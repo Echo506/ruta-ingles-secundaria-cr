@@ -3,21 +3,360 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Próximamente | English Quest CR</title>
+  <meta
+    name="description"
+    content="Misión 1 de Séptimo: saludos e información personal."
+  >
+  <title>Misión 1 | English Quest CR</title>
+
   <link rel="stylesheet" href="../assets/css/styles.css">
+  <script src="../assets/js/app.js" defer></script>
 </head>
+
 <body>
-  <main class="section">
-    <div class="container">
-      <p class="eyebrow">🚧 En desarrollo</p>
-      <h1>Esta sección estará disponible pronto.</h1>
-      <p class="hero-description">
-        Estamos construyendo esta parte de English Quest CR para la próxima fase.
-      </p>
-      <a class="button button-primary" href="../index.html">
-        ← Volver al inicio
+  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+
+  <header class="site-header">
+    <div class="container header-content">
+      <a class="brand" href="../index.html" aria-label="English Quest CR, página de inicio">
+        <span class="brand-mark" aria-hidden="true">EQ</span>
+        <span>
+          <strong>English Quest CR</strong>
+          <small>Tu ruta de inglés</small>
+        </span>
       </a>
+
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-label="Abrir menú de navegación"
+        aria-expanded="false"
+        aria-controls="main-navigation"
+        data-menu-toggle
+      >
+        <span aria-hidden="true">☰</span>
+      </button>
+
+      <nav
+        class="main-navigation"
+        id="main-navigation"
+        aria-label="Navegación principal"
+        data-navigation
+      >
+        <a class="nav-link" href="../index.html">Inicio</a>
+        <a class="nav-link" href="levels.html">Rutas</a>
+        <a class="nav-link" href="challenge.html">Retos</a>
+        <a class="nav-link" href="progress.html">Mi progreso</a>
+        <a class="nav-link" href="resources.html">Recursos</a>
+        <a class="nav-link" href="about.html">Sobre el proyecto</a>
+      </nav>
+
+      <button
+        class="contrast-toggle"
+        type="button"
+        aria-pressed="false"
+        aria-label="Activar modo de alto contraste"
+        data-contrast-toggle
+      >
+        <span aria-hidden="true">◐</span>
+        <span class="contrast-label">Alto contraste</span>
+      </button>
     </div>
+  </header>
+
+  <main id="main-content">
+    <section class="mission-hero section">
+      <div class="container">
+        <a class="back-link" href="levels.html">← Volver a rutas</a>
+
+        <p class="eyebrow">
+          <span aria-hidden="true">🌱</span>
+          Séptimo año · Foundations
+        </p>
+
+        <h1>Mission 1: Greetings & Personal Information</h1>
+
+        <p class="hero-description">
+          Aprendé a saludar, despedirte y compartir información básica sobre vos.
+          Al final completá el reto para ganar hasta 100 XP.
+        </p>
+
+        <div class="mission-meta" aria-label="Detalles de la misión">
+          <span>⏱ 15 minutos</span>
+          <span>🎯 Pre-A1 – A1</span>
+          <span>🏆 Hasta 100 XP</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="vocabulary-title">
+      <div class="container mission-layout">
+        <article class="lesson-card">
+          <p class="eyebrow">
+            <span aria-hidden="true">📚</span>
+            Paso 1
+          </p>
+
+          <h2 id="vocabulary-title">Vocabulary: basic greetings</h2>
+
+          <p>Leé las expresiones y relacioná cada una con su significado.</p>
+
+          <div class="vocabulary-grid">
+            <div class="word-card">
+              <strong>Hello / Hi</strong>
+              <span>Hola</span>
+            </div>
+
+            <div class="word-card">
+              <strong>Good morning</strong>
+              <span>Buenos días</span>
+            </div>
+
+            <div class="word-card">
+              <strong>Good afternoon</strong>
+              <span>Buenas tardes</span>
+            </div>
+
+            <div class="word-card">
+              <strong>Good evening</strong>
+              <span>Buenas noches, al saludar</span>
+            </div>
+
+            <div class="word-card">
+              <strong>Goodbye / Bye</strong>
+              <span>Adiós</span>
+            </div>
+
+            <div class="word-card">
+              <strong>Nice to meet you</strong>
+              <span>Mucho gusto</span>
+            </div>
+          </div>
+        </article>
+
+        <aside class="tip-card">
+          <span class="tip-icon" aria-hidden="true">💡</span>
+          <h2>Tip rápido</h2>
+          <p>
+            Usá <strong>Good morning</strong> antes del mediodía y
+            <strong>Good afternoon</strong> después del mediodía.
+            <strong>Good evening</strong> se usa para saludar de noche.
+          </p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section lesson-section" aria-labelledby="language-title">
+      <div class="container mission-layout">
+        <article class="lesson-card">
+          <p class="eyebrow">
+            <span aria-hidden="true">🧩</span>
+            Paso 2
+          </p>
+
+          <h2 id="language-title">Language tool: introducing yourself</h2>
+
+          <p>Para decir tu nombre, podés usar estas estructuras:</p>
+
+          <div class="example-box">
+            <p><strong>My name is Ana.</strong></p>
+            <p><strong>I am Ana.</strong></p>
+            <p><strong>I’m Ana.</strong></p>
+          </div>
+
+          <p>
+            Para preguntar el nombre de otra persona, decí:
+            <strong>What’s your name?</strong>
+          </p>
+        </article>
+
+        <aside class="tip-card">
+          <span class="tip-icon" aria-hidden="true">🗣️</span>
+          <h2>Practicá en voz alta</h2>
+          <p>
+            Repetí: “Hello, my name is ___.” Después agregá:
+            “Nice to meet you.”
+          </p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="reading-title">
+      <div class="container">
+        <article class="reading-card">
+          <p class="eyebrow">
+            <span aria-hidden="true">📖</span>
+            Paso 3 · Reading
+          </p>
+
+          <h2 id="reading-title">Read the dialogue</h2>
+
+          <div class="dialogue" lang="en">
+            <p><strong>Lucas:</strong> Good morning! My name is Lucas.</p>
+            <p><strong>Emma:</strong> Hi, Lucas. I’m Emma. Nice to meet you.</p>
+            <p><strong>Lucas:</strong> Nice to meet you too, Emma.</p>
+            <p><strong>Emma:</strong> Goodbye, Lucas!</p>
+            <p><strong>Lucas:</strong> Bye!</p>
+          </div>
+
+          <p class="reading-note">
+            <strong>Idea clave:</strong> Lucas y Emma se presentan y se despiden
+            de manera amable.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section quiz-section" aria-labelledby="quiz-title">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">
+              <span aria-hidden="true">⚡</span>
+              Paso 4 · Mission challenge
+            </p>
+            <h2 id="quiz-title">Completá el reto.</h2>
+          </div>
+        </div>
+
+        <p class="quiz-intro">
+          Elegí una respuesta para cada pregunta y presioná
+          <strong>Revisar respuestas</strong>. Necesitás al menos 3 de 4
+          respuestas correctas para completar la misión.
+        </p>
+
+        <form id="mission-quiz" class="quiz-form" novalidate>
+          <fieldset>
+            <legend>1. Which greeting is appropriate before noon?</legend>
+
+            <label class="answer-option">
+              <input type="radio" name="question-1" value="a">
+              <span>Good evening</span>
+            </label>
+
+            <label class="answer-option">
+              <input type="radio" name="question-1" value="b">
+              <span>Good morning</span>
+            </label>
+
+            <label class="answer-option">
+              <input type="radio" name="question-1" value="c">
+              <span>Goodbye</span>
+            </label>
+
+            <p class="question-feedback" data-feedback="question-1"></p>
+          </fieldset>
+
+          <fieldset>
+            <legend>2. Complete: “Hello, _____ is Daniela.”</legend>
+
+            <label class="answer-option">
+              <input type="radio" name="question-2" value="a">
+              <span>My name</span>
+            </label>
+
+            <label class="answer-option">
+              <input type="radio" name="question-2" value="b">
+              <span>Goodbye</span>
+            </label>
+
+            <label class="answer-option">
+              <input type="radio" name="question-2" value="c">
+              <span>Nice</span>
+            </label>
+
+            <p class="question-feedback" data-feedback="question-2"></p>
+          </fieldset>
+
+          <fieldset>
+            <legend>3. What do you say when you meet someone for the first time?</legend>
+
+            <label class="answer-option">
+              <input type="radio" name="question-3" value="a">
+              <span>Nice to meet you</span>
+            </label>
+
+            <label class="answer-option">
+              <input type="radio" name="question-3" value="b">
+              <span>Good afternoon yesterday</span>
+            </label>
+
+            <label class="answer-option">
+              <input type="radio" name="question-3" value="c">
+              <span>My goodbye is Ana</span>
+            </label>
+
+            <p class="question-feedback" data-feedback="question-3"></p>
+          </fieldset>
+
+          <fieldset>
+            <legend>4. In the dialogue, what is the name of Lucas’s new classmate?</legend>
+
+            <label class="answer-option">
+              <input type="radio" name="question-4" value="a">
+              <span>Ana</span>
+            </label>
+
+            <label class="answer-option">
+              <input type="radio" name="question-4" value="b">
+              <span>Emma</span>
+            </label>
+
+            <label class="answer-option">
+              <input type="radio" name="question-4" value="c">
+              <span>Daniela</span>
+            </label>
+
+            <p class="question-feedback" data-feedback="question-4"></p>
+          </fieldset>
+
+          <button class="button button-primary" type="submit">
+            Revisar respuestas
+            <span aria-hidden="true">✓</span>
+          </button>
+
+          <div
+            class="quiz-result"
+            id="quiz-result"
+            role="status"
+            aria-live="polite"
+            tabindex="-1"
+          ></div>
+        </form>
+      </div>
+    </section>
   </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="brand footer-brand" href="../index.html">
+          <span class="brand-mark" aria-hidden="true">EQ</span>
+          <span>
+            <strong>English Quest CR</strong>
+            <small>Aprender también es avanzar.</small>
+          </span>
+        </a>
+
+        <p class="footer-disclaimer">
+          Recurso educativo complementario e independiente. No está afiliado,
+          aprobado ni administrado por el Ministerio de Educación Pública de
+          Costa Rica.
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <a href="levels.html">Rutas</a>
+        <a href="challenge.html">Retos</a>
+        <a href="progress.html">Mi progreso</a>
+        <a href="resources.html">Recursos</a>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>© <span id="current-year"></span> English Quest CR. Licencia MIT.</p>
+      <a href="#main-content">Volver arriba ↑</a>
+    </div>
+  </footer>
 </body>
 </html>
