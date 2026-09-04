@@ -3,30 +3,243 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Retos de práctica de English Quest CR.">
+  <meta
+    name="description"
+    content="Reto diario de inglés con práctica breve de Reading y vocabulario."
+  >
   <title>Retos | English Quest CR</title>
+
   <link rel="stylesheet" href="../assets/css/styles.css">
+  <script src="../assets/js/app.js" defer></script>
 </head>
 
 <body>
   <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
 
-  <main id="main-content" class="section">
-    <div class="container">
-      <p class="eyebrow">⚡ Retos</p>
-
-      <h1>Próximamente: retos y diagnóstico.</h1>
-
-      <p class="hero-description">
-        Esta sección incluirá el Daily Challenge, el diagnóstico inicial
-        y los desafíos cronometrados de English Quest CR.
-      </p>
-
-      <a class="button button-primary" href="../index.html">
-        <span aria-hidden="true">←</span>
-        Volver al inicio
+  <header class="site-header">
+    <div class="container header-content">
+      <a class="brand" href="../index.html" aria-label="English Quest CR, página de inicio">
+        <span class="brand-mark" aria-hidden="true">EQ</span>
+        <span>
+          <strong>English Quest CR</strong>
+          <small>Tu ruta de inglés</small>
+        </span>
       </a>
+
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-label="Abrir menú de navegación"
+        aria-expanded="false"
+        aria-controls="main-navigation"
+        data-menu-toggle
+      >
+        <span aria-hidden="true">☰</span>
+      </button>
+
+      <nav
+        class="main-navigation"
+        id="main-navigation"
+        aria-label="Navegación principal"
+        data-navigation
+      >
+        <a class="nav-link" href="../index.html">Inicio</a>
+        <a class="nav-link" href="levels.html">Rutas</a>
+        <a class="nav-link is-active" href="challenge.html" aria-current="page">Retos</a>
+        <a class="nav-link" href="progress.html">Mi progreso</a>
+        <a class="nav-link" href="resources.html">Recursos</a>
+        <a class="nav-link" href="about.html">Sobre el proyecto</a>
+      </nav>
+
+      <button
+        class="contrast-toggle"
+        type="button"
+        aria-pressed="false"
+        aria-label="Activar modo de alto contraste"
+        data-contrast-toggle
+      >
+        <span aria-hidden="true">◐</span>
+        <span class="contrast-label">Alto contraste</span>
+      </button>
     </div>
+  </header>
+
+  <main id="main-content">
+    <section class="mission-hero section">
+      <div class="container">
+        <p class="eyebrow">
+          <span aria-hidden="true">⚡</span>
+          Daily Challenge
+        </p>
+
+        <h1>Un reto corto. Un avance real.</h1>
+
+        <p class="hero-description">
+          Respondé tres preguntas originales de inglés. Podés ganar hasta
+          30 XP una vez por día.
+        </p>
+
+        <div class="mission-meta" aria-label="Detalles del reto">
+          <span>⏱ 5 minutos</span>
+          <span>🎯 A1 – A2</span>
+          <span>🏆 Hasta 30 XP</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section quiz-section" aria-labelledby="challenge-title">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">
+              <span aria-hidden="true">📅</span>
+              Reto de hoy
+            </p>
+            <h2 id="challenge-title">Poné a prueba lo que sabés.</h2>
+          </div>
+        </div>
+
+        <p class="quiz-intro">
+          Elegí una respuesta para cada pregunta. Cuando terminés, presioná
+          <strong>Revisar reto</strong>.
+        </p>
+
+        <form id="daily-challenge-form" class="quiz-form" novalidate>
+          <fieldset>
+            <legend>1. Complete: “I _____ from Costa Rica.”</legend>
+
+            <label class="answer-option">
+              <input type="radio" name="daily-question-1" value="a">
+              <span>am</span>
+            </label>
+
+            <label class="answer-option">
+              <input type="radio" name="daily-question-1" value="b">
+              <span>is</span>
+            </label>
+
+            <label class="answer-option">
+              <input type="radio" name="daily-question-1" value="c">
+              <span>are</span>
+            </label>
+
+            <p class="question-feedback" data-daily-feedback="daily-question-1"></p>
+          </fieldset>
+
+          <fieldset>
+            <legend>2. Which word means “biblioteca”?</legend>
+
+            <label class="answer-option">
+              <input type="radio" name="daily-question-2" value="a">
+              <span>Bakery</span>
+            </label>
+
+            <label class="answer-option">
+              <input type="radio" name="daily-question-2" value="b">
+              <span>Library</span>
+            </label>
+
+            <label class="answer-option">
+              <input type="radio" name="daily-question-2" value="c">
+              <span>Hospital</span>
+            </label>
+
+            <p class="question-feedback" data-daily-feedback="daily-question-2"></p>
+          </fieldset>
+
+          <fieldset>
+            <legend>3. Read: “Sofía studies English after school.” When does Sofía study English?</legend>
+
+            <label class="answer-option">
+              <input type="radio" name="daily-question-3" value="a">
+              <span>Before school</span>
+            </label>
+
+            <label class="answer-option">
+              <input type="radio" name="daily-question-3" value="b">
+              <span>After school</span>
+            </label>
+
+            <label class="answer-option">
+              <input type="radio" name="daily-question-3" value="c">
+              <span>On Sunday only</span>
+            </label>
+
+            <p class="question-feedback" data-daily-feedback="daily-question-3"></p>
+          </fieldset>
+
+          <button class="button button-primary" type="submit">
+            Revisar reto
+            <span aria-hidden="true">✓</span>
+          </button>
+
+          <div
+            class="quiz-result"
+            id="daily-challenge-result"
+            role="status"
+            aria-live="polite"
+            tabindex="-1"
+          ></div>
+        </form>
+      </div>
+    </section>
+
+    <section class="section diagnostic-section" aria-labelledby="mission-link-title">
+      <div class="container">
+        <div class="diagnostic-card">
+          <div>
+            <p class="eyebrow">
+              <span aria-hidden="true">🌱</span>
+              Seguí aprendiendo
+            </p>
+
+            <h2 id="mission-link-title">Los retos suman; las misiones construyen.</h2>
+
+            <p>
+              Si todavía no completaste la Misión 1 de Séptimo, practicá saludos
+              e información personal para sumar hasta 100 XP.
+            </p>
+          </div>
+
+          <a class="button button-primary" href="mission.html?mission=seventh-mission-1">
+            Ir a misión 1
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
   </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="brand footer-brand" href="../index.html">
+          <span class="brand-mark" aria-hidden="true">EQ</span>
+          <span>
+            <strong>English Quest CR</strong>
+            <small>Aprender también es avanzar.</small>
+          </span>
+        </a>
+
+        <p class="footer-disclaimer">
+          Recurso educativo complementario e independiente. No está afiliado,
+          aprobado ni administrado por el Ministerio de Educación Pública de
+          Costa Rica.
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <a href="levels.html">Rutas</a>
+        <a href="progress.html">Mi progreso</a>
+        <a href="resources.html">Recursos</a>
+        <a href="about.html">Sobre el proyecto</a>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>© <span id="current-year"></span> English Quest CR. Licencia MIT.</p>
+      <a href="#main-content">Volver arriba ↑</a>
+    </div>
+  </footer>
 </body>
 </html>
