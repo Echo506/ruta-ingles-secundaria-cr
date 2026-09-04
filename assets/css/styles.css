@@ -1,30 +1,26 @@
 :root {
   --bg: #071426;
-  --bg-deep: #040b16;
+  --bg-deep: #030916;
   --surface: #0d2038;
   --surface-elevated: #112a48;
   --surface-soft: #10243f;
   --border: rgba(139, 206, 255, 0.18);
-  --border-strong: rgba(57, 207, 255, 0.48);
-
+  --border-strong: rgba(57, 207, 255, 0.58);
   --text: #f4f9ff;
   --text-muted: #b7c8dc;
   --text-soft: #83a3c2;
-
   --blue: #2e8cff;
   --cyan: #00d4ff;
   --mint: #62e6b8;
+  --violet: #8b5cf6;
   --yellow: #ffd166;
   --danger: #ff8b9a;
-
   --shadow: 0 18px 45px rgba(0, 0, 0, 0.25);
   --shadow-soft: 0 10px 24px rgba(0, 0, 0, 0.18);
-
   --radius-sm: 0.75rem;
   --radius-md: 1rem;
   --radius-lg: 1.5rem;
   --radius-xl: 2rem;
-
   --container: 1180px;
   --transition: 180ms ease;
 }
@@ -46,33 +42,30 @@ body {
     radial-gradient(circle at 10% -10%, rgba(0, 212, 255, 0.14), transparent 30rem),
     radial-gradient(circle at 95% 20%, rgba(98, 230, 184, 0.1), transparent 25rem),
     var(--bg);
-  font-family:
-    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", sans-serif;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   line-height: 1.6;
-}
-
-body.high-contrast {
-  --bg: #000000;
-  --bg-deep: #000000;
-  --surface: #080808;
-  --surface-elevated: #121212;
-  --surface-soft: #101010;
-  --border: #ffffff;
-  --border-strong: #ffff00;
-  --text: #ffffff;
-  --text-muted: #ffffff;
-  --text-soft: #ffffff;
-  --blue: #00d4ff;
-  --cyan: #00ffff;
-  --mint: #8cff00;
-  --yellow: #ffff00;
-  --shadow: none;
-  --shadow-soft: none;
 }
 
 body.menu-open {
   overflow: hidden;
+}
+
+body.high-contrast {
+  --bg: #000;
+  --bg-deep: #000;
+  --surface: #080808;
+  --surface-elevated: #121212;
+  --surface-soft: #101010;
+  --border: #fff;
+  --border-strong: #ff0;
+  --text: #fff;
+  --text-muted: #fff;
+  --text-soft: #fff;
+  --cyan: #0ff;
+  --mint: #8cff00;
+  --yellow: #ff0;
+  --shadow: none;
+  --shadow-soft: none;
 }
 
 img,
@@ -148,7 +141,9 @@ button {
   border: 0;
 }
 
-/* Header */
+/* =========================================================
+   HEADER
+   ========================================================= */
 
 .site-header {
   position: sticky;
@@ -162,15 +157,15 @@ button {
 .header-content {
   display: grid;
   grid-template-columns: 1fr auto auto;
+  gap: 0.65rem;
   align-items: center;
   min-height: 4.8rem;
-  gap: 0.65rem;
 }
 
 .brand {
   display: inline-flex;
-  align-items: center;
   gap: 0.7rem;
+  align-items: center;
   width: fit-content;
   color: var(--text);
 }
@@ -215,10 +210,7 @@ button {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  transition:
-    background var(--transition),
-    border-color var(--transition),
-    transform var(--transition);
+  transition: background var(--transition), border-color var(--transition), transform var(--transition);
 }
 
 .menu-toggle:hover,
@@ -265,9 +257,7 @@ button {
   border-radius: 0.65rem;
   font-size: 0.92rem;
   font-weight: 700;
-  transition:
-    color var(--transition),
-    background var(--transition);
+  transition: color var(--transition), background var(--transition);
 }
 
 .nav-link:hover,
@@ -277,43 +267,208 @@ button {
   background: rgba(0, 212, 255, 0.12);
 }
 
-/* Hero */
+/* =========================================================
+   HERO PRINCIPAL
+   ========================================================= */
 
 .hero {
   position: relative;
+  isolation: isolate;
   overflow: hidden;
-  padding-top: 4.6rem;
-  background-image:
-    linear-gradient(120deg, rgba(4, 11, 22, 0.1), rgba(4, 11, 22, 0.85)),
-    linear-gradient(rgba(139, 206, 255, 0.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(139, 206, 255, 0.055) 1px, transparent 1px);
-  background-size: auto, 2rem 2rem, 2rem 2rem;
+  min-height: min(760px, 90vh);
+  padding-top: clamp(5rem, 10vw, 8rem);
+  padding-bottom: clamp(4rem, 9vw, 7rem);
+  background:
+    radial-gradient(ellipse 65% 85% at 90% 45%, rgba(0, 212, 255, 0.16), transparent 72%),
+    radial-gradient(ellipse 55% 90% at 10% 5%, rgba(139, 92, 246, 0.12), transparent 70%),
+    linear-gradient(120deg, #030916 0%, #061326 48%, #071d3a 100%);
 }
 
-.hero::after {
+/* Viñeta oscura: garantiza legibilidad sobre la bandera */
+.hero::before {
   position: absolute;
-  width: 18rem;
-  height: 18rem;
-  right: -8rem;
-  bottom: -10rem;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
   content: "";
-  background: var(--cyan);
-  border-radius: 50%;
-  opacity: 0.11;
-  filter: blur(30px);
+  background:
+    radial-gradient(circle at center, transparent 22%, rgba(1, 6, 16, 0.18) 68%, rgba(1, 6, 16, 0.72) 100%);
+}
+
+/* Contenido siempre encima de la bandera */
+.hero-grid {
+  position: relative;
+  z-index: 4;
+  display: grid;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+/* =========================================================
+   BANDERA DE COSTA RICA COMO FONDO COMPLETO
+   El HTML requerido:
+   <div class="hero-effects">
+     <div class="costa-rica-flag">
+       <span class="flag-wave"></span>
+       <span class="flag-stripe flag-blue-top"></span>
+       <span class="flag-stripe flag-white-top"></span>
+       <span class="flag-stripe flag-red"></span>
+       <span class="flag-stripe flag-white-bottom"></span>
+       <span class="flag-stripe flag-blue-bottom"></span>
+     </div>
+   </div>
+   ========================================================= */
+
+.hero-effects {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
   pointer-events: none;
 }
 
-.hero-grid {
-  display: grid;
-  align-items: center;
-  gap: 2.5rem;
+/* La bandera cubre el 100% del hero */
+.costa-rica-flag {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  opacity: 0.17;
+  filter: saturate(1.1) contrast(1.06);
+  transform-origin: center;
+  animation: flag-background-drift 18s ease-in-out infinite alternate;
 }
+
+.flag-stripe {
+  position: absolute;
+  right: 0;
+  left: 0;
+  width: 100%;
+}
+
+/* Proporciones oficiales: azul, blanco, rojo doble, blanco, azul */
+.flag-blue-top {
+  top: 0;
+  height: 16.666%;
+  background: #002b7f;
+}
+
+.flag-white-top {
+  top: 16.666%;
+  height: 16.667%;
+  background: #fff;
+}
+
+.flag-red {
+  top: 33.333%;
+  height: 33.334%;
+  background: #ce1126;
+}
+
+.flag-white-bottom {
+  top: 66.667%;
+  height: 16.667%;
+  background: #fff;
+}
+
+.flag-blue-bottom {
+  bottom: 0;
+  height: 16.666%;
+  background: #002b7f;
+}
+
+/* Oscurece la bandera para no afectar texto, botones ni panel */
+.hero-effects::before {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  content: "";
+  background:
+    linear-gradient(
+      90deg,
+      rgba(3, 9, 22, 0.9) 0%,
+      rgba(3, 9, 22, 0.72) 43%,
+      rgba(3, 9, 22, 0.58) 100%
+    ),
+    radial-gradient(circle at 18% 26%, rgba(0, 212, 255, 0.14), transparent 34%);
+}
+
+/* Reflejo de luz con movimiento sutil */
+.flag-wave {
+  position: absolute;
+  z-index: 3;
+  top: -20%;
+  bottom: -20%;
+  left: -55%;
+  width: 42%;
+  opacity: 0.38;
+  background: linear-gradient(
+    105deg,
+    transparent 16%,
+    rgba(255, 255, 255, 0.62) 50%,
+    transparent 84%
+  );
+  transform: skewX(-18deg);
+  animation: flag-light-sweep 9s ease-in-out infinite;
+}
+
+/* Chispas ambientales, si existen en el HTML */
+.spark {
+  position: absolute;
+  z-index: 4;
+  width: 0.38rem;
+  height: 0.38rem;
+  background: var(--cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--cyan), 0 0 20px rgba(0, 212, 255, 0.52);
+  animation: spark-drift 5.5s ease-in-out infinite;
+}
+
+.spark-one {
+  top: 20%;
+  right: 28%;
+  animation-delay: -1s;
+}
+
+.spark-two {
+  top: 63%;
+  right: 13%;
+  width: 0.28rem;
+  height: 0.28rem;
+  background: var(--violet);
+  box-shadow: 0 0 8px var(--violet), 0 0 20px rgba(139, 92, 246, 0.46);
+  animation-delay: -3.4s;
+  animation-duration: 7.2s;
+}
+
+.spark-three {
+  top: 82%;
+  left: 13%;
+  width: 0.25rem;
+  height: 0.25rem;
+  animation-delay: -2.1s;
+}
+
+.spark-four {
+  top: 34%;
+  left: 57%;
+  width: 0.3rem;
+  height: 0.3rem;
+  background: var(--violet);
+  box-shadow: 0 0 8px var(--violet), 0 0 20px rgba(139, 92, 246, 0.46);
+  animation-delay: -4.8s;
+  animation-duration: 7.2s;
+}
+
+/* =========================================================
+   TEXTO DEL HERO
+   ========================================================= */
 
 .eyebrow {
   display: flex;
-  align-items: center;
   gap: 0.45rem;
+  align-items: center;
   margin: 0 0 0.8rem;
   color: var(--mint);
   font-size: 0.82rem;
@@ -336,10 +491,27 @@ button {
   font-size: clamp(2.35rem, 9vw, 4.8rem);
   line-height: 1.02;
   letter-spacing: -0.055em;
+  text-shadow: 0 0 16px rgba(0, 212, 255, 0.2), 0 0 42px rgba(0, 212, 255, 0.1);
 }
 
 .hero h1 span {
+  position: relative;
+  display: inline-block;
   color: var(--cyan);
+  text-shadow: 0 0 12px rgba(0, 212, 255, 0.7), 0 0 32px rgba(0, 212, 255, 0.28);
+}
+
+.hero h1 span::after {
+  position: absolute;
+  right: 0;
+  bottom: -0.14em;
+  left: 0;
+  height: 2px;
+  content: "";
+  background: linear-gradient(90deg, transparent, var(--cyan), var(--violet), transparent);
+  box-shadow: 0 0 14px var(--cyan);
+  transform-origin: left;
+  animation: title-line 3.5s ease-in-out infinite;
 }
 
 .hero-description {
@@ -356,37 +528,65 @@ button {
   margin-top: 1.7rem;
 }
 
+.motivation {
+  margin: 1.3rem 0 0;
+  color: var(--text-soft);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+/* =========================================================
+   BOTONES Y ENLACES
+   ========================================================= */
+
 .button {
+  position: relative;
   display: inline-flex;
+  gap: 0.55rem;
   align-items: center;
   justify-content: center;
   min-height: 3rem;
-  gap: 0.55rem;
+  isolation: isolate;
+  overflow: hidden;
   padding: 0.75rem 1rem;
   border: 1px solid transparent;
   border-radius: var(--radius-sm);
   font-size: 0.95rem;
   font-weight: 800;
   text-align: center;
-  transition:
-    transform var(--transition),
-    box-shadow var(--transition),
-    background var(--transition),
-    border-color var(--transition);
+  transition: transform var(--transition), box-shadow var(--transition), background var(--transition), border-color var(--transition), filter var(--transition);
 }
 
-.button:hover {
-  transform: translateY(-2px);
+.button::before {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: -130%;
+  width: 55%;
+  pointer-events: none;
+  content: "";
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.36), transparent);
+  transform: skewX(-22deg);
+  transition: left 560ms ease;
+}
+
+.button:hover,
+.button:focus-visible {
+  transform: translateY(-4px) scale(1.01);
+  filter: brightness(1.08);
+  box-shadow: 0 0 16px rgba(0, 212, 255, 0.4), 0 0 34px rgba(0, 212, 255, 0.14);
+}
+
+.button:hover::before,
+.button:focus-visible::before {
+  left: 150%;
 }
 
 .button-primary {
   color: var(--bg-deep);
   background: linear-gradient(135deg, var(--cyan), var(--mint));
   box-shadow: 0 12px 26px rgba(0, 212, 255, 0.2);
-}
-
-.button-primary:hover {
-  box-shadow: 0 16px 30px rgba(0, 212, 255, 0.32);
 }
 
 .button-secondary {
@@ -399,26 +599,42 @@ button {
   background: var(--surface-elevated);
 }
 
-.motivation {
-  margin: 1.3rem 0 0;
-  color: var(--text-soft);
-  font-size: 0.88rem;
-  font-weight: 700;
+.text-link {
+  display: inline-flex;
+  gap: 0.4rem;
+  align-items: center;
+  color: var(--cyan);
+  font-size: 0.9rem;
+  font-weight: 800;
 }
+
+.text-link:hover {
+  color: var(--mint);
+}
+
+/* =========================================================
+   PANEL DE PROGRESO
+   ========================================================= */
 
 .quest-panel {
   position: relative;
-  padding: 1.35rem;
+  z-index: 4;
+  isolation: isolate;
   overflow: hidden;
-  background:
-    linear-gradient(145deg, rgba(17, 42, 72, 0.98), rgba(8, 22, 40, 0.98));
-  border: 1px solid var(--border);
+  padding: 1.35rem;
+  background: linear-gradient(145deg, rgba(14, 42, 76, 0.92), rgba(3, 13, 28, 0.94));
+  border: 1px solid rgba(0, 212, 255, 0.42);
   border-radius: var(--radius-xl);
-  box-shadow: var(--shadow);
+  box-shadow:
+    inset 0 0 0 1px rgba(139, 92, 246, 0.1),
+    0 0 34px rgba(0, 212, 255, 0.14),
+    0 24px 60px rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(12px);
 }
 
 .quest-panel::before {
   position: absolute;
+  z-index: -2;
   top: -5rem;
   right: -5rem;
   width: 12rem;
@@ -426,21 +642,72 @@ button {
   content: "";
   background: var(--cyan);
   border-radius: 50%;
-  opacity: 0.11;
   filter: blur(15px);
+  opacity: 0.12;
+}
+
+.quest-panel::after {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: -120%;
+  width: 52%;
+  pointer-events: none;
+  content: "";
+  background: linear-gradient(110deg, transparent, rgba(135, 241, 255, 0.2), transparent);
+  transform: skewX(-22deg);
+  animation: panel-shine 8s ease-in-out infinite;
+}
+
+.panel-corner {
+  position: absolute;
+  z-index: 2;
+  width: 15px;
+  height: 15px;
+  pointer-events: none;
+  border-color: var(--cyan);
+}
+
+.panel-corner--top-left {
+  top: 8px;
+  left: 8px;
+  border-top: 2px solid;
+  border-left: 2px solid;
+}
+
+.panel-corner--top-right {
+  top: 8px;
+  right: 8px;
+  border-top: 2px solid;
+  border-right: 2px solid;
+}
+
+.panel-corner--bottom-left {
+  bottom: 8px;
+  left: 8px;
+  border-bottom: 2px solid;
+  border-left: 2px solid;
+}
+
+.panel-corner--bottom-right {
+  right: 8px;
+  bottom: 8px;
+  border-right: 2px solid;
+  border-bottom: 2px solid;
 }
 
 .quest-panel-top,
-.quest-stats,
-.text-link {
+.quest-stats {
   position: relative;
+  z-index: 1;
 }
 
 .quest-panel-top {
   display: flex;
+  gap: 0.7rem;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 0.7rem;
 }
 
 .panel-label {
@@ -478,7 +745,7 @@ button {
     radial-gradient(closest-side, var(--surface-elevated) 78%, transparent 79% 100%),
     conic-gradient(var(--mint) 0deg, rgba(255, 255, 255, 0.12) 0deg);
   border-radius: 50%;
-  box-shadow: inset 0 0 25px rgba(0, 212, 255, 0.1);
+  box-shadow: inset 0 0 25px rgba(0, 212, 255, 0.22), 0 0 20px rgba(0, 212, 255, 0.12);
 }
 
 .progress-ring span {
@@ -497,8 +764,8 @@ button {
 
 .stat {
   display: grid;
-  place-items: center;
   padding: 0.7rem 0.3rem;
+  place-items: center;
   text-align: center;
   background: rgba(4, 11, 22, 0.24);
   border: 1px solid rgba(139, 206, 255, 0.1);
@@ -524,20 +791,9 @@ button {
   line-height: 1.2;
 }
 
-.text-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  color: var(--cyan);
-  font-size: 0.9rem;
-  font-weight: 800;
-}
-
-.text-link:hover {
-  color: var(--mint);
-}
-
-/* Levels */
+/* =========================================================
+   TARJETAS Y SECCIONES PRINCIPALES
+   ========================================================= */
 
 .level-section {
   background: rgba(4, 11, 22, 0.3);
@@ -547,9 +803,9 @@ button {
 
 .section-heading {
   display: flex;
+  gap: 1.2rem;
   align-items: end;
   justify-content: space-between;
-  gap: 1.2rem;
   margin-bottom: 1.8rem;
 }
 
@@ -571,9 +827,93 @@ button {
   margin-inline: auto;
 }
 
+.steps-grid,
 .level-grid {
   display: grid;
   gap: 1rem;
+}
+
+.step-card,
+.level-card,
+.badge-card,
+.diagnostic-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  transition: transform 260ms ease, border-color 260ms ease, box-shadow 260ms ease;
+}
+
+.step-card::after,
+.level-card::after,
+.badge-card::after,
+.diagnostic-card::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  opacity: 0;
+  border: 1px solid rgba(0, 212, 255, 0.7);
+  border-radius: inherit;
+  box-shadow: 0 0 22px rgba(0, 212, 255, 0.22), inset 0 0 24px rgba(0, 212, 255, 0.06);
+  transition: opacity 260ms ease;
+}
+
+.step-card:hover,
+.level-card:hover,
+.badge-card:hover,
+.diagnostic-card:hover {
+  transform: translateY(-7px);
+  border-color: rgba(0, 212, 255, 0.66);
+  box-shadow: 0 20px 42px rgba(0, 0, 0, 0.25), 0 0 30px rgba(0, 212, 255, 0.1);
+}
+
+.step-card:hover::after,
+.level-card:hover::after,
+.badge-card:hover::after,
+.diagnostic-card:hover::after {
+  opacity: 1;
+}
+
+.step-card {
+  padding: 1.3rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.step-number {
+  position: absolute;
+  top: 0.8rem;
+  right: 1rem;
+  color: rgba(139, 206, 255, 0.16);
+  font-size: 2.35rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.step-icon {
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: 1rem;
+  place-items: center;
+  background: rgba(0, 212, 255, 0.1);
+  border-radius: 0.9rem;
+  font-size: 1.35rem;
+}
+
+.step-card h3 {
+  position: relative;
+  margin: 0;
+  font-size: 1.14rem;
+}
+
+.step-card p {
+  position: relative;
+  margin: 0.65rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.92rem;
 }
 
 .loading-message,
@@ -596,28 +936,17 @@ button {
   flex-direction: column;
   min-height: 100%;
   padding: 1.2rem;
-  overflow: hidden;
   background: linear-gradient(155deg, var(--surface-elevated), var(--surface));
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-soft);
-  transition:
-    transform var(--transition),
-    border-color var(--transition),
-    box-shadow var(--transition);
-}
-
-.level-card:hover {
-  border-color: var(--border-strong);
-  box-shadow: var(--shadow);
-  transform: translateY(-4px);
 }
 
 .level-card-top {
   display: flex;
+  gap: 0.8rem;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 0.8rem;
 }
 
 .level-icon {
@@ -684,66 +1013,8 @@ button {
   margin-top: auto;
 }
 
-/* Steps */
-
-.how-section {
-  position: relative;
-}
-
-.steps-grid {
-  display: grid;
-  gap: 1rem;
-}
-
-.step-card {
-  position: relative;
-  padding: 1.3rem;
-  overflow: hidden;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-}
-
-.step-number {
-  position: absolute;
-  top: 0.8rem;
-  right: 1rem;
-  color: rgba(139, 206, 255, 0.16);
-  font-size: 2.35rem;
-  font-weight: 900;
-  line-height: 1;
-}
-
-.step-icon {
-  display: grid;
-  width: 3rem;
-  height: 3rem;
-  margin-bottom: 1rem;
-  place-items: center;
-  background: rgba(0, 212, 255, 0.1);
-  border-radius: 0.9rem;
-  font-size: 1.35rem;
-}
-
-.step-card h3 {
-  position: relative;
-  margin: 0;
-  font-size: 1.14rem;
-}
-
-.step-card p {
-  position: relative;
-  margin: 0.65rem 0 0;
-  color: var(--text-muted);
-  font-size: 0.92rem;
-}
-
-/* Badges */
-
 .badges-section {
-  background:
-    linear-gradient(135deg, rgba(0, 212, 255, 0.08), transparent 45%),
-    var(--bg-deep);
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), transparent 45%, var(--bg-deep));
 }
 
 .badges-layout {
@@ -793,8 +1064,6 @@ button {
   line-height: 1.35;
 }
 
-/* Diagnostic */
-
 .diagnostic-section {
   padding-top: 0;
 }
@@ -821,207 +1090,9 @@ button {
   align-self: center;
 }
 
-/* Footer */
-
-.site-footer {
-  padding-top: 3rem;
-  background: var(--bg-deep);
-  border-top: 1px solid rgba(139, 206, 255, 0.12);
-}
-
-.footer-grid {
-  display: grid;
-  gap: 1.7rem;
-  padding-bottom: 2rem;
-}
-
-.footer-brand {
-  margin-bottom: 1rem;
-}
-
-.footer-disclaimer {
-  max-width: 65ch;
-  margin: 0;
-  color: var(--text-soft);
-  font-size: 0.84rem;
-}
-
-.footer-links {
-  display: grid;
-  align-content: start;
-  gap: 0.7rem;
-}
-
-.footer-links a {
-  width: fit-content;
-  color: var(--text-muted);
-  font-size: 0.88rem;
-  font-weight: 700;
-}
-
-.footer-links a:hover {
-  color: var(--cyan);
-}
-
-.footer-bottom {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 0.8rem;
-  padding: 1.1rem 0;
-  color: var(--text-soft);
-  border-top: 1px solid rgba(139, 206, 255, 0.1);
-  font-size: 0.78rem;
-}
-
-.footer-bottom p {
-  margin: 0;
-}
-
-.footer-bottom a {
-  color: var(--cyan);
-  font-weight: 800;
-}
-
-/* Tablet */
-
-@media (min-width: 620px) {
-  .container {
-    width: min(calc(100% - 3rem), var(--container));
-  }
-
-  .section {
-    padding: 5.5rem 0;
-  }
-
-  .hero {
-    padding-top: 5.5rem;
-  }
-
-  .level-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .steps-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .diagnostic-card {
-    grid-template-columns: 1fr auto;
-    align-items: center;
-    padding: 2rem;
-  }
-
-  .footer-grid {
-    grid-template-columns: 1.5fr 1fr;
-  }
-
-  .footer-links {
-    justify-self: end;
-  }
-}
-
-/* Desktop */
-
-@media (min-width: 920px) {
-  .header-content {
-    grid-template-columns: auto 1fr auto;
-    gap: 1.4rem;
-  }
-
-  .menu-toggle {
-    display: none;
-  }
-
-  .contrast-label {
-    display: inline;
-  }
-
-  .main-navigation {
-    position: static;
-    display: flex;
-    justify-content: center;
-    gap: 0.1rem;
-    padding: 0;
-    background: transparent;
-    border: 0;
-    box-shadow: none;
-  }
-
-  .nav-link {
-    padding: 0.55rem 0.6rem;
-    font-size: 0.82rem;
-  }
-
-  .hero-grid {
-    grid-template-columns: minmax(0, 1.25fr) minmax(18rem, 0.75fr);
-    gap: 4rem;
-  }
-
-  .quest-panel {
-    padding: 1.6rem;
-  }
-
-  .level-grid {
-    grid-template-columns: repeat(5, 1fr);
-  }
-
-  .level-card {
-    padding: 1rem;
-  }
-
-  .level-card h3 {
-    font-size: 1.08rem;
-  }
-
-  .level-card p:not(.level-year) {
-    font-size: 0.82rem;
-  }
-
-  .topic-list li {
-    font-size: 0.64rem;
-  }
-
-  .badges-layout {
-    grid-template-columns: 0.9fr 1.1fr;
-    align-items: center;
-    gap: 4rem;
-  }
-
-  .badge-showcase {
-    gap: 1rem;
-  }
-
-  .badge-card {
-    padding: 1.25rem;
-  }
-}
-
-@media (min-width: 1120px) {
-  .nav-link {
-    padding-inline: 0.75rem;
-    font-size: 0.86rem;
-  }
-}
-
-/* Reduced motion */
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
-  *,
-  *::before,
-  *::after {
-    scroll-behavior: auto !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* Mission pages */
+/* =========================================================
+   MISIONES Y LECCIONES
+   ========================================================= */
 
 .mission-hero {
   padding-top: 4.5rem;
@@ -1033,8 +1104,8 @@ button {
 
 .back-link {
   display: inline-flex;
-  align-items: center;
   gap: 0.4rem;
+  align-items: center;
   margin-bottom: 1.4rem;
   color: var(--cyan);
   font-size: 0.92rem;
@@ -1099,8 +1170,8 @@ button {
   line-height: 1.15;
 }
 
-.lesson-card > p:not(.eyebrow),
-.reading-card > p:not(.eyebrow),
+.lesson-card p:not(.eyebrow),
+.reading-card p:not(.eyebrow),
 .tip-card p {
   color: var(--text-muted);
 }
@@ -1207,8 +1278,8 @@ button {
 
 .quiz-form {
   display: grid;
-  gap: 1rem;
   max-width: 850px;
+  gap: 1rem;
 }
 
 .quiz-form fieldset {
@@ -1230,8 +1301,8 @@ button {
 
 .answer-option {
   display: flex;
-  align-items: center;
   gap: 0.7rem;
+  align-items: center;
   margin-top: 0.75rem;
   padding: 0.82rem;
   color: var(--text-muted);
@@ -1239,10 +1310,7 @@ button {
   border: 1px solid rgba(139, 206, 255, 0.12);
   border-radius: var(--radius-sm);
   cursor: pointer;
-  transition:
-    transform var(--transition),
-    border-color var(--transition),
-    background var(--transition);
+  transition: transform var(--transition), border-color var(--transition), background var(--transition);
 }
 
 .answer-option:hover {
@@ -1265,9 +1333,9 @@ button {
 .answer-option input {
   width: 1.05rem;
   height: 1.05rem;
+  flex: 0 0 auto;
   margin: 0;
   accent-color: var(--cyan);
-  flex: 0 0 auto;
 }
 
 .question-feedback {
@@ -1314,26 +1382,9 @@ button {
   border-color: rgba(255, 209, 102, 0.42);
 }
 
-@media (min-width: 620px) {
-  .vocabulary-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .lesson-card,
-  .tip-card,
-  .reading-card {
-    padding: 1.7rem;
-  }
-}
-
-@media (min-width: 900px) {
-  .mission-layout {
-    grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.38fr);
-    gap: 1.3rem;
-  }
-}
-
-/* Progress page */
+/* =========================================================
+   PÁGINA DE PROGRESO
+   ========================================================= */
 
 .progress-summary-grid {
   display: grid;
@@ -1381,15 +1432,15 @@ button {
 
 .mission-progress-list {
   display: grid;
-  gap: 0.8rem;
   max-width: 920px;
+  gap: 0.8rem;
 }
 
 .mission-progress-item {
   display: grid;
   grid-template-columns: auto 1fr;
-  align-items: center;
   gap: 0.9rem;
+  align-items: center;
   padding: 1rem;
   background: var(--surface);
   border: 1px solid var(--border);
@@ -1397,11 +1448,7 @@ button {
 }
 
 .mission-progress-item.is-completed {
-  background: linear-gradient(
-    135deg,
-    rgba(98, 230, 184, 0.14),
-    var(--surface)
-  );
+  background: linear-gradient(135deg, rgba(98, 230, 184, 0.14), var(--surface));
   border-color: rgba(98, 230, 184, 0.44);
 }
 
@@ -1472,17 +1519,191 @@ button {
 }
 
 .badge-card.is-earned {
-  background: linear-gradient(
-    145deg,
-    rgba(98, 230, 184, 0.18),
-    rgba(13, 32, 56, 0.88)
-  );
+  background: linear-gradient(145deg, rgba(98, 230, 184, 0.18), rgba(13, 32, 56, 0.88));
   border-color: rgba(98, 230, 184, 0.48);
 }
 
 .badge-card.is-earned .badge-state {
   color: var(--mint);
   background: rgba(98, 230, 184, 0.12);
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.site-footer {
+  padding-top: 3rem;
+  background: var(--bg-deep);
+  border-top: 1px solid rgba(139, 206, 255, 0.12);
+}
+
+.footer-grid {
+  display: grid;
+  gap: 1.7rem;
+  padding-bottom: 2rem;
+}
+
+.footer-brand {
+  margin-bottom: 1rem;
+}
+
+.footer-disclaimer {
+  max-width: 65ch;
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 0.84rem;
+}
+
+.footer-links {
+  display: grid;
+  gap: 0.7rem;
+  align-content: start;
+}
+
+.footer-links a {
+  width: fit-content;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.footer-links a:hover {
+  color: var(--cyan);
+}
+
+.footer-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  justify-content: space-between;
+  padding: 1.1rem 0;
+  color: var(--text-soft);
+  border-top: 1px solid rgba(139, 206, 255, 0.1);
+  font-size: 0.78rem;
+}
+
+.footer-bottom p {
+  margin: 0;
+}
+
+.footer-bottom a {
+  color: var(--cyan);
+  font-weight: 800;
+}
+
+/* =========================================================
+   ANIMACIONES
+   ========================================================= */
+
+@keyframes flag-background-drift {
+  from {
+    transform: scale(1.02) translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: scale(1.08) translate3d(-1.8%, -1%, 0);
+  }
+}
+
+@keyframes flag-light-sweep {
+  0%,
+  68%,
+  100% {
+    transform: translateX(0) skewX(-18deg);
+  }
+
+  84% {
+    transform: translateX(380%) skewX(-18deg);
+  }
+}
+
+@keyframes title-line {
+  0%,
+  100% {
+    opacity: 0.38;
+    transform: scaleX(0.72);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes panel-shine {
+  0%,
+  72%,
+  100% {
+    left: -120%;
+  }
+
+  86% {
+    left: 150%;
+  }
+}
+
+@keyframes spark-drift {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: translate3d(0, 0, 0) scale(0.8);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translate3d(15px, -32px, 0) scale(1.2);
+  }
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (min-width: 620px) {
+  .container {
+    width: min(calc(100% - 3rem), var(--container));
+  }
+
+  .section {
+    padding: 5.5rem 0;
+  }
+
+  .hero {
+    padding-top: 5.5rem;
+  }
+
+  .level-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .steps-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .diagnostic-card {
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    padding: 2rem;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1.5fr 1fr;
+  }
+
+  .footer-links {
+    justify-self: end;
+  }
+
+  .vocabulary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .lesson-card,
+  .tip-card,
+  .reading-card {
+    padding: 1.7rem;
+  }
 }
 
 @media (min-width: 700px) {
@@ -1497,5 +1718,142 @@ button {
   .mission-status {
     grid-column: auto;
     justify-self: end;
+  }
+}
+
+@media (min-width: 900px) {
+  .mission-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.38fr);
+    gap: 1.3rem;
+  }
+}
+
+@media (min-width: 920px) {
+  .header-content {
+    grid-template-columns: auto 1fr auto;
+    gap: 1.4rem;
+  }
+
+  .menu-toggle {
+    display: none;
+  }
+
+  .contrast-label {
+    display: inline;
+  }
+
+  .main-navigation {
+    position: static;
+    display: flex;
+    gap: 0.1rem;
+    justify-content: center;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .nav-link {
+    padding: 0.55rem 0.6rem;
+    font-size: 0.82rem;
+  }
+
+  .hero-grid {
+    grid-template-columns: minmax(0, 1.25fr) minmax(18rem, 0.75fr);
+    gap: 4rem;
+  }
+
+  .quest-panel {
+    padding: 1.6rem;
+  }
+
+  .level-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .level-card {
+    padding: 1rem;
+  }
+
+  .level-card h3 {
+    font-size: 1.08rem;
+  }
+
+  .level-card p:not(.level-year) {
+    font-size: 0.82rem;
+  }
+
+  .topic-list li {
+    font-size: 0.64rem;
+  }
+
+  .badges-layout {
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .badge-showcase {
+    gap: 1rem;
+  }
+
+  .badge-card {
+    padding: 1.25rem;
+  }
+}
+
+@media (min-width: 1120px) {
+  .nav-link {
+    padding-inline: 0.75rem;
+    font-size: 0.86rem;
+  }
+}
+
+@media (max-width: 619px) {
+  .hero {
+    min-height: auto;
+  }
+
+  .costa-rica-flag {
+    opacity: 0.13;
+  }
+
+  .hero-effects::before {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(3, 9, 22, 0.92) 0%,
+        rgba(3, 9, 22, 0.78) 100%
+      );
+  }
+
+  .section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+/* =========================================================
+   ACCESIBILIDAD
+   ========================================================= */
+
+body.high-contrast .costa-rica-flag,
+body.high-contrast .flag-wave,
+body.high-contrast .spark {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

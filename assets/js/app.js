@@ -1,615 +1,217 @@
-"use strict";
-
-const STORAGE_KEYS = {
-  contrast: "englishQuestCR.highContrast",
-  progress: "englishQuestCR.progress",
-  xp: "englishQuestCR.xp",
-  streak: "englishQuestCR.streak",
-  badges: "englishQuestCR.badges"
-};
-
-const DEFAULT_PROGRESS = {
-  completedMissions: [],
-  completedLevels: []
-};
-
-const MISSION_ANSWERS = {
-  "seventh-mission-1": {
-    "question-1": "b",
-    "question-2": "a",
-    "question-3": "a",
-    "question-4": "b"
-  }
-};
-
-const QUESTION_FEEDBACK = {
-  "question-1": {
-    correct: "¡Correcto! “Good morning” se usa antes del mediodía.",
-    incorrect: "Todavía no. Antes del mediodía se usa “Good morning”."
-  },
-  "question-2": {
-    correct: "¡Muy bien! La frase correcta es “My name is Daniela.”",
-    incorrect: "Revisá la estructura: “My name is Daniela.”"
-  },
-  "question-3": {
-    correct: "¡Correcto! “Nice to meet you” se usa al conocer a alguien.",
-    incorrect: "La expresión adecuada al conocer a alguien es “Nice to meet you”."
-  },
-  "question-4": {
-    correct: "¡Excelente! La compañera nueva de Lucas se llama Emma.",
-    incorrect: "Leé el diálogo otra vez: Emma se presenta después de Lucas."
-  }
-};
-
 document.addEventListener("DOMContentLoaded", () => {
-  setCurrentYear();
-  initializeMenu();
-  initializeContrastMode();
-  loadDashboard();
-  loadLevels();
-  displayMotivationalMessage();
-  initializeMissionQuiz();
-});
-
-function setCurrentYear() {
+  const menuToggle = document.querySelector("[data-menu-toggle]");
+  const navigation = document.querySelector("[data-navigation]");
+  const contrastToggle = document.querySelector("[data-contrast-toggle]");
   const yearElement = document.getElementById("current-year");
 
   if (yearElement) {
     yearElement.textContent = new Date().getFullYear();
   }
-}
 
-function initializeMenu() {
-  const menuButton = document.querySelector("[data-menu-toggle]");
-  const navigation = document.querySelector("[data-navigation]");
+  if (menuToggle && navigation) {
+    menuToggle.addEventListener("click", () => {
+      const isOpen = navigation.classList.toggle("is-open");
 
-  if (!menuButton || !navigation) {
-    return;
-  }
+      menuToggle.setAttribute("aria-expanded", String(isOpen));
+      menuToggle.setAttribute(
+        "aria-label",
+        isOpen ? "Cerrar menú de navegación" : "Abrir menú de navegación"
+      );
 
-  menuButton.addEventListener("click", () => {
-    const isOpen = navigation.classList.toggle("is-open");
-
-    menuButton.setAttribute("aria-expanded", String(isOpen));
-    menuButton.setAttribute(
-      "aria-label",
-      isOpen ? "Cerrar menú de navegación" : "Abrir menú de navegación"
-    );
-
-    document.body.classList.toggle("menu-open", isOpen);
-  });
-
-  navigation.addEventListener("click", (event) => {
-    if (event.target.closest("a")) {
-      navigation.classList.remove("is-open");
-      menuButton.setAttribute("aria-expanded", "false");
-      menuButton.setAttribute("aria-label", "Abrir menú de navegación");
-      document.body.classList.remove("menu-open");
-    }
-  });
-}
-
-function initializeContrastMode() {
-  const contrastButton = document.querySelector("[data-contrast-toggle]");
-
-  if (!contrastButton) {
-    return;
-  }
-
-  const highContrastEnabled = readBooleanPreference(STORAGE_KEYS.contrast);
-  updateContrastMode(highContrastEnabled, contrastButton);
-
-  contrastButton.addEventListener("click", () => {
-    const isEnabled = !document.body.classList.contains("high-contrast");
-
-    updateContrastMode(isEnabled, contrastButton);
-    saveToStorage(STORAGE_KEYS.contrast, String(isEnabled));
-  });
-}
-
-function updateContrastMode(isEnabled, button) {
-  document.body.classList.toggle("high-contrast", isEnabled);
-  button.setAttribute("aria-pressed", String(isEnabled));
-  button.setAttribute(
-    "aria-label",
-    isEnabled
-      ? "Desactivar modo de alto contraste"
-      : "Activar modo de alto contraste"
-  );
-}
-
-function loadDashboard() {
-  const progress = getProgressData();
-  const xp = getStoredNumber(STORAGE_KEYS.xp);
-  const streak = getStoredNumber(STORAGE_KEYS.streak);
-  const badges = getStoredArray(STORAGE_KEYS.badges);
-
-  const totalMissions = 25;
-  const completedMissions = progress.completedMissions.length;
-  const percentage = Math.min(
-    100,
-    Math.round((completedMissions / totalMissions) * 100)
-  );
-
-  updateText("xp-total", xp);
-  updateText("streak-total", streak);
-  updateText("badges-total", badges.length);
-  updateText("progress-percentage", `${percentage}%`);
-
-  updateProgressRing(percentage);
-  updateRankBadge(xp, percentage);
-}
-
-function updateProgressRing(percentage) {
-  const progressRing = document.querySelector("[data-progress-ring]");
-
-  if (!progressRing) {
-    return;
-  }
-
-  const degrees = percentage * 3.6;
-
-  progressRing.style.background = `
-    radial-gradient(closest-side, var(--surface-elevated) 78%, transparent 79% 100%),
-    conic-gradient(var(--mint) ${degrees}deg, rgba(255, 255, 255, 0.12) ${degrees}deg)
-  `;
-
-  progressRing.setAttribute("aria-valuenow", String(percentage));
-}
-
-function updateRankBadge(xp, percentage) {
-  const rankBadge = document.getElementById("rank-badge");
-
-  if (!rankBadge) {
-    return;
-  }
-
-  let rank = "Explorer";
-
-  if (percentage >= 100 || xp >= 1500) {
-    rank = "Quest Master";
-  } else if (percentage >= 60 || xp >= 800) {
-    rank = "Pathfinder";
-  } else if (percentage >= 25 || xp >= 300) {
-    rank = "Trailblazer";
-  }
-
-  rankBadge.textContent = rank;
-}
-
-async function loadLevels() {
-  const container = document.getElementById("levels-container");
-  const errorMessage = document.getElementById("levels-error");
-
-  if (!container) {
-    return;
-  }
-
-  try {
-    const response = await fetch("../data/levels.json");
-
-    if (!response.ok) {
-      throw new Error(`No se pudo cargar levels.json: ${response.status}`);
-    }
-
-    const levels = await response.json();
-
-    if (!Array.isArray(levels) || levels.length === 0) {
-      throw new Error("El archivo de niveles no contiene datos válidos.");
-    }
-
-    container.innerHTML = "";
-
-    levels.forEach((level) => {
-      if (isValidLevel(level)) {
-        container.appendChild(createLevelCard(level));
-      }
+      document.body.classList.toggle("menu-open", isOpen);
     });
 
-    if (!container.children.length) {
-      throw new Error("No hay niveles disponibles para mostrar.");
+    navigation.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        navigation.classList.remove("is-open");
+        menuToggle.setAttribute("aria-expanded", "false");
+        menuToggle.setAttribute("aria-label", "Abrir menú de navegación");
+        document.body.classList.remove("menu-open");
+      });
+    });
+  }
+
+  const storedContrast = localStorage.getItem("englishQuestHighContrast");
+
+  if (storedContrast === "true") {
+    document.body.classList.add("high-contrast");
+
+    if (contrastToggle) {
+      contrastToggle.setAttribute("aria-pressed", "true");
     }
-  } catch (error) {
-    console.error("Error al cargar niveles:", error);
-    container.innerHTML = "";
-
-    if (errorMessage) {
-      errorMessage.hidden = false;
-    }
-  }
-}
-
-function isValidLevel(level) {
-  return Boolean(
-    level &&
-      level.id &&
-      level.year &&
-      level.title &&
-      level.cefr &&
-      level.description &&
-      Array.isArray(level.topics)
-  );
-}
-
-function createLevelCard(level) {
-  const card = document.createElement("article");
-  card.className = "level-card";
-
-  const visibleTopics = level.topics.slice(0, 3);
-  const topicsMarkup = visibleTopics
-    .map((topic) => `<li>${escapeHTML(topic)}</li>`)
-    .join("");
-
-  card.innerHTML = `
-    <div class="level-card-top">
-      <span class="level-icon" aria-hidden="true">${escapeHTML(level.icon || "📘")}</span>
-      <span class="level-tag">${escapeHTML(level.cefr)}</span>
-    </div>
-
-    <h3>${escapeHTML(level.title)}</h3>
-    <p class="level-year">${escapeHTML(level.year)}</p>
-    <p>${escapeHTML(level.description)}</p>
-
-    <ul class="topic-list" aria-label="Temas principales">
-      ${topicsMarkup}
-    </ul>
-
-    <a class="text-link" href="mission.html?mission=seventh-mission-1">
-      Explorar ruta
-      <span aria-hidden="true">→</span>
-      <span class="sr-only">: ${escapeHTML(level.title)}</span>
-    </a>
-  `;
-
-  return card;
-}
-
-function initializeMissionQuiz() {
-  const quizForm = document.getElementById("mission-quiz");
-
-  if (!quizForm) {
-    return;
   }
 
-  const missionId = getMissionIdFromURL();
-  const answers = MISSION_ANSWERS[missionId];
+  if (contrastToggle) {
+    contrastToggle.addEventListener("click", () => {
+      const enabled = document.body.classList.toggle("high-contrast");
 
-  if (!answers) {
-    return;
+      contrastToggle.setAttribute("aria-pressed", String(enabled));
+      localStorage.setItem("englishQuestHighContrast", String(enabled));
+    });
   }
 
-  quizForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    evaluateMissionQuiz(quizForm, missionId, answers);
-  });
-}
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
 
-function getMissionIdFromURL() {
-  const parameters = new URLSearchParams(window.location.search);
-  return parameters.get("mission") || "seventh-mission-1";
-}
+  const revealCards = document.querySelectorAll(".reveal-card");
 
-function evaluateMissionQuiz(form, missionId, answers) {
-  const resultElement = document.getElementById("quiz-result");
-  const questionNames = Object.keys(answers);
-
-  clearQuestionFeedback(form);
-
-  let correctAnswers = 0;
-  let unansweredQuestions = 0;
-
-  questionNames.forEach((questionName) => {
-    const selectedOption = form.querySelector(
-      `input[name="${questionName}"]:checked`
-    );
-
-    const feedbackElement = form.querySelector(
-      `[data-feedback="${questionName}"]`
-    );
-
-    if (!selectedOption) {
-      unansweredQuestions += 1;
-
-      if (feedbackElement) {
-        feedbackElement.textContent = "Elegí una respuesta para continuar.";
-        feedbackElement.className = "question-feedback is-missing";
+  if (!reduceMotion && "IntersectionObserver" in window) {
+    const revealObserver = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.15
       }
+    );
 
-      return;
-    }
-
-    const isCorrect = selectedOption.value === answers[questionName];
-
-    if (isCorrect) {
-      correctAnswers += 1;
-    }
-
-    if (feedbackElement) {
-      feedbackElement.textContent = isCorrect
-        ? QUESTION_FEEDBACK[questionName].correct
-        : QUESTION_FEEDBACK[questionName].incorrect;
-
-      feedbackElement.className = isCorrect
-        ? "question-feedback is-correct"
-        : "question-feedback is-incorrect";
-    }
-  });
-
-  if (!resultElement) {
-    return;
-  }
-
-  if (unansweredQuestions > 0) {
-    resultElement.textContent =
-      "Todavía faltan respuestas. Completá todas las preguntas y volvé a intentarlo.";
-    resultElement.className = "quiz-result is-warning";
-    resultElement.focus();
-    return;
-  }
-
-  const passedMission = correctAnswers >= 3;
-  const earnedXP = correctAnswers * 25;
-
-  if (passedMission) {
-    const wasAlreadyCompleted = isMissionCompleted(missionId);
-
-    if (!wasAlreadyCompleted) {
-      completeMission(missionId, earnedXP);
-    }
-
-    resultElement.innerHTML = `
-      <strong>¡Misión completada! 🎉</strong>
-      Obtuviste ${earnedXP} XP con ${correctAnswers} de ${questionNames.length} respuestas correctas.
-      ${wasAlreadyCompleted ? "Esta misión ya estaba registrada en tu progreso." : "Tu progreso fue guardado en este navegador."}
-    `;
-
-    resultElement.className = "quiz-result is-success";
+    revealCards.forEach((card, index) => {
+      card.style.transitionDelay = `${Math.min(index * 75, 300)}ms`;
+      revealObserver.observe(card);
+    });
   } else {
-    resultElement.innerHTML = `
-      <strong>Vas avanzando. 💪</strong>
-      Obtuviste ${correctAnswers} de ${questionNames.length} respuestas correctas.
-      Necesitás al menos 3 respuestas correctas para completar la misión.
-      Revisá las explicaciones e intentá otra vez.
-    `;
-
-    resultElement.className = "quiz-result is-warning";
+    revealCards.forEach((card) => card.classList.add("is-visible"));
   }
 
-  resultElement.focus();
-}
+  const levelContainer = document.getElementById("levels-container");
+  const levelsError = document.getElementById("levels-error");
 
-function clearQuestionFeedback(form) {
-  form.querySelectorAll(".question-feedback").forEach((feedback) => {
-    feedback.textContent = "";
-    feedback.className = "question-feedback";
-  });
-}
-
-function isMissionCompleted(missionId) {
-  const progress = getProgressData();
-  return progress.completedMissions.includes(missionId);
-}
-
-function completeMission(missionId, earnedXP) {
-  const progress = getProgressData();
-
-  if (!progress.completedMissions.includes(missionId)) {
-    progress.completedMissions.push(missionId);
-  }
-
-  if (!progress.completedLevels.includes("seventh-foundations")) {
-    progress.completedLevels.push("seventh-foundations");
-  }
-
-  saveToStorage(STORAGE_KEYS.progress, JSON.stringify(progress));
-
-  const currentXP = getStoredNumber(STORAGE_KEYS.xp);
-  saveToStorage(STORAGE_KEYS.xp, String(currentXP + earnedXP));
-
-  updateStreak();
-  addFirstMissionBadge();
-}
-
-function updateStreak() {
-  const streakDataKey = "englishQuestCR.lastStudyDate";
-  const today = new Date().toISOString().slice(0, 10);
-  const lastStudyDate = readFromStorage(streakDataKey);
-  const currentStreak = getStoredNumber(STORAGE_KEYS.streak);
-
-  if (lastStudyDate === today) {
-    return;
-  }
-
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  const yesterdayString = yesterday.toISOString().slice(0, 10);
-
-  const updatedStreak = lastStudyDate === yesterdayString
-    ? currentStreak + 1
-    : 1;
-
-  saveToStorage(STORAGE_KEYS.streak, String(updatedStreak));
-  saveToStorage(streakDataKey, today);
-}
-
-function addFirstMissionBadge() {
-  const badges = getStoredArray(STORAGE_KEYS.badges);
-  const badgeId = "first-mission";
-
-  if (!badges.includes(badgeId)) {
-    badges.push(badgeId);
-    saveToStorage(STORAGE_KEYS.badges, JSON.stringify(badges));
-  }
-}
-
-function displayMotivationalMessage() {
-  const messageElement = document.getElementById("motivational-message");
-
-  if (!messageElement) {
-    return;
-  }
-
-  const messages = [
-    "Cada reto completado te acerca a tu meta.",
-    "Pequeños avances diarios construyen grandes habilidades.",
-    "Practicá con calma: cada intento también enseña.",
-    "Tu progreso empieza con una misión.",
-    "El inglés se aprende paso a paso. Hoy podés dar uno."
+  const levels = [
+    {
+      icon: "🌱",
+      level: "PRE-A1 - A1",
+      title: "Foundations",
+      year: "Séptimo año",
+      description: "Construí bases sólidas para presentarte y comunicarte en situaciones cotidianas.",
+      topics: ["Saludos", "Familia", "Información personal"]
+    },
+    {
+      icon: "🧭",
+      level: "A1",
+      title: "Everyday English",
+      year: "Octavo año",
+      description: "Usá inglés para hablar de lugares, comida, clima, ropa y actividades diarias.",
+      topics: ["Comida", "Clima", "Direcciones"]
+    },
+    {
+      icon: "💬",
+      level: "A1 - A2",
+      title: "Real-Life Communication",
+      year: "Noveno año",
+      description: "Practicá inglés aplicado a viajes, tecnología, salud y planes personales.",
+      topics: ["Viajes", "Salud", "Tecnología"]
+    },
+    {
+      icon: "📘",
+      level: "A2",
+      title: "Academic Growth",
+      year: "Décimo año",
+      description: "Comprendé textos funcionales, expresá opiniones y desarrollá pensamiento crítico.",
+      topics: ["Ambiente", "Educación", "Opiniones"]
+    },
+    {
+      icon: "🏁",
+      level: "A2 - B1",
+      title: "Exam Challenge",
+      year: "Undécimo año",
+      description: "Fortalecé estrategias de Reading y Listening con ejercicios tipo examen.",
+      topics: ["Idea principal", "Detalles", "Inferencias"]
+    }
   ];
 
-  const messageIndex = new Date().getDate() % messages.length;
-  messageElement.textContent = messages[messageIndex];
-}
+  if (levelContainer) {
+    try {
+      levelContainer.innerHTML = levels
+        .map(
+          (level) => `
+            <article class="level-card">
+              <div class="level-card-top">
+                <span class="level-icon" aria-hidden="true">${level.icon}</span>
+                <span class="level-tag">${level.level}</span>
+              </div>
 
-function getProgressData() {
-  const savedProgress = getStoredObject(STORAGE_KEYS.progress);
+              <h3>${level.title}</h3>
+              <p class="level-year">${level.year}</p>
+              <p>${level.description}</p>
 
-  return {
-    completedMissions: Array.isArray(savedProgress.completedMissions)
-      ? savedProgress.completedMissions
-      : [],
-    completedLevels: Array.isArray(savedProgress.completedLevels)
-      ? savedProgress.completedLevels
-      : []
+              <ul class="topic-list" aria-label="Temas de ${level.title}">
+                ${level.topics.map((topic) => `<li>${topic}</li>`).join("")}
+              </ul>
+
+              <a class="text-link" href="pages/levels.html">
+                Explorar ruta
+                <span aria-hidden="true">→</span>
+              </a>
+            </article>
+          `
+        )
+        .join("");
+    } catch (error) {
+      levelContainer.innerHTML = "";
+
+      if (levelsError) {
+        levelsError.hidden = false;
+      }
+    }
+  }
+
+  const progressRing = document.querySelector("[data-progress-ring]");
+  const percentageElement = document.getElementById("progress-percentage");
+  const xpElement = document.getElementById("xp-total");
+  const streakElement = document.getElementById("streak-total");
+  const badgesElement = document.getElementById("badges-total");
+  const rankBadge = document.getElementById("rank-badge");
+
+  const progress = {
+    percent: Number(localStorage.getItem("eqProgressPercent") || 0),
+    xp: Number(localStorage.getItem("eqXpTotal") || 0),
+    streak: Number(localStorage.getItem("eqStreakTotal") || 0),
+    badges: Number(localStorage.getItem("eqBadgesTotal") || 0)
   };
-}
 
-function getStoredNumber(key) {
-  const value = Number(readFromStorage(key));
-  return Number.isFinite(value) && value >= 0 ? value : 0;
-}
+  if (progressRing) {
+    const safePercent = Math.max(0, Math.min(100, progress.percent));
+    const degrees = safePercent * 3.6;
 
-function getStoredArray(key) {
-  try {
-    const value = JSON.parse(readFromStorage(key));
-    return Array.isArray(value) ? value : [];
-  } catch (error) {
-    return [];
-  }
-}
+    progressRing.style.background = `
+      radial-gradient(closest-side, var(--surface-elevated) 78%, transparent 79% 100%),
+      conic-gradient(var(--mint) ${degrees}deg, rgba(255, 255, 255, 0.12) 0deg)
+    `;
 
-function getStoredObject(key) {
-  try {
-    const value = JSON.parse(readFromStorage(key));
-    return value && typeof value === "object" ? value : DEFAULT_PROGRESS;
-  } catch (error) {
-    return DEFAULT_PROGRESS;
-  }
-}
-
-function readBooleanPreference(key) {
-  return readFromStorage(key) === "true";
-}
-
-function readFromStorage(key) {
-  try {
-    return localStorage.getItem(key);
-  } catch (error) {
-    return null;
-  }
-}
-
-function saveToStorage(key, value) {
-  try {
-    localStorage.setItem(key, value);
-  } catch (error) {
-    console.warn("No se pudo guardar información local:", error);
-  }
-}
-
-function updateText(elementId, value) {
-  const element = document.getElementById(elementId);
-
-  if (element) {
-    element.textContent = String(value);
-  }
-}
-
-function escapeHTML(value) {
-  const element = document.createElement("div");
-  element.textContent = String(value);
-  return element.innerHTML;
-}
-
-function initializeProgressPage() {
-  const progressPage = document.getElementById("progress-xp");
-
-  if (!progressPage) {
-    return;
+    progressRing.setAttribute("aria-valuenow", String(safePercent));
   }
 
-  const progress = getProgressData();
-  const xp = getStoredNumber(STORAGE_KEYS.xp);
-  const streak = getStoredNumber(STORAGE_KEYS.streak);
-  const badges = getStoredArray(STORAGE_KEYS.badges);
-  const completedMissions = progress.completedMissions;
-
-  updateText("progress-xp", xp);
-  updateText("progress-streak", streak);
-  updateText("progress-badges", badges.length);
-  updateText("progress-missions", completedMissions.length);
-
-  updateMissionProgressStatus(completedMissions);
-  updateBadgeProgressStatus(badges);
-  updateNextMissionCard(completedMissions);
-}
-
-function updateMissionProgressStatus(completedMissions) {
-  const firstMissionId = "seventh-mission-1";
-  const missionItem = document.querySelector(
-    `[data-mission-status="${firstMissionId}"]`
-  );
-
-  const statusLabel = document.querySelector(
-    `[data-status-label="${firstMissionId}"]`
-  );
-
-  if (!missionItem || !statusLabel) {
-    return;
+  if (percentageElement) {
+    percentageElement.textContent = `${progress.percent}%`;
   }
 
-  const missionCompleted = completedMissions.includes(firstMissionId);
-
-  missionItem.classList.toggle("is-completed", missionCompleted);
-  statusLabel.textContent = missionCompleted ? "Completada ✓" : "Pendiente";
-  statusLabel.classList.toggle("is-completed", missionCompleted);
-}
-
-function updateBadgeProgressStatus(badges) {
-  const firstBadge = document.querySelector(
-    `[data-badge-card="first-mission"]`
-  );
-
-  if (!firstBadge) {
-    return;
+  if (xpElement) {
+    xpElement.textContent = progress.xp;
   }
 
-  const badgeEarned = badges.includes("first-mission");
-  const badgeState = firstBadge.querySelector(".badge-state");
-
-  firstBadge.classList.toggle("is-earned", badgeEarned);
-
-  if (badgeState) {
-    badgeState.textContent = badgeEarned ? "Ganada ✓" : "Bloqueada";
-  }
-}
-
-function updateNextMissionCard(completedMissions) {
-  const message = document.getElementById("progress-next-message");
-  const link = document.getElementById("progress-next-link");
-
-  if (!message || !link) {
-    return;
+  if (streakElement) {
+    streakElement.textContent = progress.streak;
   }
 
-  const firstMissionCompleted = completedMissions.includes(
-    "seventh-mission-1"
-  );
-
-  if (firstMissionCompleted) {
-    message.textContent =
-      "¡Buen trabajo! Completaste la primera misión. La misión 2 llegará pronto; mientras tanto, podés repetir esta práctica para reforzar.";
-    link.textContent = "Repetir misión 1";
-    link.href = "mission.html?mission=seventh-mission-1";
+  if (badgesElement) {
+    badgesElement.textContent = progress.badges;
   }
-}
+
+  if (rankBadge) {
+    if (progress.xp >= 1000) {
+      rankBadge.textContent = "Master";
+    } else if (progress.xp >= 500) {
+      rankBadge.textContent = "Navigator";
+    } else if (progress.xp >= 150) {
+      rankBadge.textContent = "Adventurer";
+    } else {
+      rankBadge.textContent = "Explorer";
+    }
+  }
+});

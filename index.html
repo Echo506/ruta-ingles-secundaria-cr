@@ -66,14 +66,31 @@
 
   <main id="main-content">
     <section class="hero section">
+      <div class="hero-background" aria-hidden="true">
+        <div class="hero-grid-effect"></div>
+        <div class="hero-scanlines"></div>
+        <div class="hero-glow hero-glow--one"></div>
+        <div class="hero-glow hero-glow--two"></div>
+
+        <span class="hero-particle particle--one"></span>
+        <span class="hero-particle particle--two"></span>
+        <span class="hero-particle particle--three"></span>
+        <span class="hero-particle particle--four"></span>
+        <span class="hero-particle particle--five"></span>
+        <span class="hero-particle particle--six"></span>
+      </div>
+
       <div class="container hero-grid">
-        <div>
+        <div class="hero-copy">
           <p class="eyebrow">
             <span aria-hidden="true">⚡</span>
             Plataforma gratuita de práctica
           </p>
 
-          <h1>Aprendé inglés por niveles. <span>Superá retos.</span></h1>
+          <h1>
+            Aprendé inglés por niveles.
+            <span>Superá retos.</span>
+          </h1>
 
           <p class="hero-description">
             Fortalecé Reading y Listening con misiones originales,
@@ -83,12 +100,12 @@
 
           <div class="hero-actions">
             <a class="button button-primary" href="pages/levels.html">
-              Comenzar mi ruta
+              <span>Comenzar mi ruta</span>
               <span aria-hidden="true">→</span>
             </a>
 
             <a class="button button-secondary" href="#como-funciona">
-              Conocer cómo funciona
+              <span>Conocer cómo funciona</span>
               <span aria-hidden="true">↓</span>
             </a>
           </div>
@@ -99,6 +116,11 @@
         </div>
 
         <aside class="quest-panel" aria-labelledby="quest-panel-title">
+          <span class="panel-corner panel-corner--top-left" aria-hidden="true"></span>
+          <span class="panel-corner panel-corner--top-right" aria-hidden="true"></span>
+          <span class="panel-corner panel-corner--bottom-left" aria-hidden="true"></span>
+          <span class="panel-corner panel-corner--bottom-right" aria-hidden="true"></span>
+
           <div class="quest-panel-top">
             <div>
               <p class="panel-label">Tu expedición</p>
@@ -177,21 +199,21 @@
         </div>
 
         <div class="steps-grid">
-          <article class="step-card">
+          <article class="step-card reveal-card">
             <span class="step-number" aria-hidden="true">01</span>
             <span class="step-icon" aria-hidden="true">🗺️</span>
             <h3>Elegí tu ruta</h3>
             <p>Explorá los niveles desde Séptimo hasta Undécimo y empezá por donde necesitás.</p>
           </article>
 
-          <article class="step-card">
+          <article class="step-card reveal-card">
             <span class="step-number" aria-hidden="true">02</span>
             <span class="step-icon" aria-hidden="true">🎯</span>
             <h3>Completá misiones</h3>
             <p>Practicá vocabulario, gramática funcional, Reading y Listening con ejercicios originales.</p>
           </article>
 
-          <article class="step-card">
+          <article class="step-card reveal-card">
             <span class="step-number" aria-hidden="true">03</span>
             <span class="step-icon" aria-hidden="true">🏆</span>
             <h3>Registrá tu avance</h3>
@@ -242,31 +264,31 @@
           </p>
 
           <a class="button button-secondary" href="pages/progress.html">
-            Ver mis insignias
+            <span>Ver mis insignias</span>
             <span aria-hidden="true">→</span>
           </a>
         </div>
 
         <div class="badge-showcase" aria-label="Ejemplos de insignias">
-          <article class="badge-card">
+          <article class="badge-card reveal-card">
             <span class="badge-icon" aria-hidden="true">🌟</span>
             <h3>Primer paso</h3>
             <p>Completá tu primera misión.</p>
           </article>
 
-          <article class="badge-card">
+          <article class="badge-card reveal-card">
             <span class="badge-icon" aria-hidden="true">🔥</span>
             <h3>Racha activa</h3>
             <p>Practicá varios días seguidos.</p>
           </article>
 
-          <article class="badge-card">
+          <article class="badge-card reveal-card">
             <span class="badge-icon" aria-hidden="true">📚</span>
             <h3>Lectura atenta</h3>
             <p>Resolvé retos de Reading.</p>
           </article>
 
-          <article class="badge-card">
+          <article class="badge-card reveal-card">
             <span class="badge-icon" aria-hidden="true">🎧</span>
             <h3>Oído explorador</h3>
             <p>Practicá ejercicios de Listening.</p>
@@ -277,7 +299,7 @@
 
     <section class="section diagnostic-section" aria-labelledby="diagnostic-title">
       <div class="container">
-        <div class="diagnostic-card">
+        <div class="diagnostic-card reveal-card">
           <div>
             <p class="eyebrow">
               <span aria-hidden="true">🚀</span>
@@ -291,7 +313,7 @@
           </div>
 
           <a class="button button-primary" href="pages/mission.html?mission=seventh-mission-1">
-            Iniciar misión 1
+            <span>Iniciar misión 1</span>
             <span aria-hidden="true">→</span>
           </a>
         </div>
