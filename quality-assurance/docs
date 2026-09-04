@@ -1,5 +1,12 @@
 docs/
 ├── alineacion-mep.md
+
+| Unidad               | Año  | Tema        | Competencia         | Nivel | Evidencia                |
+| -------------------- | ---- | ----------- | ------------------- | ----- | ------------------------ |
+| Personal Information | 7.º  | Identidad   | Reading / Listening | A1    | Quiz + audio + actividad |
+| Digital Citizenship  | 10.º | Tecnología  | Reading / Listening | A2    | Texto + preguntas        |
+| Mock Exam 1          | 11.º | Integración | Reading / Listening | A2–B1 | Simulacro cronometrado   |
+
 ├── matriz-contenidos-por-nivel.md
 ├── guia-de-creacion-de-ejercicios.md
 ├── criterios-de-calidad-de-audios.md
