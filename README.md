@@ -45,6 +45,10 @@ Lenguas Extranjeras del MEP.
 - [Programas de estudio del MEP](https://www.mep.go.cr/programas-estudio)
 - [Prácticas de Inglés – DGEC](https://dgec.mep.go.cr/PRACTICAS_LENGUAS%20EXTRANJERAS/Ingles/)
 
+- Nota de alcance: el contenido de esta fase es original y la plataforma se presenta como recurso complementario e independiente. El MEP publica programas de estudio oficiales, que deben revisarse periódicamente porque pueden actualizarse.
+
+
+
 ## Licencia
 
 Este proyecto utiliza una licencia Creative Commons Attribution 4.0
