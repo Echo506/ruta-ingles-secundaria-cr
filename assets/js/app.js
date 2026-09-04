@@ -1,19 +1,295 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const menuToggle = document.querySelector("[data-menu-toggle]");
-  const navigation = document.querySelector("[data-navigation]");
-  const contrastToggle = document.querySelector("[data-contrast-toggle]");
-  const yearElement = document.getElementById("current-year");
+"use strict";
 
-  if (yearElement) {
-    yearElement.textContent = new Date().getFullYear();
+document.addEventListener("DOMContentLoaded", () => {
+  const STORAGE_KEY = "englishQuestCRProgress";
+  const CONTRAST_KEY = "englishQuestCRHighContrast";
+
+  const levels = [
+    {
+      id: "seventh",
+      year: "Séptimo año",
+      level: "Pre-A1 a A1",
+      title: "Foundations",
+      icon: "🌱",
+      description:
+        "Construí bases para presentarte, hablar de tu familia y comunicarte en situaciones cotidianas.",
+      topics: ["Saludos", "Información personal", "Familia", "Rutinas"],
+      mission: "seventh-mission-1",
+      status: "Disponible"
+    },
+    {
+      id: "eighth",
+      year: "Octavo año",
+      level: "A1",
+      title: "Everyday English",
+      icon: "🧭",
+      description:
+        "Practicá inglés para hablar de comida, ropa, lugares, clima y actividades de todos los días.",
+      topics: ["Comida", "Clima", "Ropa", "Direcciones"],
+      mission: "eighth-mission-1",
+      status: "Próximamente"
+    },
+    {
+      id: "ninth",
+      year: "Noveno año",
+      level: "A1 a A2",
+      title: "Real-Life Communication",
+      icon: "💬",
+      description:
+        "Usá el inglés para viajes, salud, tecnología y planes personales.",
+      topics: ["Viajes", "Salud", "Tecnología", "Planes"],
+      mission: "ninth-mission-1",
+      status: "Próximamente"
+    },
+    {
+      id: "tenth",
+      year: "Décimo año",
+      level: "A2",
+      title: "Academic Growth",
+      icon: "📘",
+      description:
+        "Comprendé textos funcionales, expresá opiniones y desarrollá pensamiento crítico.",
+      topics: ["Ambiente", "Educación", "Opiniones", "Sociedad"],
+      mission: "tenth-mission-1",
+      status: "Próximamente"
+    },
+    {
+      id: "eleventh",
+      year: "Undécimo año",
+      level: "A2 a B1",
+      title: "Exam Challenge",
+      icon: "🏁",
+      description:
+        "Fortalecé estrategias de Reading y Listening con retos de comprensión más avanzados.",
+      topics: ["Idea principal", "Detalles", "Inferencias", "Listening"],
+      mission: "eleventh-mission-1",
+      status: "Próximamente"
+    }
+  ];
+
+  function isInsidePagesFolder() {
+    return window.location.pathname.includes("/pages/");
   }
 
-  if (menuToggle && navigation) {
-    menuToggle.addEventListener("click", () => {
+  function getPagePrefix() {
+    return isInsidePagesFolder() ? "" : "pages/";
+  }
+
+  function getMissionUrl(missionId) {
+    return `${getPagePrefix()}mission.html?mission=${encodeURIComponent(missionId)}`;
+  }
+
+  function getProgressUrl() {
+    return `${getPagePrefix()}progress.html`;
+  }
+
+  function getDefaultProgress() {
+    return {
+      xp: 0,
+      streak: 0,
+      badges: [],
+      completedMissions: [],
+      lastStudyDate: null
+    };
+  }
+
+  function getProgress() {
+    try {
+      const savedProgress = localStorage.getItem(STORAGE_KEY);
+
+      if (!savedProgress) {
+        return getDefaultProgress();
+      }
+
+      const parsedProgress = JSON.parse(savedProgress);
+
+      return {
+        ...getDefaultProgress(),
+        ...parsedProgress,
+        badges: Array.isArray(parsedProgress.badges) ? parsedProgress.badges : [],
+        completedMissions: Array.isArray(parsedProgress.completedMissions)
+          ? parsedProgress.completedMissions
+          : []
+      };
+    } catch (error) {
+      return getDefaultProgress();
+    }
+  }
+
+  function saveProgress(progress) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+  }
+
+  function escapeHTML(value) {
+    const element = document.createElement("div");
+    element.textContent = String(value);
+    return element.innerHTML;
+  }
+
+  function calculateProgressPercentage(progress) {
+    const totalMissions = 25;
+
+    if (!progress.completedMissions.length) {
+      return 0;
+    }
+
+    return Math.min(
+      100,
+      Math.round((progress.completedMissions.length / totalMissions) * 100)
+    );
+  }
+
+  function getRank(progress) {
+    if (progress.xp >= 1000) {
+      return "Master";
+    }
+
+    if (progress.xp >= 500) {
+      return "Pathfinder";
+    }
+
+    if (progress.xp >= 150) {
+      return "Adventurer";
+    }
+
+    return "Explorer";
+  }
+
+  function updateProgressInterface() {
+    const progress = getProgress();
+    const percentage = calculateProgressPercentage(progress);
+
+    const xpTotal = document.querySelector("#xp-total");
+    const streakTotal = document.querySelector("#streak-total");
+    const badgesTotal = document.querySelector("#badges-total");
+    const progressPercentage = document.querySelector("#progress-percentage");
+    const rankBadge = document.querySelector("#rank-badge");
+    const progressRing = document.querySelector("[data-progress-ring]");
+
+    if (xpTotal) {
+      xpTotal.textContent = progress.xp;
+    }
+
+    if (streakTotal) {
+      streakTotal.textContent = progress.streak;
+    }
+
+    if (badgesTotal) {
+      badgesTotal.textContent = progress.badges.length;
+    }
+
+    if (progressPercentage) {
+      progressPercentage.textContent = `${percentage}%`;
+    }
+
+    if (rankBadge) {
+      rankBadge.textContent = getRank(progress);
+    }
+
+    if (progressRing) {
+      progressRing.style.background = `
+        radial-gradient(closest-side, var(--surface-elevated) 78%, transparent 79% 100%),
+        conic-gradient(var(--mint) ${percentage * 3.6}deg, rgba(255, 255, 255, 0.12) 0deg)
+      `;
+
+      progressRing.setAttribute("aria-valuenow", String(percentage));
+    }
+  }
+
+  function renderLevels() {
+    const levelsContainer = document.querySelector("#levels-container");
+    const levelsError = document.querySelector("#levels-error");
+
+    if (!levelsContainer) {
+      return;
+    }
+
+    try {
+      const progress = getProgress();
+
+      levelsContainer.innerHTML = levels
+        .map((level, index) => {
+          const isFirstLevel = index === 0;
+          const isCompleted = progress.completedMissions.includes(level.mission);
+          const cardStatus = isFirstLevel
+            ? isCompleted
+              ? "Completada"
+              : "Disponible"
+            : "Próximamente";
+
+          const actionMarkup = isFirstLevel
+            ? `
+              <a class="text-link" href="${getMissionUrl(level.mission)}">
+                ${isCompleted ? "Repetir misión" : "Explorar ruta"}
+                <span aria-hidden="true">→</span>
+              </a>
+            `
+            : `
+              <span class="text-link" aria-label="Ruta disponible próximamente">
+                Próximamente
+                <span aria-hidden="true">🔒</span>
+              </span>
+            `;
+
+          return `
+            <article class="level-card reveal-card">
+              <div class="level-card-top">
+                <span class="level-icon" aria-hidden="true">${level.icon}</span>
+                <span class="level-tag">${escapeHTML(cardStatus)}</span>
+              </div>
+
+              <h3>${escapeHTML(level.title)}</h3>
+
+              <p class="level-year">
+                ${escapeHTML(level.year)} · ${escapeHTML(level.level)}
+              </p>
+
+              <p>${escapeHTML(level.description)}</p>
+
+              <ul class="topic-list" aria-label="Temas de ${escapeHTML(level.year)}">
+                ${level.topics
+                  .map((topic) => `<li>${escapeHTML(topic)}</li>`)
+                  .join("")}
+              </ul>
+
+              ${actionMarkup}
+            </article>
+          `;
+        })
+        .join("");
+
+      if (levelsError) {
+        levelsError.hidden = true;
+      }
+    } catch (error) {
+      levelsContainer.innerHTML = "";
+
+      if (levelsError) {
+        levelsError.hidden = false;
+      }
+    }
+  }
+
+  function setupNavigation() {
+    const menuButton = document.querySelector("[data-menu-toggle]");
+    const navigation = document.querySelector("[data-navigation]");
+
+    if (!menuButton || !navigation) {
+      return;
+    }
+
+    function closeNavigation() {
+      navigation.classList.remove("is-open");
+      menuButton.setAttribute("aria-expanded", "false");
+      menuButton.setAttribute("aria-label", "Abrir menú de navegación");
+      document.body.classList.remove("menu-open");
+    }
+
+    menuButton.addEventListener("click", () => {
       const isOpen = navigation.classList.toggle("is-open");
 
-      menuToggle.setAttribute("aria-expanded", String(isOpen));
-      menuToggle.setAttribute(
+      menuButton.setAttribute("aria-expanded", String(isOpen));
+      menuButton.setAttribute(
         "aria-label",
         isOpen ? "Cerrar menú de navegación" : "Abrir menú de navegación"
       );
@@ -22,196 +298,83 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     navigation.querySelectorAll("a").forEach((link) => {
-      link.addEventListener("click", () => {
-        navigation.classList.remove("is-open");
-        menuToggle.setAttribute("aria-expanded", "false");
-        menuToggle.setAttribute("aria-label", "Abrir menú de navegación");
-        document.body.classList.remove("menu-open");
-      });
+      link.addEventListener("click", closeNavigation);
     });
-  }
 
-  const storedContrast = localStorage.getItem("englishQuestHighContrast");
-
-  if (storedContrast === "true") {
-    document.body.classList.add("high-contrast");
-
-    if (contrastToggle) {
-      contrastToggle.setAttribute("aria-pressed", "true");
-    }
-  }
-
-  if (contrastToggle) {
-    contrastToggle.addEventListener("click", () => {
-      const enabled = document.body.classList.toggle("high-contrast");
-
-      contrastToggle.setAttribute("aria-pressed", String(enabled));
-      localStorage.setItem("englishQuestHighContrast", String(enabled));
-    });
-  }
-
-  const reduceMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)"
-  ).matches;
-
-  const revealCards = document.querySelectorAll(".reveal-card");
-
-  if (!reduceMotion && "IntersectionObserver" in window) {
-    const revealObserver = new IntersectionObserver(
-      (entries, observer) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      {
-        threshold: 0.15
+    window.addEventListener("resize", () => {
+      if (window.innerWidth >= 920) {
+        closeNavigation();
       }
-    );
-
-    revealCards.forEach((card, index) => {
-      card.style.transitionDelay = `${Math.min(index * 75, 300)}ms`;
-      revealObserver.observe(card);
     });
-  } else {
-    revealCards.forEach((card) => card.classList.add("is-visible"));
   }
 
-  const levelContainer = document.getElementById("levels-container");
-  const levelsError = document.getElementById("levels-error");
+  function setupContrastToggle() {
+    const contrastButton = document.querySelector("[data-contrast-toggle]");
 
-  const levels = [
-    {
-      icon: "🌱",
-      level: "PRE-A1 - A1",
-      title: "Foundations",
-      year: "Séptimo año",
-      description: "Construí bases sólidas para presentarte y comunicarte en situaciones cotidianas.",
-      topics: ["Saludos", "Familia", "Información personal"]
-    },
-    {
-      icon: "🧭",
-      level: "A1",
-      title: "Everyday English",
-      year: "Octavo año",
-      description: "Usá inglés para hablar de lugares, comida, clima, ropa y actividades diarias.",
-      topics: ["Comida", "Clima", "Direcciones"]
-    },
-    {
-      icon: "💬",
-      level: "A1 - A2",
-      title: "Real-Life Communication",
-      year: "Noveno año",
-      description: "Practicá inglés aplicado a viajes, tecnología, salud y planes personales.",
-      topics: ["Viajes", "Salud", "Tecnología"]
-    },
-    {
-      icon: "📘",
-      level: "A2",
-      title: "Academic Growth",
-      year: "Décimo año",
-      description: "Comprendé textos funcionales, expresá opiniones y desarrollá pensamiento crítico.",
-      topics: ["Ambiente", "Educación", "Opiniones"]
-    },
-    {
-      icon: "🏁",
-      level: "A2 - B1",
-      title: "Exam Challenge",
-      year: "Undécimo año",
-      description: "Fortalecé estrategias de Reading y Listening con ejercicios tipo examen.",
-      topics: ["Idea principal", "Detalles", "Inferencias"]
+    if (!contrastButton) {
+      return;
     }
-  ];
 
-  if (levelContainer) {
-    try {
-      levelContainer.innerHTML = levels
-        .map(
-          (level) => `
-            <article class="level-card">
-              <div class="level-card-top">
-                <span class="level-icon" aria-hidden="true">${level.icon}</span>
-                <span class="level-tag">${level.level}</span>
-              </div>
-
-              <h3>${level.title}</h3>
-              <p class="level-year">${level.year}</p>
-              <p>${level.description}</p>
-
-              <ul class="topic-list" aria-label="Temas de ${level.title}">
-                ${level.topics.map((topic) => `<li>${topic}</li>`).join("")}
-              </ul>
-
-              <a class="text-link" href="pages/levels.html">
-                Explorar ruta
-                <span aria-hidden="true">→</span>
-              </a>
-            </article>
-          `
-        )
-        .join("");
-    } catch (error) {
-      levelContainer.innerHTML = "";
-
-      if (levelsError) {
-        levelsError.hidden = false;
-      }
+    function setContrastMode(isEnabled) {
+      document.body.classList.toggle("high-contrast", isEnabled);
+      contrastButton.setAttribute("aria-pressed", String(isEnabled));
+      contrastButton.setAttribute(
+        "aria-label",
+        isEnabled
+          ? "Desactivar modo de alto contraste"
+          : "Activar modo de alto contraste"
+      );
     }
+
+    const savedContrastMode = localStorage.getItem(CONTRAST_KEY) === "true";
+    setContrastMode(savedContrastMode);
+
+    contrastButton.addEventListener("click", () => {
+      const nextMode = !document.body.classList.contains("high-contrast");
+
+      setContrastMode(nextMode);
+      localStorage.setItem(CONTRAST_KEY, String(nextMode));
+    });
   }
 
-  const progressRing = document.querySelector("[data-progress-ring]");
-  const percentageElement = document.getElementById("progress-percentage");
-  const xpElement = document.getElementById("xp-total");
-  const streakElement = document.getElementById("streak-total");
-  const badgesElement = document.getElementById("badges-total");
-  const rankBadge = document.getElementById("rank-badge");
+  function setupCurrentYear() {
+    const yearElements = document.querySelectorAll("#current-year");
 
-  const progress = {
-    percent: Number(localStorage.getItem("eqProgressPercent") || 0),
-    xp: Number(localStorage.getItem("eqXpTotal") || 0),
-    streak: Number(localStorage.getItem("eqStreakTotal") || 0),
-    badges: Number(localStorage.getItem("eqBadgesTotal") || 0)
+    yearElements.forEach((element) => {
+      element.textContent = new Date().getFullYear();
+    });
+  }
+
+  function setupMotivationalMessage() {
+    const messageElement = document.querySelector("#motivational-message");
+
+    if (!messageElement) {
+      return;
+    }
+
+    const messages = [
+      "El inglés se aprende paso a paso. Hoy podés dar uno.",
+      "Una práctica breve hoy puede abrir una conversación mañana.",
+      "Cada respuesta te acerca a comunicarte con más confianza.",
+      "Tu ritmo es válido: seguí avanzando, misión por misión."
+    ];
+
+    const dayIndex = new Date().getDate() % messages.length;
+    messageElement.textContent = messages[dayIndex];
+  }
+
+  setupNavigation();
+  setupContrastToggle();
+  setupCurrentYear();
+  setupMotivationalMessage();
+  renderLevels();
+  updateProgressInterface();
+
+  window.EnglishQuestCR = {
+    getProgress,
+    saveProgress,
+    updateProgressInterface,
+    getMissionUrl,
+    getProgressUrl
   };
-
-  if (progressRing) {
-    const safePercent = Math.max(0, Math.min(100, progress.percent));
-    const degrees = safePercent * 3.6;
-
-    progressRing.style.background = `
-      radial-gradient(closest-side, var(--surface-elevated) 78%, transparent 79% 100%),
-      conic-gradient(var(--mint) ${degrees}deg, rgba(255, 255, 255, 0.12) 0deg)
-    `;
-
-    progressRing.setAttribute("aria-valuenow", String(safePercent));
-  }
-
-  if (percentageElement) {
-    percentageElement.textContent = `${progress.percent}%`;
-  }
-
-  if (xpElement) {
-    xpElement.textContent = progress.xp;
-  }
-
-  if (streakElement) {
-    streakElement.textContent = progress.streak;
-  }
-
-  if (badgesElement) {
-    badgesElement.textContent = progress.badges;
-  }
-
-  if (rankBadge) {
-    if (progress.xp >= 1000) {
-      rankBadge.textContent = "Master";
-    } else if (progress.xp >= 500) {
-      rankBadge.textContent = "Navigator";
-    } else if (progress.xp >= 150) {
-      rankBadge.textContent = "Adventurer";
-    } else {
-      rankBadge.textContent = "Explorer";
-    }
-  }
 });
