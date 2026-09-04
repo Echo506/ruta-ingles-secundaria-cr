@@ -530,3 +530,86 @@ function escapeHTML(value) {
   element.textContent = String(value);
   return element.innerHTML;
 }
+
+function initializeProgressPage() {
+  const progressPage = document.getElementById("progress-xp");
+
+  if (!progressPage) {
+    return;
+  }
+
+  const progress = getProgressData();
+  const xp = getStoredNumber(STORAGE_KEYS.xp);
+  const streak = getStoredNumber(STORAGE_KEYS.streak);
+  const badges = getStoredArray(STORAGE_KEYS.badges);
+  const completedMissions = progress.completedMissions;
+
+  updateText("progress-xp", xp);
+  updateText("progress-streak", streak);
+  updateText("progress-badges", badges.length);
+  updateText("progress-missions", completedMissions.length);
+
+  updateMissionProgressStatus(completedMissions);
+  updateBadgeProgressStatus(badges);
+  updateNextMissionCard(completedMissions);
+}
+
+function updateMissionProgressStatus(completedMissions) {
+  const firstMissionId = "seventh-mission-1";
+  const missionItem = document.querySelector(
+    `[data-mission-status="${firstMissionId}"]`
+  );
+
+  const statusLabel = document.querySelector(
+    `[data-status-label="${firstMissionId}"]`
+  );
+
+  if (!missionItem || !statusLabel) {
+    return;
+  }
+
+  const missionCompleted = completedMissions.includes(firstMissionId);
+
+  missionItem.classList.toggle("is-completed", missionCompleted);
+  statusLabel.textContent = missionCompleted ? "Completada ✓" : "Pendiente";
+  statusLabel.classList.toggle("is-completed", missionCompleted);
+}
+
+function updateBadgeProgressStatus(badges) {
+  const firstBadge = document.querySelector(
+    `[data-badge-card="first-mission"]`
+  );
+
+  if (!firstBadge) {
+    return;
+  }
+
+  const badgeEarned = badges.includes("first-mission");
+  const badgeState = firstBadge.querySelector(".badge-state");
+
+  firstBadge.classList.toggle("is-earned", badgeEarned);
+
+  if (badgeState) {
+    badgeState.textContent = badgeEarned ? "Ganada ✓" : "Bloqueada";
+  }
+}
+
+function updateNextMissionCard(completedMissions) {
+  const message = document.getElementById("progress-next-message");
+  const link = document.getElementById("progress-next-link");
+
+  if (!message || !link) {
+    return;
+  }
+
+  const firstMissionCompleted = completedMissions.includes(
+    "seventh-mission-1"
+  );
+
+  if (firstMissionCompleted) {
+    message.textContent =
+      "¡Buen trabajo! Completaste la primera misión. La misión 2 llegará pronto; mientras tanto, podés repetir esta práctica para reforzar.";
+    link.textContent = "Repetir misión 1";
+    link.href = "mission.html?mission=seventh-mission-1";
+  }
+}

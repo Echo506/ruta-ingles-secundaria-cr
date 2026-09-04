@@ -3,21 +3,281 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Próximamente | English Quest CR</title>
+  <meta
+    name="description"
+    content="Consulta tu progreso, XP, racha e insignias en English Quest CR."
+  >
+  <title>Mi progreso | English Quest CR</title>
+
   <link rel="stylesheet" href="../assets/css/styles.css">
+  <script src="../assets/js/app.js" defer></script>
 </head>
+
 <body>
-  <main class="section">
-    <div class="container">
-      <p class="eyebrow">🚧 En desarrollo</p>
-      <h1>Esta sección estará disponible pronto.</h1>
-      <p class="hero-description">
-        Estamos construyendo esta parte de English Quest CR para la próxima fase.
-      </p>
-      <a class="button button-primary" href="../index.html">
-        ← Volver al inicio
+  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+
+  <header class="site-header">
+    <div class="container header-content">
+      <a class="brand" href="../index.html" aria-label="English Quest CR, página de inicio">
+        <span class="brand-mark" aria-hidden="true">EQ</span>
+        <span>
+          <strong>English Quest CR</strong>
+          <small>Tu ruta de inglés</small>
+        </span>
       </a>
+
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-label="Abrir menú de navegación"
+        aria-expanded="false"
+        aria-controls="main-navigation"
+        data-menu-toggle
+      >
+        <span aria-hidden="true">☰</span>
+      </button>
+
+      <nav
+        class="main-navigation"
+        id="main-navigation"
+        aria-label="Navegación principal"
+        data-navigation
+      >
+        <a class="nav-link" href="../index.html">Inicio</a>
+        <a class="nav-link" href="levels.html">Rutas</a>
+        <a class="nav-link" href="challenge.html">Retos</a>
+        <a class="nav-link is-active" href="progress.html" aria-current="page">Mi progreso</a>
+        <a class="nav-link" href="resources.html">Recursos</a>
+        <a class="nav-link" href="about.html">Sobre el proyecto</a>
+      </nav>
+
+      <button
+        class="contrast-toggle"
+        type="button"
+        aria-pressed="false"
+        aria-label="Activar modo de alto contraste"
+        data-contrast-toggle
+      >
+        <span aria-hidden="true">◐</span>
+        <span class="contrast-label">Alto contraste</span>
+      </button>
     </div>
+  </header>
+
+  <main id="main-content">
+    <section class="mission-hero section">
+      <div class="container">
+        <p class="eyebrow">
+          <span aria-hidden="true">📊</span>
+          Tu expedición
+        </p>
+
+        <h1>Mi progreso</h1>
+
+        <p class="hero-description">
+          Cada misión que completás deja una huella. Revisá tus puntos,
+          tus logros y elegí tu siguiente paso.
+        </p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="summary-title">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">
+              <span aria-hidden="true">🏆</span>
+              Resumen
+            </p>
+            <h2 id="summary-title">Tu avance hasta hoy.</h2>
+          </div>
+        </div>
+
+        <div class="progress-summary-grid">
+          <article class="progress-stat-card">
+            <span class="progress-stat-icon" aria-hidden="true">✨</span>
+            <p class="progress-stat-value" id="progress-xp">0</p>
+            <p class="progress-stat-label">XP acumulado</p>
+          </article>
+
+          <article class="progress-stat-card">
+            <span class="progress-stat-icon" aria-hidden="true">🔥</span>
+            <p class="progress-stat-value" id="progress-streak">0</p>
+            <p class="progress-stat-label">Días de racha</p>
+          </article>
+
+          <article class="progress-stat-card">
+            <span class="progress-stat-icon" aria-hidden="true">🎖️</span>
+            <p class="progress-stat-value" id="progress-badges">0</p>
+            <p class="progress-stat-label">Insignias ganadas</p>
+          </article>
+
+          <article class="progress-stat-card">
+            <span class="progress-stat-icon" aria-hidden="true">✅</span>
+            <p class="progress-stat-value" id="progress-missions">0</p>
+            <p class="progress-stat-label">Misiones completadas</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section lesson-section" aria-labelledby="missions-title">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">
+              <span aria-hidden="true">🗺️</span>
+              Camino recorrido
+            </p>
+            <h2 id="missions-title">Misiones de Séptimo</h2>
+          </div>
+        </div>
+
+        <div class="mission-progress-list">
+          <article class="mission-progress-item" data-mission-status="seventh-mission-1">
+            <div class="mission-progress-icon" aria-hidden="true">🌱</div>
+
+            <div class="mission-progress-copy">
+              <p class="mission-progress-label">Mission 1</p>
+              <h3>Greetings & Personal Information</h3>
+              <p>Saludos, despedidas y presentación personal.</p>
+            </div>
+
+            <span class="mission-status" data-status-label="seventh-mission-1">
+              Pendiente
+            </span>
+          </article>
+
+          <article class="mission-progress-item is-locked">
+            <div class="mission-progress-icon" aria-hidden="true">🔒</div>
+
+            <div class="mission-progress-copy">
+              <p class="mission-progress-label">Mission 2</p>
+              <h3>My Family & Friends</h3>
+              <p>Próximamente: personas importantes y posesivos básicos.</p>
+            </div>
+
+            <span class="mission-status">Próximamente</span>
+          </article>
+
+          <article class="mission-progress-item is-locked">
+            <div class="mission-progress-icon" aria-hidden="true">🔒</div>
+
+            <div class="mission-progress-copy">
+              <p class="mission-progress-label">Mission 3</p>
+              <h3>My Daily Routine</h3>
+              <p>Próximamente: hábitos, horarios y presente simple.</p>
+            </div>
+
+            <span class="mission-status">Próximamente</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="badges-title">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">
+              <span aria-hidden="true">🎖️</span>
+              Colección
+            </p>
+            <h2 id="badges-title">Tus insignias</h2>
+          </div>
+        </div>
+
+        <div class="badge-showcase progress-badge-showcase">
+          <article class="badge-card" data-badge-card="first-mission">
+            <span class="badge-icon" aria-hidden="true">🌟</span>
+            <h3>Primer paso</h3>
+            <p>Completá tu primera misión.</p>
+            <span class="badge-state">Bloqueada</span>
+          </article>
+
+          <article class="badge-card is-locked">
+            <span class="badge-icon" aria-hidden="true">🔥</span>
+            <h3>Racha de 3 días</h3>
+            <p>Estudiá durante tres días consecutivos.</p>
+            <span class="badge-state">Próximamente</span>
+          </article>
+
+          <article class="badge-card is-locked">
+            <span class="badge-icon" aria-hidden="true">📚</span>
+            <h3>Lectura atenta</h3>
+            <p>Completá tres misiones de Reading.</p>
+            <span class="badge-state">Próximamente</span>
+          </article>
+
+          <article class="badge-card is-locked">
+            <span class="badge-icon" aria-hidden="true">🎧</span>
+            <h3>Oído explorador</h3>
+            <p>Completá tres misiones de Listening.</p>
+            <span class="badge-state">Próximamente</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section diagnostic-section" aria-labelledby="next-title">
+      <div class="container">
+        <div class="diagnostic-card">
+          <div>
+            <p class="eyebrow">
+              <span aria-hidden="true">🚀</span>
+              Siguiente paso
+            </p>
+
+            <h2 id="next-title">Tu próxima práctica te espera.</h2>
+
+            <p id="progress-next-message">
+              Empezá la primera misión para sumar XP y desbloquear tu primera insignia.
+            </p>
+          </div>
+
+          <a
+            class="button button-primary"
+            id="progress-next-link"
+            href="mission.html?mission=seventh-mission-1"
+          >
+            Iniciar misión 1
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
   </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="brand footer-brand" href="../index.html">
+          <span class="brand-mark" aria-hidden="true">EQ</span>
+          <span>
+            <strong>English Quest CR</strong>
+            <small>Aprender también es avanzar.</small>
+          </span>
+        </a>
+
+        <p class="footer-disclaimer">
+          Recurso educativo complementario e independiente. No está afiliado,
+          aprobado ni administrado por el Ministerio de Educación Pública de
+          Costa Rica.
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <a href="levels.html">Rutas</a>
+        <a href="challenge.html">Retos</a>
+        <a href="resources.html">Recursos</a>
+        <a href="about.html">Sobre el proyecto</a>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>© <span id="current-year"></span> English Quest CR. Licencia MIT.</p>
+      <a href="#main-content">Volver arriba ↑</a>
+    </div>
+  </footer>
 </body>
 </html>
