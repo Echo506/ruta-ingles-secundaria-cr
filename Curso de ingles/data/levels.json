@@ -1,0 +1,92 @@
+[
+  {
+    "id": "seventh-foundations",
+    "year": "Séptimo año",
+    "title": "Foundations",
+    "cefr": "Pre-A1 – A1",
+    "icon": "🌱",
+    "description": "Construí bases sólidas para presentarte, comprender expresiones frecuentes y comunicarte en situaciones cotidianas.",
+    "topics": [
+      "Saludos",
+      "Información personal",
+      "Familia",
+      "Rutinas",
+      "Presente simple"
+    ],
+    "missionCount": 5,
+    "status": "available",
+    "color": "mint"
+  },
+  {
+    "id": "eighth-everyday-english",
+    "year": "Octavo año",
+    "title": "Everyday English",
+    "cefr": "A1",
+    "icon": "🏙️",
+    "description": "Usá el inglés para resolver situaciones de la vida diaria: lugares, clima, comida, ropa y habilidades.",
+    "topics": [
+      "Alimentación",
+      "Clima",
+      "Direcciones",
+      "Habilidades",
+      "Pasado simple"
+    ],
+    "missionCount": 5,
+    "status": "available",
+    "color": "cyan"
+  },
+  {
+    "id": "ninth-real-life-communication",
+    "year": "Noveno año",
+    "title": "Real-Life Communication",
+    "cefr": "A1 – A2",
+    "icon": "🗣️",
+    "description": "Practicá inglés para viajes, salud, tecnología, planes y conversaciones que ocurren fuera del aula.",
+    "topics": [
+      "Viajes",
+      "Salud",
+      "Tecnología",
+      "Comparaciones",
+      "Futuro"
+    ],
+    "missionCount": 5,
+    "status": "available",
+    "color": "blue"
+  },
+  {
+    "id": "tenth-academic-growth",
+    "year": "Décimo año",
+    "title": "Academic Growth",
+    "cefr": "A2",
+    "icon": "📘",
+    "description": "Desarrollá habilidades para comprender textos funcionales, expresar opiniones y participar en temas actuales.",
+    "topics": [
+      "Ambiente",
+      "Ciudadanía digital",
+      "Educación",
+      "Empleo",
+      "Opiniones"
+    ],
+    "missionCount": 5,
+    "status": "available",
+    "color": "violet"
+  },
+  {
+    "id": "eleventh-exam-challenge",
+    "year": "Undécimo año",
+    "title": "Exam Challenge",
+    "cefr": "A2 – B1",
+    "icon": "🚀",
+    "description": "Fortalecé estrategias de Reading y Listening con práctica original, análisis de contexto y simulacros cortos.",
+    "topics": [
+      "Idea principal",
+      "Inferencias",
+      "Detalles",
+      "Propósito",
+      "Simulacros"
+    ],
+    "missionCount": 5,
+    "status": "available",
+    "color": "yellow"
+  }
+]
