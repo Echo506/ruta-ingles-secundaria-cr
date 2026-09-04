@@ -1,76 +1,51 @@
-ingles-mep-secundaria/
-│
-├── README.md
-├── LICENSE
-├── CONTRIBUTING.md
-├── CODE_OF_CONDUCT.md
-│
-├── 00-guia-del-estudiante/
-│   ├── como-usar-el-curso.md
-│   ├── plan-de-estudio-12-semanas.md
-│   ├── niveles-mcer.md
-│   └── consejos-para-prueba-nacional.md
-│
-├── 01-septimo/
-│   ├── unidad-01-personal-information/
-│   ├── unidad-02-family-and-home/
-│   ├── unidad-03-daily-routines/
-│   ├── unidad-04-school-and-community/
-│   └── evaluacion-septimo/
-│
-├── 02-octavo/
-│   ├── unidad-01-food-and-healthy-habits/
-│   ├── unidad-02-city-and-directions/
-│   ├── unidad-03-weather-and-clothing/
-│   ├── unidad-04-past-events/
-│   └── evaluacion-octavo/
-│
-├── 03-noveno/
-│   ├── unidad-01-travel-and-transportation/
-│   ├── unidad-02-health-and-lifestyle/
-│   ├── unidad-03-technology-and-communication/
-│   ├── unidad-04-plans-and-predictions/
-│   └── evaluacion-noveno/
-│
-├── 04-decimo/
-│   ├── unidad-01-environment/
-│   ├── unidad-02-education-and-careers/
-│   ├── unidad-03-culture-and-entertainment/
-│   ├── unidad-04-digital-citizenship/
-│   └── evaluacion-decimo/
-│
-├── 05-undecimo/
-│   ├── unidad-01-reading-strategies/
-│   ├── unidad-02-listening-strategies/
-│   ├── unidad-03-vocabulary-in-context/
-│   ├── unidad-04-inference-and-main-idea/
-│   └── simulacros/
-│
-├── 06-listening/
-│   ├── audios/
-│   ├── transcripts/
-│   ├── exercises/
-│   └── answer-keys/
-│
-├── 07-reading/
-│   ├── messages-and-chats/
-│   ├── emails-and-invitations/
-│   ├── ads-and-notices/
-│   ├── articles-and-reports/
-│   └── answer-keys/
-│
-├── 08-simulacros/
-│   ├── diagnostico-inicial/
-│   ├── simulacro-01-a1/
-│   ├── simulacro-02-a2/
-│   ├── simulacro-final/
-│   └── rubricas-y-resultados/
-│
-├── 09-recursos/
-│   ├── grammar-reference/
-│   ├── vocabulary-by-topic/
-│   ├── flashcards/
-│   └── glossary-es-en.md
-│
-└── docs/
-    └── index.html
+# Inglés MEP Secundaria Costa Rica
+
+Curso abierto y gratuito de inglés para estudiantes de secundaria en Costa Rica.
+
+Su objetivo es reforzar los contenidos de Inglés de III Ciclo y Educación
+Diversificada, además de desarrollar las competencias de comprensión lectora
+y comprensión auditiva utilizadas en la Prueba Nacional Estandarizada de
+Lenguas Extranjeras del MEP.
+
+> Este proyecto es independiente y no está afiliado, aprobado ni administrado
+> por el Ministerio de Educación Pública de Costa Rica.
+
+## ¿Qué encontrarás?
+
+- Contenido organizado de 7.º a 11.º año
+- Vocabulario y gramática contextualizados
+- Actividades de Reading y Listening
+- Audios y transcripciones originales
+- Ejercicios autocorregibles
+- Simulacros de práctica
+- Claves de respuesta y explicaciones
+- Planes de estudio para reforzamiento y preparación de pruebas
+
+## Competencias principales
+
+- Reading comprehension
+- Listening comprehension
+- Vocabulary in context
+- Functional English
+- Grammar for communication
+- Test-taking strategies
+
+## Estructura
+
+| Nivel | Enfoque |
+|---|---|
+| 7.º | Fundamentos: Pre-A1 y A1 |
+| 8.º | Consolidación de A1 |
+| 9.º | Transición a A2 |
+| 10.º | Desarrollo de A2 |
+| 11.º | Preparación de lectura, escucha y simulacros |
+
+## Recursos oficiales
+
+- [Programas de estudio del MEP](https://www.mep.go.cr/programas-estudio)
+- [Prácticas de Inglés – DGEC](https://dgec.mep.go.cr/PRACTICAS_LENGUAS%20EXTRANJERAS/Ingles/)
+
+## Licencia
+
+Este proyecto utiliza una licencia Creative Commons Attribution 4.0
+International (CC BY 4.0), salvo donde se indique lo contrario.
