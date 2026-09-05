@@ -2098,3 +2098,340 @@ body.high-contrast .spark {
     grid-template-columns: repeat(5, 1fr);
   }
 }
+
+/* =========================================
+   Bandera cyber CR: pantalla completa
+   ========================================= */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 78% 28%, rgba(75, 196, 255, 0.1), transparent 32%),
+    radial-gradient(circle at 15% 82%, rgba(218, 66, 99, 0.1), transparent 36%),
+    #07111f;
+}
+
+.hero > .container {
+  position: relative;
+  z-index: 5;
+}
+
+/* Capa que cubre por completo el hero */
+.hero-effects {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  animation: cyber-flag-appearance 18s ease-in-out infinite;
+}
+
+/* Bandera completa y tenue */
+.costa-rica-flag {
+  position: absolute;
+  inset: -12%;
+  overflow: hidden;
+  opacity: 0.24;
+  background:
+    linear-gradient(
+      to bottom,
+      #0b2d5f 0%,
+      #0b2d5f 16%,
+      #d8e4ed 16%,
+      #d8e4ed 33%,
+      #8d2b42 33%,
+      #8d2b42 67%,
+      #d8e4ed 67%,
+      #d8e4ed 84%,
+      #0b2d5f 84%,
+      #0b2d5f 100%
+    );
+  filter: saturate(0.7) blur(0.25px);
+  transform: scale(1.15);
+  animation: flag-digital-wave 18s ease-in-out infinite;
+}
+
+/* Se ocultan las franjas individuales, porque el fondo genera la bandera */
+.flag-stripe {
+  display: none;
+}
+
+/* Brillo que se mueve sobre la bandera */
+.flag-wave {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+  left: -50%;
+  width: 28%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(217, 250, 255, 0.06),
+    rgba(217, 250, 255, 0.48),
+    rgba(217, 250, 255, 0.08),
+    transparent
+  );
+  filter: blur(8px);
+  transform: skewX(-20deg);
+  animation: cyber-scan 18s ease-in-out infinite;
+}
+
+/* Líneas de escaneo holográficas */
+.hero-effects::before {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  content: "";
+  opacity: 0;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(150, 230, 255, 0.13) 0,
+      rgba(150, 230, 255, 0.13) 1px,
+      transparent 1px,
+      transparent 6px
+    );
+  mix-blend-mode: screen;
+  animation: scanlines 18s ease-in-out infinite;
+}
+
+/* Destello de teletransportación */
+.hero-effects::after {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  left: 50%;
+  width: 1px;
+  height: 1px;
+  content: "";
+  background: #c7f8ff;
+  border-radius: 50%;
+  box-shadow:
+    0 0 2rem 0.8rem rgba(88, 211, 255, 0.8),
+    0 0 6rem 1.7rem rgba(88, 211, 255, 0.4),
+    0 0 12rem 3rem rgba(200, 79, 111, 0.18);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.1);
+  animation: teleport-flash 18s ease-in-out infinite;
+}
+
+/* Partículas */
+.spark {
+  position: absolute;
+  z-index: 4;
+  width: 0.3rem;
+  height: 0.3rem;
+  background: #b9f6ff;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0.45rem #b9f6ff,
+    0 0 1.1rem #4bc4ff;
+  opacity: 0;
+  animation: cyber-particle 18s linear infinite;
+}
+
+.spark-one {
+  top: 18%;
+  left: 13%;
+  animation-delay: 1.3s;
+}
+
+.spark-two {
+  top: 70%;
+  left: 78%;
+  animation-delay: 2.6s;
+}
+
+.spark-three {
+  top: 35%;
+  left: 88%;
+  animation-delay: 4.1s;
+}
+
+.spark-four {
+  top: 82%;
+  left: 34%;
+  animation-delay: 5.5s;
+}
+
+@keyframes cyber-flag-appearance {
+  0%,
+  13%,
+  100% {
+    opacity: 0;
+  }
+
+  17% {
+    opacity: 0.95;
+  }
+
+  21% {
+    opacity: 0.65;
+  }
+
+  25%,
+  43% {
+    opacity: 1;
+  }
+
+  49% {
+    opacity: 0;
+  }
+}
+
+@keyframes flag-digital-wave {
+  0%,
+  13%,
+  100% {
+    opacity: 0;
+    transform: scale(1.24) translateX(-8%);
+  }
+
+  17% {
+    opacity: 0.32;
+    transform: scale(1.12) translateX(0);
+  }
+
+  22% {
+    opacity: 0.22;
+    transform: scale(1.18) translateX(1.5%);
+  }
+
+  28% {
+    opacity: 0.3;
+    transform: scale(1.14) translateX(-1%);
+  }
+
+  43% {
+    opacity: 0.2;
+    transform: scale(1.2) translateX(3%);
+  }
+
+  49% {
+    opacity: 0;
+    transform: scale(1.3) translateX(10%);
+  }
+}
+
+@keyframes cyber-scan {
+  0%,
+  17%,
+  100% {
+    left: -50%;
+    opacity: 0;
+  }
+
+  21% {
+    opacity: 0.9;
+  }
+
+  38% {
+    left: 125%;
+    opacity: 0.55;
+  }
+
+  44% {
+    left: 150%;
+    opacity: 0;
+  }
+}
+
+@keyframes scanlines {
+  0%,
+  16%,
+  100% {
+    opacity: 0;
+    transform: translateY(-3rem);
+  }
+
+  20%,
+  42% {
+    opacity: 0.34;
+  }
+
+  48% {
+    opacity: 0;
+    transform: translateY(5rem);
+  }
+}
+
+@keyframes teleport-flash {
+  0%,
+  15%,
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.1);
+  }
+
+  17% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  19% {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(2.8);
+  }
+
+  22% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(4);
+  }
+}
+
+@keyframes cyber-particle {
+  0%,
+  15%,
+  100% {
+    opacity: 0;
+    transform: scale(0.2) translate(0, 0);
+  }
+
+  19% {
+    opacity: 1;
+    transform: scale(1.3) translate(0, 0);
+  }
+
+  40% {
+    opacity: 0.65;
+    transform: scale(0.7) translate(-4rem, -7rem);
+  }
+
+  47% {
+    opacity: 0;
+    transform: scale(0.1) translate(-7rem, -11rem);
+  }
+}
+
+@media (max-width: 919px) {
+  .costa-rica-flag {
+    opacity: 0.18;
+  }
+
+  .hero-effects::before {
+    opacity: 0.22;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-effects {
+    opacity: 0.42;
+    animation: none;
+  }
+
+  .costa-rica-flag {
+    opacity: 0.16;
+    animation: none;
+  }
+
+  .flag-wave,
+  .hero-effects::before,
+  .hero-effects::after,
+  .spark {
+    animation: none;
+  }
+}
