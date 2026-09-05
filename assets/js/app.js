@@ -3,10 +3,17 @@
 document.addEventListener("DOMContentLoaded", () => {
   const STORAGE_KEY = "englishQuestCRProgress";
   const CONTRAST_KEY = "englishQuestCRHighContrast";
-  const MISSIONS = Array.isArray(window.seventhMissions)
+
+  const SEVENTH_MISSIONS = Array.isArray(window.seventhMissions)
     ? window.seventhMissions
     : [];
-  const TOTAL_MISSIONS = MISSIONS.length || 24;
+
+  const EIGHTH_MISSIONS = Array.isArray(window.eighthMissions)
+    ? window.eighthMissions
+    : [];
+
+  const MISSIONS = [...SEVENTH_MISSIONS, ...EIGHTH_MISSIONS];
+  const TOTAL_MISSIONS = MISSIONS.length || 48;
 
   function getDefaultProgress() {
     return {
@@ -82,11 +89,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return `mission.html?mission=${encodeURIComponent(missionId)}`;
   }
 
-  function getMissionNumber(missionId) {
-    const match = missionId.match(/(\d+)$/);
-    return match ? Number(match[1]) : 0;
-  }
-
   function getMissionById(missionId) {
     return MISSIONS.find((mission) => mission.id === missionId);
   }
@@ -96,11 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
       (mission) => mission.id === missionId
     );
 
-    if (currentIndex === -1) {
-      return null;
-    }
-
-    return MISSIONS[currentIndex + 1] || null;
+    return currentIndex >= 0 ? MISSIONS[currentIndex + 1] || null : null;
   }
 
   function isMissionLocked(missionId, completedMissions) {
@@ -112,22 +110,22 @@ document.addEventListener("DOMContentLoaded", () => {
       return false;
     }
 
-    const previousMission = MISSIONS[missionIndex - 1];
-
-    return !completedMissions.includes(previousMission.id);
+    return !completedMissions.includes(MISSIONS[missionIndex - 1].id);
   }
 
   function calculateProgress(progress) {
     return Math.min(
       100,
-      Math.round((progress.completedMissions.length / TOTAL_MISSIONS) * 100)
+      Math.round(
+        (progress.completedMissions.length / TOTAL_MISSIONS) * 100
+      )
     );
   }
 
   function getRank(progress) {
-    if (progress.xp >= 1500) return "Master";
-    if (progress.xp >= 800) return "Pathfinder";
-    if (progress.xp >= 300) return "Adventurer";
+    if (progress.xp >= 3500) return "Master";
+    if (progress.xp >= 1800) return "Pathfinder";
+    if (progress.xp >= 600) return "Adventurer";
     return "Explorer";
   }
 
@@ -170,38 +168,34 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function normalizeQuestion(question, index) {
+  function normalizeQuestion(question) {
     const [questionText, answers, correctIndex] = question;
 
     return {
       question: questionText,
-      answers: answers.map((answer, answerIndex) => [
-        String.fromCharCode(97 + answerIndex),
+      answers: answers.map((answer, index) => [
+        String.fromCharCode(97 + index),
         answer
       ]),
       correct: String.fromCharCode(97 + correctIndex),
       correctMessage: "¡Correcto! Muy bien.",
-      incorrectMessage: `La respuesta correcta es: ${answers[correctIndex]}.`,
-      index
+      incorrectMessage: `La respuesta correcta es: ${answers[correctIndex]}.`
     };
   }
 
   function setupMissionPage() {
     const form = document.querySelector("#mission-quiz");
 
-    if (!form) {
-      return;
-    }
+    if (!form) return;
+
+    const result = document.querySelector("#quiz-result");
 
     if (!MISSIONS.length) {
-      const result = document.querySelector("#quiz-result");
-
       if (result) {
         result.textContent =
-          "No se pudieron cargar las misiones. Verificá data/seventh-missions.js.";
-        result.classList.add("is-warning");
+          "No se cargaron las misiones. Revisá los archivos en data/.";
+        result.className = "quiz-result is-warning";
       }
-
       return;
     }
 
@@ -209,67 +203,48 @@ document.addEventListener("DOMContentLoaded", () => {
     const requestedMissionId =
       params.get("mission") || "seventh-mission-1";
 
-    const mission =
-      getMissionById(requestedMissionId) || MISSIONS[0];
-
-    const missionId = mission.id;
+    const mission = getMissionById(requestedMissionId) || MISSIONS[0];
     const progress = getProgress();
 
-    if (isMissionLocked(missionId, progress.completedMissions)) {
+    if (isMissionLocked(mission.id, progress.completedMissions)) {
       window.location.href = "progress.html";
       return;
     }
 
-    const title = document.querySelector("#mission-title");
-    const description = document.querySelector("#mission-description");
-    const vocabularyTitle = document.querySelector("#vocabulary-title");
-    const vocabularyIntro = document.querySelector("#vocabulary-intro");
-    const vocabularyGrid = document.querySelector("#vocabulary-grid");
-    const tipText = document.querySelector("#tip-text");
-    const languageTitle = document.querySelector("#language-title");
-    const languageIntro = document.querySelector("#language-intro");
-    const exampleBox = document.querySelector("#example-box");
-    const languageExtra = document.querySelector("#language-extra");
-    const speakingTip = document.querySelector("#speaking-tip");
-    const dialogue = document.querySelector("#dialogue");
-    const readingNote = document.querySelector("#reading-note");
-    const questionsContainer = document.querySelector("#mission-questions");
-    const result = document.querySelector("#quiz-result");
+    const elements = {
+      title: document.querySelector("#mission-title"),
+      description: document.querySelector("#mission-description"),
+      vocabularyTitle: document.querySelector("#vocabulary-title"),
+      vocabularyIntro: document.querySelector("#vocabulary-intro"),
+      vocabularyGrid: document.querySelector("#vocabulary-grid"),
+      tipText: document.querySelector("#tip-text"),
+      languageTitle: document.querySelector("#language-title"),
+      languageIntro: document.querySelector("#language-intro"),
+      exampleBox: document.querySelector("#example-box"),
+      languageExtra: document.querySelector("#language-extra"),
+      speakingTip: document.querySelector("#speaking-tip"),
+      dialogue: document.querySelector("#dialogue"),
+      readingNote: document.querySelector("#reading-note"),
+      questions: document.querySelector("#mission-questions"),
+      result
+    };
 
-    if (
-      !title ||
-      !description ||
-      !vocabularyTitle ||
-      !vocabularyIntro ||
-      !vocabularyGrid ||
-      !tipText ||
-      !languageTitle ||
-      !languageIntro ||
-      !exampleBox ||
-      !languageExtra ||
-      !speakingTip ||
-      !dialogue ||
-      !readingNote ||
-      !questionsContainer ||
-      !result
-    ) {
-      return;
-    }
+    if (Object.values(elements).some((element) => !element)) return;
 
     document.title = `${mission.title} | English Quest CR`;
 
-    title.textContent = mission.title;
-    description.textContent = mission.description;
-    vocabularyTitle.textContent = mission.vocabularyTitle;
-    vocabularyIntro.textContent = mission.vocabularyIntro;
-    tipText.textContent = mission.tip;
-    languageTitle.textContent = mission.languageTitle;
-    languageIntro.textContent = mission.languageIntro;
-    languageExtra.textContent = mission.languageExtra;
-    speakingTip.textContent = mission.speakingTip;
-    readingNote.textContent = mission.readingNote;
+    elements.title.textContent = mission.title;
+    elements.description.textContent = mission.description;
+    elements.vocabularyTitle.textContent = mission.vocabularyTitle;
+    elements.vocabularyIntro.textContent = mission.vocabularyIntro;
+    elements.tipText.textContent = mission.tip;
+    elements.languageTitle.textContent = mission.languageTitle;
+    elements.languageIntro.textContent = mission.languageIntro;
+    elements.languageExtra.textContent = mission.languageExtra;
+    elements.speakingTip.textContent = mission.speakingTip;
+    elements.readingNote.textContent = mission.readingNote;
 
-    vocabularyGrid.innerHTML = mission.vocabulary
+    elements.vocabularyGrid.innerHTML = mission.vocabulary
       .map(
         ([word, meaning]) => `
           <div class="word-card">
@@ -280,11 +255,11 @@ document.addEventListener("DOMContentLoaded", () => {
       )
       .join("");
 
-    exampleBox.innerHTML = mission.examples
+    elements.exampleBox.innerHTML = mission.examples
       .map((example) => `<p><strong>${escapeHtml(example)}</strong></p>`)
       .join("");
 
-    dialogue.innerHTML = mission.dialogue
+    elements.dialogue.innerHTML = mission.dialogue
       .map(
         ([speaker, line]) => `
           <p>
@@ -297,21 +272,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const questions = mission.questions.map(normalizeQuestion);
 
-    questionsContainer.innerHTML = questions
+    elements.questions.innerHTML = questions
       .map(
         (question, index) => `
           <fieldset>
             <legend>${index + 1}. ${escapeHtml(question.question)}</legend>
             ${question.answers
               .map(
-                ([value, answerText]) => `
+                ([value, answer]) => `
                   <label class="answer-option">
                     <input
                       type="radio"
                       name="question-${index}"
                       value="${value}"
                     >
-                    <span>${escapeHtml(answerText)}</span>
+                    <span>${escapeHtml(answer)}</span>
                   </label>
                 `
               )
@@ -337,25 +312,22 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       questions.forEach((question, index) => {
-        const questionName = `question-${index}`;
-
-        const selected = form.querySelector(
-          `input[name="${questionName}"]:checked`
+        const input = form.querySelector(
+          `input[name="question-${index}"]:checked`
         );
 
         const feedback = form.querySelector(
-          `[data-feedback="${questionName}"]`
+          `[data-feedback="question-${index}"]`
         );
 
-        if (!selected) {
+        if (!input) {
           missing += 1;
-          feedback.textContent =
-            "Elegí una respuesta antes de revisar.";
+          feedback.textContent = "Elegí una respuesta antes de revisar.";
           feedback.classList.add("is-missing");
           return;
         }
 
-        if (selected.value === question.correct) {
+        if (input.value === question.correct) {
           score += 1;
           feedback.textContent = question.correctMessage;
           feedback.classList.add("is-correct");
@@ -365,79 +337,95 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
-      result.className = "quiz-result";
+      elements.result.className = "quiz-result";
 
       if (missing > 0) {
-        result.textContent =
+        elements.result.textContent =
           "Respondé todas las preguntas antes de revisar.";
-        result.classList.add("is-warning");
-        result.focus();
+        elements.result.classList.add("is-warning");
+        elements.result.focus();
         return;
       }
 
       if (score < 3) {
-        result.innerHTML = `
+        elements.result.innerHTML = `
           <strong>Vas por buen camino.</strong>
           Obtuviste ${score} de ${questions.length} respuestas correctas.
           Necesitás al menos 3 para completar la misión.
         `;
-        result.classList.add("is-warning");
-        result.focus();
+        elements.result.classList.add("is-warning");
+        elements.result.focus();
         return;
       }
 
       const updatedProgress = getProgress();
       const alreadyCompleted =
-        updatedProgress.completedMissions.includes(missionId);
+        updatedProgress.completedMissions.includes(mission.id);
 
       updateStreak(updatedProgress);
 
       if (!alreadyCompleted) {
         updatedProgress.xp += 100;
-        updatedProgress.completedMissions.push(missionId);
+        updatedProgress.completedMissions.push(mission.id);
 
         if (!updatedProgress.badges.includes("first-step")) {
           updatedProgress.badges.push("first-step");
         }
 
+        const seventhComplete = SEVENTH_MISSIONS.every((item) =>
+          updatedProgress.completedMissions.includes(item.id)
+        );
+
         if (
-          updatedProgress.completedMissions.length === TOTAL_MISSIONS &&
+          seventhComplete &&
           !updatedProgress.badges.includes("seventh-complete")
         ) {
           updatedProgress.badges.push("seventh-complete");
         }
 
+        const eighthComplete = EIGHTH_MISSIONS.length > 0 &&
+          EIGHTH_MISSIONS.every((item) =>
+            updatedProgress.completedMissions.includes(item.id)
+          );
+
+        if (
+          eighthComplete &&
+          !updatedProgress.badges.includes("eighth-complete")
+        ) {
+          updatedProgress.badges.push("eighth-complete");
+        }
+
         saveProgress(updatedProgress);
       }
 
-      const nextMission = getNextMission(missionId);
-      const nextMissionUrl = nextMission
+      const nextMission = getNextMission(mission.id);
+      const nextUrl = nextMission
         ? getMissionUrl(nextMission.id)
         : getProgressUrl();
 
-      const nextMissionLabel = nextMission
+      const nextLabel = nextMission
         ? "Ir a la siguiente misión →"
         : "Ver mi progreso →";
 
-      result.innerHTML = alreadyCompleted
+      elements.result.innerHTML = alreadyCompleted
         ? `
           <strong>¡Misión revisada!</strong>
           Obtuviste ${score} de ${questions.length} respuestas correctas.
           Ya habías recibido los XP de esta misión.
           <br><br>
-          <a href="${nextMissionUrl}">${nextMissionLabel}</a>
+          <a href="${nextUrl}">${nextLabel}</a>
         `
         : `
           <strong>¡Misión completada!</strong>
           Obtuviste ${score} de ${questions.length} respuestas correctas y ganaste
           <strong>100 XP</strong>.
           <br><br>
-          <a href="${nextMissionUrl}">${nextMissionLabel}</a>
+          <a href="${nextUrl}">${nextLabel}</a>
         `;
 
-      result.classList.add("is-success");
+      elements.result.classList.add("is-success");
       updateProgressInterface();
-      result.focus();
+      elements.result.focus();
     });
   }
 
@@ -445,9 +433,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const form = document.querySelector("#daily-challenge-form");
     const result = document.querySelector("#challenge-result");
 
-    if (!form || !result) {
-      return;
-    }
+    if (!form || !result) return;
 
     const answers = {
       "daily-question-1": "a",
@@ -458,17 +444,16 @@ document.addEventListener("DOMContentLoaded", () => {
     form.addEventListener("submit", (event) => {
       event.preventDefault();
 
-      let score = 0;
+      const score = Object.entries(answers).reduce(
+        (total, [name, correct]) => {
+          const selected = form.querySelector(
+            `input[name="${name}"]:checked`
+          );
 
-      Object.entries(answers).forEach(([name, correct]) => {
-        const selected = form.querySelector(
-          `input[name="${name}"]:checked`
-        );
-
-        if (selected && selected.value === correct) {
-          score += 1;
-        }
-      });
+          return total + Number(selected && selected.value === correct);
+        },
+        0
+      );
 
       result.className = "quiz-result";
 
@@ -515,12 +500,75 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  function renderMissionGroup(missions, grade, completed) {
+    return missions
+      .map((mission, index) => {
+        const missionCompleted = completed.includes(mission.id);
+        const previousMission =
+          index > 0
+            ? missions[index - 1]
+            : grade === "Octavo"
+              ? SEVENTH_MISSIONS[SEVENTH_MISSIONS.length - 1]
+              : null;
+
+        const available =
+          !previousMission ||
+          completed.includes(previousMission.id);
+
+        const locked = !missionCompleted && !available;
+        const status = missionCompleted
+          ? "Completada"
+          : locked
+            ? "Bloqueada"
+            : "Disponible";
+
+        const icon = missionCompleted
+          ? "✅"
+          : locked
+            ? "🔒"
+            : "🧭";
+
+        const classes = [
+          "mission-progress-item",
+          missionCompleted ? "is-completed" : "",
+          locked ? "is-locked" : "",
+          available && !missionCompleted ? "is-available" : ""
+        ]
+          .filter(Boolean)
+          .join(" ");
+
+        return `
+          <article
+            class="${classes}"
+            ${locked ? "" : `data-mission-url="${getMissionUrl(mission.id)}"`}
+            tabindex="${locked ? "-1" : "0"}"
+            aria-label="${escapeHtml(mission.title)}: ${status}"
+          >
+            <span class="mission-progress-icon" aria-hidden="true">
+              ${icon}
+            </span>
+            <div class="mission-progress-copy">
+              <p class="mission-progress-label">
+                ${grade} · ${escapeHtml(mission.unit)}
+              </p>
+              <h3>${escapeHtml(mission.title)}</h3>
+              <p>${escapeHtml(mission.description)}</p>
+            </div>
+            <span class="mission-status ${
+              missionCompleted ? "is-completed" : ""
+            }">
+              ${status}
+            </span>
+          </article>
+        `;
+      })
+      .join("");
+  }
+
   function setupProgressPage() {
     const xp = document.querySelector("#progress-xp");
 
-    if (!xp) {
-      return;
-    }
+    if (!xp) return;
 
     const progress = getProgress();
     const completed = progress.completedMissions;
@@ -541,62 +589,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const missionList = document.querySelector(".mission-progress-list");
 
     if (missionList && MISSIONS.length) {
-      missionList.innerHTML = MISSIONS.map((mission, index) => {
-        const completedMission = completed.includes(mission.id);
-        const available =
-          index === 0 || completed.includes(MISSIONS[index - 1].id);
-        const locked = !completedMission && !available;
-
-        const icon = completedMission
-          ? "✅"
-          : locked
-            ? "🔒"
-            : "🧭";
-
-        const status = completedMission
-          ? "Completada"
-          : locked
-            ? "Bloqueada"
-            : "Disponible";
-
-        const classes = [
-          "mission-progress-item",
-          completedMission ? "is-completed" : "",
-          locked ? "is-locked" : "",
-          available && !completedMission ? "is-available" : ""
-        ]
-          .filter(Boolean)
-          .join(" ");
-
-        const url = getMissionUrl(mission.id);
-
-        return `
-          <article
-            class="${classes}"
-            ${locked ? "" : `data-mission-url="${url}"`}
-            tabindex="${locked ? "-1" : "0"}"
-            aria-label="${escapeHtml(mission.title)}: ${status}"
-          >
-            <span class="mission-progress-icon" aria-hidden="true">
-              ${icon}
-            </span>
-
-            <div class="mission-progress-copy">
-              <p class="mission-progress-label">
-                Séptimo · ${escapeHtml(mission.unit)}
-              </p>
-              <h3>${escapeHtml(mission.title)}</h3>
-              <p>${escapeHtml(mission.description)}</p>
-            </div>
-
-            <span class="mission-status ${
-              completedMission ? "is-completed" : ""
-            }">
-              ${status}
-            </span>
-          </article>
-        `;
-      }).join("");
+      missionList.innerHTML = `
+        ${renderMissionGroup(SEVENTH_MISSIONS, "Séptimo año", completed)}
+        ${renderMissionGroup(EIGHTH_MISSIONS, "Octavo año", completed)}
+      `;
 
       missionList
         .querySelectorAll("[data-mission-url]")
@@ -640,24 +636,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (progress.badges.includes("first-step") && firstStepBadge) {
       firstStepBadge.classList.add("is-earned");
-
       const state = firstStepBadge.querySelector(".badge-state");
-
-      if (state) {
-        state.textContent = "Obtenida";
-      }
+      if (state) state.textContent = "Obtenida";
     }
 
     const streakBadge = document.querySelector("#badge-active-streak");
 
     if (progress.badges.includes("active-streak") && streakBadge) {
       streakBadge.classList.add("is-earned");
-
       const state = streakBadge.querySelector(".badge-state");
-
-      if (state) {
-        state.textContent = "Obtenida";
-      }
+      if (state) state.textContent = "Obtenida";
     }
   }
 
@@ -665,9 +653,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const button = document.querySelector("[data-menu-toggle]");
     const navigation = document.querySelector("[data-navigation]");
 
-    if (!button || !navigation) {
-      return;
-    }
+    if (!button || !navigation) return;
 
     button.addEventListener("click", () => {
       const isOpen = navigation.classList.toggle("is-open");
@@ -679,12 +665,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function setupContrastToggle() {
     const button = document.querySelector("[data-contrast-toggle]");
 
-    if (!button) {
-      return;
-    }
+    if (!button) return;
 
-    const savedMode =
-      localStorage.getItem(CONTRAST_KEY) === "true";
+    const savedMode = localStorage.getItem(CONTRAST_KEY) === "true";
 
     document.body.classList.toggle("high-contrast", savedMode);
     button.setAttribute("aria-pressed", String(savedMode));
