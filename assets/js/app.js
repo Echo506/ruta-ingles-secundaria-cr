@@ -511,7 +511,18 @@ document.addEventListener("DOMContentLoaded", () => {
               ? SEVENTH_MISSIONS[SEVENTH_MISSIONS.length - 1]
               : null;
 
-        const available =
+        const canStartEighth =
+  grade !== "Octavo año" ||
+  completed.includes(
+    SEVENTH_MISSIONS[SEVENTH_MISSIONS.length - 1].id
+  );
+
+const available =
+  canStartEighth &&
+  (
+    !previousMission ||
+    completed.includes(previousMission.id)
+  );
           !previousMission ||
           completed.includes(previousMission.id);
 
