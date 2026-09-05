@@ -5,21 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta
     name="description"
-    content="Rutas de aprendizaje de inglés de English Quest CR."
+    content="Rutas de aprendizaje de inglés para secundaria en English Quest CR."
   >
   <title>Rutas | English Quest CR</title>
 
   <link rel="stylesheet" href="../assets/css/styles.css">
+
+  <script src="../data/seventh-missions.js" defer></script>
+  <script src="../data/eighth-missions.js" defer></script>
+  <script src="../data/ninth-missions.js" defer></script>
   <script src="../assets/js/app.js" defer></script>
 </head>
 
-<body>
-  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+<body class="levels-page">
+  <a class="skip-link" href="#main-content">
+    Saltar al contenido principal
+  </a>
 
   <header class="site-header">
     <div class="container header-content">
-      <a class="brand" href="../index.html" aria-label="English Quest CR, página de inicio">
+      <a
+        class="brand"
+        href="../index.html"
+        aria-label="English Quest CR, ir al inicio"
+      >
         <span class="brand-mark" aria-hidden="true">EQ</span>
+
         <span>
           <strong>English Quest CR</strong>
           <small>Tu ruta de inglés</small>
@@ -29,22 +40,24 @@
       <button
         class="menu-toggle"
         type="button"
-        aria-label="Abrir menú de navegación"
-        aria-expanded="false"
-        aria-controls="main-navigation"
         data-menu-toggle
+        aria-expanded="false"
+        aria-controls="site-navigation"
       >
+        <span class="sr-only">Abrir menú</span>
         <span aria-hidden="true">☰</span>
       </button>
 
       <nav
         class="main-navigation"
-        id="main-navigation"
-        aria-label="Navegación principal"
+        id="site-navigation"
         data-navigation
+        aria-label="Navegación principal"
       >
         <a class="nav-link" href="../index.html">Inicio</a>
-        <a class="nav-link is-active" href="levels.html" aria-current="page">Rutas</a>
+        <a class="nav-link is-active" href="levels.html" aria-current="page">
+          Rutas
+        </a>
         <a class="nav-link" href="challenge.html">Retos</a>
         <a class="nav-link" href="progress.html">Mi progreso</a>
         <a class="nav-link" href="resources.html">Recursos</a>
@@ -54,9 +67,8 @@
       <button
         class="contrast-toggle"
         type="button"
-        aria-pressed="false"
-        aria-label="Activar modo de alto contraste"
         data-contrast-toggle
+        aria-pressed="false"
       >
         <span aria-hidden="true">◐</span>
         <span class="contrast-label">Alto contraste</span>
@@ -65,80 +77,330 @@
   </header>
 
   <main id="main-content">
-    <section class="hero section">
-      <div class="container">
-        <p class="eyebrow">
-          <span aria-hidden="true">🧭</span>
-          Tu mapa de aprendizaje
-        </p>
+    <section class="hero levels-hero">
+      <div class="container hero-grid">
+        <div>
+          <p class="eyebrow">
+            <span aria-hidden="true">🧭</span>
+            Tu mapa de aprendizaje
+          </p>
 
-        <h1>Elegí una ruta y convertí cada práctica en progreso.</h1>
+          <h1 class="hero-title">
+            Elegí una ruta<br>
+            y convertí<br>
+            cada práctica<br>
+            en progreso.
+          </h1>
 
-        <p class="hero-description">
-          Podés seguir el orden recomendado o explorar cualquier nivel.
-          Cada ruta contiene misiones con vocabulario, gramática aplicada,
-          Reading, Listening y retroalimentación.
-        </p>
+          <p class="hero-description">
+            Podés seguir el orden recomendado o explorar cualquier nivel.
+            Cada ruta contiene misiones con vocabulario, gramática aplicada,
+            Reading, Listening y retroalimentación.
+          </p>
 
-        <div class="hero-actions">
-          <a class="button button-primary" href="#rutas-disponibles">
-            Ver rutas disponibles
-            <span aria-hidden="true">↓</span>
-          </a>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#rutas-disponibles">
+              Ver rutas disponibles
+              <span aria-hidden="true">↓</span>
+            </a>
 
-          <a class="button button-secondary" href="challenge.html">
-            Hacer diagnóstico
-            <span aria-hidden="true">→</span>
-          </a>
+            <a class="button button-secondary" href="challenge.html">
+              Hacer diagnóstico
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="section level-section" id="rutas-disponibles" aria-labelledby="routes-title">
+    <section
+      class="section level-section"
+      id="rutas-disponibles"
+      aria-labelledby="routes-title"
+    >
       <div class="container">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">
-              <span aria-hidden="true">🚀</span>
-              Rutas por nivel
-            </p>
+            <p class="eyebrow">Rutas por nivel</p>
             <h2 id="routes-title">Encontrá tu punto de partida.</h2>
           </div>
+
+          <p>
+            Completá una misión para desbloquear la siguiente. La ruta sigue
+            el orden Séptimo, Octavo y Noveno.
+          </p>
         </div>
 
-        <div class="level-grid" id="levels-container" aria-live="polite">
-          <p class="loading-message">Cargando rutas de aprendizaje...</p>
-        </div>
+        <div class="level-grid">
+          <article class="level-card" id="route-seventh">
+            <div class="level-card-top">
+              <span class="level-icon" aria-hidden="true">🌱</span>
+              <span class="level-tag" id="route-seventh-status">
+                Disponible
+              </span>
+            </div>
 
-        <p class="content-error" id="levels-error" hidden role="alert">
-          No pudimos cargar las rutas. Recargá la página e intentá nuevamente.
-        </p>
+            <h3>Séptimo año</h3>
+            <p class="level-year">A1 · Fundamentos</p>
+
+            <p>
+              Presentaciones, rutinas, gustos, naturaleza, compras, cultura
+              y direcciones.
+            </p>
+
+            <ul class="topic-list" aria-label="Temas de Séptimo">
+              <li>Presentaciones</li>
+              <li>Rutinas</li>
+              <li>Gustos</li>
+              <li>Direcciones</li>
+            </ul>
+
+            <div
+              class="route-progress"
+              role="progressbar"
+              aria-label="Progreso de Séptimo"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow="0"
+              id="route-seventh-progress"
+            >
+              <span id="route-seventh-progress-bar"></span>
+            </div>
+
+            <p class="route-progress-text">
+              <strong id="route-seventh-count">0 de 24</strong>
+              misiones ·
+              <span id="route-seventh-percent">0%</span>
+            </p>
+
+            <a
+              class="text-link"
+              id="route-seventh-link"
+              href="mission.html?mission=seventh-mission-1"
+            >
+              Empezar Séptimo
+              <span aria-hidden="true">→</span>
+            </a>
+          </article>
+
+          <article class="level-card" id="route-eighth">
+            <div class="level-card-top">
+              <span class="level-icon" aria-hidden="true">🚀</span>
+              <span class="level-tag" id="route-eighth-status">
+                Bloqueada
+              </span>
+            </div>
+
+            <h3>Octavo año</h3>
+            <p class="level-year">A2 · Comunicación cotidiana</p>
+
+            <p>
+              Colegio, actividades, tecnología, eventos, compras, pasado
+              simple, turismo y recomendaciones.
+            </p>
+
+            <ul class="topic-list" aria-label="Temas de Octavo">
+              <li>Colegio</li>
+              <li>Tecnología</li>
+              <li>Pasado simple</li>
+              <li>Turismo</li>
+            </ul>
+
+            <div
+              class="route-progress"
+              role="progressbar"
+              aria-label="Progreso de Octavo"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow="0"
+              id="route-eighth-progress"
+            >
+              <span id="route-eighth-progress-bar"></span>
+            </div>
+
+            <p class="route-progress-text">
+              <strong id="route-eighth-count">0 de 24</strong>
+              misiones ·
+              <span id="route-eighth-percent">0%</span>
+            </p>
+
+            <a
+              class="text-link"
+              id="route-eighth-link"
+              href="progress.html"
+              aria-disabled="true"
+            >
+              Completá Séptimo primero
+              <span aria-hidden="true">→</span>
+            </a>
+          </article>
+
+          <article class="level-card" id="route-ninth">
+            <div class="level-card-top">
+              <span class="level-icon" aria-hidden="true">📚</span>
+              <span class="level-tag" id="route-ninth-status">
+                Bloqueada
+              </span>
+            </div>
+
+            <h3>Noveno año</h3>
+            <p class="level-year">A2+ · Consolidación</p>
+
+            <p>
+              Ocio, tecnología, medios, salud, situaciones inesperadas,
+              lectura y comprensión de ideas principales.
+            </p>
+
+            <ul class="topic-list" aria-label="Temas de Noveno">
+              <li>Medios</li>
+              <li>Seguridad digital</li>
+              <li>Salud</li>
+              <li>Lectura</li>
+            </ul>
+
+            <div
+              class="route-progress"
+              role="progressbar"
+              aria-label="Progreso de Noveno"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow="0"
+              id="route-ninth-progress"
+            >
+              <span id="route-ninth-progress-bar"></span>
+            </div>
+
+            <p class="route-progress-text">
+              <strong id="route-ninth-count">0 de 24</strong>
+              misiones ·
+              <span id="route-ninth-percent">0%</span>
+            </p>
+
+            <a
+              class="text-link"
+              id="route-ninth-link"
+              href="progress.html"
+              aria-disabled="true"
+            >
+              Completá Octavo primero
+              <span aria-hidden="true">→</span>
+            </a>
+          </article>
+
+          <article class="level-card">
+            <div class="level-card-top">
+              <span class="level-icon" aria-hidden="true">🏔️</span>
+              <span class="level-tag">Próximamente</span>
+            </div>
+
+            <h3>Décimo año</h3>
+            <p class="level-year">B1 · Preparación avanzada</p>
+
+            <p>
+              Comprensión lectora, listening, comunicación académica y
+              preparación para evaluaciones.
+            </p>
+
+            <ul class="topic-list" aria-label="Temas próximos">
+              <li>Listening</li>
+              <li>Writing</li>
+              <li>Lectura</li>
+              <li>Opiniones</li>
+            </ul>
+
+            <a class="text-link" href="resources.html">
+              Explorar recursos
+              <span aria-hidden="true">→</span>
+            </a>
+          </article>
+
+          <article class="level-card">
+            <div class="level-card-top">
+              <span class="level-icon" aria-hidden="true">🎓</span>
+              <span class="level-tag">Próximamente</span>
+            </div>
+
+            <h3>Undécimo año</h3>
+            <p class="level-year">B1+ · Proyección académica</p>
+
+            <p>
+              Prácticas integradas de lectura, escritura, comprensión oral y
+              preparación de comunicación para contextos académicos.
+            </p>
+
+            <ul class="topic-list" aria-label="Temas próximos">
+              <li>Debates</li>
+              <li>Ensayos</li>
+              <li>Listening</li>
+              <li>Repaso final</li>
+            </ul>
+
+            <a class="text-link" href="resources.html">
+              Ver materiales
+              <span aria-hidden="true">→</span>
+            </a>
+          </article>
+        </div>
       </div>
     </section>
 
-    <section class="section" aria-labelledby="free-exploration-title">
+    <section class="section how-section">
       <div class="container">
-        <div class="diagnostic-card">
+        <div class="section-heading centered-heading">
           <div>
-            <p class="eyebrow">
-              <span aria-hidden="true">🔓</span>
-              Aprendé sin barreras
-            </p>
+            <p class="eyebrow">Aprendé sin barreras</p>
+            <h2>Explorar libremente también cuenta.</h2>
+          </div>
+        </div>
 
-            <h2 id="free-exploration-title">Explorar libremente también cuenta.</h2>
-
+        <div class="steps-grid">
+          <article class="step-card">
+            <span class="step-number" aria-hidden="true">01</span>
+            <span class="step-icon" aria-hidden="true">🧭</span>
+            <h3>Elegí tu ruta</h3>
             <p>
-              Las misiones se desbloquearán de forma progresiva, pero siempre
-              podrás consultar rutas y temas para reforzar lo que necesitás.
-              Tu ritmo es válido.
+              Empezá con el nivel que corresponde a tu recorrido escolar.
+            </p>
+          </article>
+
+          <article class="step-card">
+            <span class="step-number" aria-hidden="true">02</span>
+            <span class="step-icon" aria-hidden="true">✍️</span>
+            <h3>Completá misiones</h3>
+            <p>
+              Practicá vocabulario, gramática, lectura y comprensión.
+            </p>
+          </article>
+
+          <article class="step-card">
+            <span class="step-number" aria-hidden="true">03</span>
+            <span class="step-icon" aria-hidden="true">🏅</span>
+            <h3>Sumá progreso</h3>
+            <p>
+              Ganá XP, mantené tu racha y desbloqueá nuevos niveles.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section diagnostic-section">
+      <div class="container">
+        <article class="diagnostic-card">
+          <div>
+            <p class="eyebrow">¿No sabés por dónde empezar?</p>
+            <h2>Hacé un diagnóstico rápido.</h2>
+            <p>
+              Revisá tu nivel actual con un reto breve y elegí la ruta que
+              mejor se adapte a tu proceso de aprendizaje.
             </p>
           </div>
 
-          <a class="button button-primary" href="mission.html?mission=seventh-mission-1">
-            Iniciar primera misión
+          <a class="button button-primary" href="challenge.html">
+            Ir al diagnóstico
             <span aria-hidden="true">→</span>
           </a>
-        </div>
+        </article>
       </div>
     </section>
   </main>
@@ -146,23 +408,23 @@
   <footer class="site-footer">
     <div class="container footer-grid">
       <div>
-        <a class="brand footer-brand" href="../index.html" aria-label="English Quest CR, página de inicio">
+        <a class="brand footer-brand" href="../index.html">
           <span class="brand-mark" aria-hidden="true">EQ</span>
+
           <span>
             <strong>English Quest CR</strong>
-            <small>Aprender también es avanzar.</small>
+            <small>Tu ruta de inglés</small>
           </span>
         </a>
 
         <p class="footer-disclaimer">
           English Quest CR es un recurso complementario e independiente.
           No está afiliado, aprobado ni administrado por el Ministerio de
-          Educación Pública de Costa Rica. Los programas, disposiciones y
-          criterios oficiales pueden cambiar.
+          Educación Pública de Costa Rica.
         </p>
       </div>
 
-      <div class="footer-links">
+      <nav class="footer-links" aria-label="Enlaces del pie de página">
         <a href="resources.html">Recursos</a>
         <a href="about.html">Sobre el proyecto</a>
         <a href="about.html#contribuir">Cómo contribuir</a>
@@ -172,13 +434,14 @@
           rel="noopener noreferrer"
         >
           Programas oficiales del MEP
-          <span class="sr-only">(se abre en una pestaña nueva)</span>
         </a>
-      </div>
+      </nav>
     </div>
 
     <div class="container footer-bottom">
-      <p>© <span id="current-year"></span> English Quest CR. Licencia MIT.</p>
+      <p>
+        © <span id="current-year"></span> English Quest CR. Licencia MIT.
+      </p>
       <a href="#main-content">Volver arriba ↑</a>
     </div>
   </footer>

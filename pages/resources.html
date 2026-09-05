@@ -3,21 +3,287 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Próximamente | English Quest CR</title>
+
+  <meta
+    name="description"
+    content="Recursos, simulacros y estrategias para aprender inglés en English Quest CR."
+  >
+
+  <title>Recursos | English Quest CR</title>
+
   <link rel="stylesheet" href="../assets/css/styles.css">
+  <script src="../assets/js/app.js" defer></script>
+
+  <style>
+    .resources-page {
+      padding: 2rem 0 4rem;
+    }
+
+    .resources-hero {
+      max-width: 780px;
+      margin-bottom: 2rem;
+    }
+
+    .resources-hero h1 {
+      margin: 0;
+      color: var(--text);
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      line-height: 1.05;
+    }
+
+    .resources-hero p {
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.75;
+    }
+
+    .resources-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.25rem;
+    }
+
+    .resource-card {
+      display: flex;
+      flex-direction: column;
+      min-height: 260px;
+      padding: 1.6rem;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .resource-card.is-featured {
+      border-color: rgba(89, 242, 196, 0.5);
+      background:
+        linear-gradient(
+          135deg,
+          rgba(89, 242, 196, 0.12),
+          rgba(255, 255, 255, 0.03)
+        );
+    }
+
+    .resource-tag {
+      display: inline-flex;
+      align-self: flex-start;
+      margin-bottom: 0.9rem;
+      padding: 0.35rem 0.7rem;
+      border: 1px solid rgba(89, 242, 196, 0.45);
+      border-radius: 999px;
+      color: var(--mint);
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .resource-card h2 {
+      margin: 0;
+      color: var(--text);
+      font-size: 1.45rem;
+    }
+
+    .resource-card p {
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .resource-card .button {
+      align-self: flex-start;
+      margin-top: auto;
+    }
+
+    .study-tips {
+      margin-top: 2rem;
+      padding: clamp(1.25rem, 3vw, 2rem);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .study-tips h2 {
+      margin-top: 0;
+      color: var(--text);
+    }
+
+    .study-tips ul {
+      margin-bottom: 0;
+      padding-left: 1.3rem;
+      color: var(--muted);
+      line-height: 1.9;
+    }
+
+    @media (max-width: 720px) {
+      .resources-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
+
 <body>
-  <main class="section">
-    <div class="container">
-      <p class="eyebrow">🚧 En desarrollo</p>
-      <h1>Esta sección estará disponible pronto.</h1>
-      <p class="hero-description">
-        Estamos construyendo esta parte de English Quest CR para la próxima fase.
-      </p>
-      <a class="button button-primary" href="../index.html">
-        ← Volver al inicio
+  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="../index.html" aria-label="English Quest CR, inicio">
+        <span class="brand-mark" aria-hidden="true">EQ</span>
+        <span>
+          <strong>English Quest CR</strong>
+          <small>Tu ruta de inglés</small>
+        </span>
       </a>
+
+      <button
+        class="menu-toggle"
+        type="button"
+        data-menu-toggle
+        aria-expanded="false"
+        aria-controls="primary-navigation"
+      >
+        <span class="sr-only">Abrir menú</span>
+        <span aria-hidden="true">☰</span>
+      </button>
+
+      <nav id="primary-navigation" class="primary-navigation" data-navigation>
+        <a href="../index.html">Inicio</a>
+        <a href="levels.html">Rutas</a>
+        <a href="challenge.html">Retos</a>
+        <a href="progress.html">Mi progreso</a>
+        <a href="resources.html" aria-current="page">Recursos</a>
+        <a href="about.html">Sobre el proyecto</a>
+      </nav>
+
+      <button
+        class="contrast-toggle"
+        type="button"
+        data-contrast-toggle
+        aria-pressed="false"
+      >
+        Alto contraste
+      </button>
+    </div>
+  </header>
+
+  <main id="main-content" class="resources-page">
+    <div class="container">
+      <section class="resources-hero" aria-labelledby="resources-title">
+        <p class="eyebrow">Herramientas de práctica</p>
+
+        <h1 id="resources-title">Recursos para avanzar con seguridad</h1>
+
+        <p>
+          Practicá estrategias de comprensión, resolvé simulacros originales y
+          preparate para usar el inglés en contextos académicos y cotidianos.
+        </p>
+      </section>
+
+      <section class="resources-grid" aria-label="Recursos disponibles">
+        <article class="resource-card is-featured">
+          <span class="resource-tag">Undécimo · B1</span>
+
+          <h2>Simulacro Reading B1</h2>
+
+          <p>
+            Tres lecturas originales y 15 preguntas sobre idea principal,
+            detalles, inferencias y vocabulario en contexto.
+          </p>
+
+          <a class="button button-primary" href="mock-exam.html">
+            Iniciar Reading →
+          </a>
+        </article>
+
+        <article class="resource-card is-featured">
+          <span class="resource-tag">Undécimo · B1</span>
+
+          <h2>Simulacro Listening B1</h2>
+
+          <p>
+            Tres audios y 15 preguntas para practicar ideas principales,
+            instrucciones, lugares, fechas, horarios y detalles.
+          </p>
+
+          <a class="button button-primary" href="listening-exam.html">
+            Iniciar Listening →
+          </a>
+        </article>
+
+        <article class="resource-card">
+          <span class="resource-tag">Estrategias</span>
+
+          <h2>Lectura eficiente</h2>
+
+          <p>
+            Leé primero la pregunta, encontrá palabras clave y buscá en el texto
+            solo la información necesaria antes de escoger una respuesta.
+          </p>
+
+          <a class="button button-secondary" href="mission.html?mission=eleventh-mission-13">
+            Practicar estrategias →
+          </a>
+        </article>
+
+        <article class="resource-card">
+          <span class="resource-tag">Estrategias</span>
+
+          <h2>Listening paso a paso</h2>
+
+          <p>
+            Antes de escuchar, revisá las preguntas. Durante el audio, buscá
+            nombres, números, lugares, acciones y palabras que se repiten.
+          </p>
+
+          <a class="button button-secondary" href="listening-exam.html">
+            Practicar listening →
+          </a>
+        </article>
+      </section>
+
+      <section class="study-tips" aria-labelledby="tips-title">
+        <h2 id="tips-title">Recomendaciones para estudiar</h2>
+
+        <ul>
+          <li>Practicá entre 15 y 25 minutos al día en lugar de estudiar todo en una sola sesión larga.</li>
+          <li>Cuando leás, subrayá palabras clave antes de responder.</li>
+          <li>En listening, escuchá primero la idea general y luego los detalles específicos.</li>
+          <li>Revisá los errores: entender por qué una respuesta es incorrecta también es parte del aprendizaje.</li>
+          <li>Usá Mi progreso para mantener una racha y completar tus misiones en orden.</li>
+        </ul>
+      </section>
     </div>
   </main>
+
+  <footer class="site-footer">
+    <div class="container footer-top">
+      <div>
+        <a class="brand" href="../index.html">
+          <span class="brand-mark" aria-hidden="true">EQ</span>
+          <span>
+            <strong>English Quest CR</strong>
+            <small>Tu ruta de inglés</small>
+          </span>
+        </a>
+
+        <p class="footer-copy">
+          Curso gratuito de inglés para estudiantes de secundaria en Costa Rica.
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <a href="levels.html">Rutas</a>
+        <a href="challenge.html">Retos</a>
+        <a href="progress.html">Mi progreso</a>
+        <a href="about.html">Sobre el proyecto</a>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>© <span id="current-year"></span> English Quest CR. Licencia MIT.</p>
+      <a href="#main-content">Volver arriba ↑</a>
+    </div>
+  </footer>
 </body>
 </html>

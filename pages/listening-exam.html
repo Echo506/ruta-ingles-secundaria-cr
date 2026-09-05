@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="description"
+    content="Simulacro de comprensión auditiva B1 para Undécimo año."
+  >
+
+  <title>Simulacro Listening B1 | English Quest CR</title>
+
+  <link rel="stylesheet" href="../assets/css/styles.css">
+
+  <script src="../assets/js/app.js" defer></script>
+
+  <style>
+    .listening-page {
+      padding: 2rem 0 4rem;
+    }
+
+    .listening-hero {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1.25rem;
+      align-items: start;
+      margin-bottom: 1.5rem;
+    }
+
+    .listening-label {
+      display: inline-flex;
+      margin-bottom: 0.85rem;
+      padding: 0.38rem 0.75rem;
+      border: 1px solid rgba(89, 242, 196, 0.45);
+      border-radius: 999px;
+      color: var(--mint);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .listening-title {
+      max-width: 760px;
+      margin: 0;
+      color: var(--text);
+      font-size: clamp(2rem, 5vw, 3.6rem);
+      line-height: 1.05;
+    }
+
+    .listening-intro {
+      max-width: 720px;
+      margin: 1rem 0 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    .listening-timer {
+      min-width: 140px;
+      padding: 1rem;
+      border: 1px solid rgba(89, 242, 196, 0.28);
+      border-radius: 18px;
+      background: rgba(89, 242, 196, 0.08);
+      text-align: center;
+    }
+
+    .listening-timer-label {
+      display: block;
+      margin-bottom: 0.3rem;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .listening-timer-time {
+      color: var(--mint);
+      font-size: 2rem;
+      font-variant-numeric: tabular-nums;
+      font-weight: 900;
+    }
+
+    .listening-timer.is-warning {
+      border-color: rgba(255, 184, 77, 0.7);
+      background: rgba(255, 184, 77, 0.12);
+    }
+
+    .listening-timer.is-warning .listening-timer-time {
+      color: #ffb84d;
+    }
+
+    .listening-timer.is-finished {
+      border-color: rgba(255, 104, 104, 0.7);
+      background: rgba(255, 104, 104, 0.12);
+    }
+
+    .listening-timer.is-finished .listening-timer-time {
+      color: #ff6868;
+    }
+
+    .listening-instructions,
+    .audio-card,
+    .listening-result {
+      margin-bottom: 1.5rem;
+      padding: clamp(1.25rem, 3vw, 2rem);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .listening-instructions h2,
+    .audio-card h2 {
+      margin-top: 0;
+      color: var(--text);
+    }
+
+    .listening-instructions p,
+    .listening-instructions li,
+    .audio-card p {
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .listening-instructions ul {
+      margin-bottom: 0;
+      padding-left: 1.25rem;
+    }
+
+    .audio-card {
+      scroll-margin-top: 1rem;
+    }
+
+    .audio-label {
+      display: inline-block;
+      margin-bottom: 0.8rem;
+      color: var(--mint);
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .audio-player-box {
+      margin: 1.1rem 0 1.4rem;
+      padding: 1rem;
+      border: 1px solid rgba(89, 242, 196, 0.2);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .audio-player-box p {
+      margin-top: 0;
+      font-size: 0.94rem;
+    }
+
+    .audio-player-box audio {
+      width: 100%;
+      margin-top: 0.4rem;
+    }
+
+    .audio-status {
+      min-height: 1.25rem;
+      margin: 0.7rem 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .audio-status.is-error {
+      color: #ff8d8d;
+    }
+
+    .listening-question {
+      margin-top: 1.4rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .listening-question legend {
+      color: var(--text);
+      font-weight: 800;
+      line-height: 1.5;
+    }
+
+    .listening-option {
+      display: flex;
+      gap: 0.7rem;
+      align-items: flex-start;
+      margin-top: 0.75rem;
+      padding: 0.85rem 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      color: var(--muted);
+      cursor: pointer;
+      transition: border-color 160ms ease, background 160ms ease;
+    }
+
+    .listening-option:hover {
+      border-color: rgba(89, 242, 196, 0.5);
+      background: rgba(89, 242, 196, 0.06);
+    }
+
+    .listening-option input {
+      margin-top: 0.25rem;
+      accent-color: var(--mint);
+    }
+
+    .listening-submit-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      margin-top: 1.5rem;
+    }
+
+    .listening-submit-row p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .listening-result {
+      display: none;
+    }
+
+    .listening-result.is-visible {
+      display: block;
+    }
+
+    .listening-result.is-success {
+      border-color: rgba(89, 242, 196, 0.5);
+    }
+
+    .listening-result.is-warning {
+      border-color: rgba(255, 184, 77, 0.7);
+    }
+
+    .listening-result.is-error {
+      border-color: rgba(255, 104, 104, 0.7);
+    }
+
+    .listening-result h2 {
+      margin-top: 0;
+    }
+
+    .listening-result p {
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .listening-score {
+      color: var(--mint);
+      font-size: clamp(2.4rem, 7vw, 4.5rem);
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .listening-feedback-list {
+      margin: 1rem 0 0;
+      padding-left: 1.25rem;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .listening-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      margin-top: 1.35rem;
+    }
+
+    .listening-actions a,
+    .listening-actions button {
+      text-decoration: none;
+    }
+
+    @media (max-width: 700px) {
+      .listening-hero {
+        grid-template-columns: 1fr;
+      }
+
+      .listening-timer {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="../index.html" aria-label="English Quest CR, inicio">
+        <span class="brand-mark" aria-hidden="true">EQ</span>
+        <span>
+          <strong>English Quest CR</strong>
+          <small>Tu ruta de inglés</small>
+        </span>
+      </a>
+
+      <button
+        class="menu-toggle"
+        type="button"
+        data-menu-toggle
+        aria-expanded="false"
+        aria-controls="primary-navigation"
+      >
+        <span class="sr-only">Abrir menú</span>
+        <span aria-hidden="true">☰</span>
+      </button>
+
+      <nav id="primary-navigation" class="primary-navigation" data-navigation>
+        <a href="../index.html">Inicio</a>
+        <a href="levels.html">Rutas</a>
+        <a href="challenge.html">Retos</a>
+        <a href="progress.html">Mi progreso</a>
+        <a href="resources.html">Recursos</a>
+        <a href="about.html">Sobre el proyecto</a>
+      </nav>
+
+      <button
+        class="contrast-toggle"
+        type="button"
+        data-contrast-toggle
+        aria-pressed="false"
+      >
+        Alto contraste
+      </button>
+    </div>
+  </header>
+
+  <main id="main-content" class="listening-page">
+    <div class="container">
+      <section class="listening-hero" aria-labelledby="listening-title">
+        <div>
+          <span class="listening-label">Undécimo · Listening B1</span>
+
+          <h1 id="listening-title" class="listening-title">
+            Simulacro de comprensión auditiva
+          </h1>
+
+          <p class="listening-intro">
+            Escuchá los tres audios y respondé las 15 preguntas. Prestá atención
+            a la idea principal, los detalles, los horarios, las instrucciones y
+            el significado de palabras en contexto.
+          </p>
+        </div>
+
+        <div class="listening-timer" id="listening-timer" aria-live="polite">
+          <span class="listening-timer-label">Tiempo restante</span>
+          <strong class="listening-timer-time" id="timer-display">20:00</strong>
+        </div>
+      </section>
+
+      <section class="listening-instructions" aria-labelledby="instructions-title">
+        <h2 id="instructions-title">Instrucciones</h2>
+
+        <ul>
+          <li>Tenés 20 minutos para completar el simulacro.</li>
+          <li>Podés escuchar cada audio hasta dos veces.</li>
+          <li>No hay transcripción durante el examen.</li>
+          <li>Seleccioná una sola respuesta por pregunta.</li>
+          <li>Al terminar, presioná “Finalizar simulacro”.</li>
+          <li>Este es material original de práctica y no una prueba oficial.</li>
+        </ul>
+      </section>
+
+      <form id="listening-exam-form" novalidate>
+        <section class="audio-card" aria-labelledby="audio-1-title">
+          <span class="audio-label">Audio 1</span>
+          <h2 id="audio-1-title">Community project announcement</h2>
+
+          <div class="audio-player-box">
+            <p>
+              Escuchá el anuncio. Podés reproducirlo un máximo de dos veces.
+            </p>
+
+            <audio
+              id="audio-1"
+              controls
+              preload="metadata"
+              data-max-plays="2"
+            >
+              <source src="../assets/audio/listening-b1-1.mp3" type="audio/mpeg">
+              Tu navegador no puede reproducir este archivo de audio.
+            </audio>
+
+            <p id="audio-1-status" class="audio-status" aria-live="polite">
+              Reproducciones disponibles: 2
+            </p>
+          </div>
+
+          <fieldset class="listening-question">
+            <legend>1. What is the name of the community project?</legend>
+
+            <label class="listening-option">
+              <input type="radio" name="q1" value="a">
+              <span>Clean Spaces</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q1" value="b">
+              <span>Green Technology</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q1" value="c">
+              <span>Future Careers</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q1" value="d">
+              <span>Healthy Schools</span>
+            </label>
+          </fieldset>
+
+          <fieldset class="listening-question">
+            <legend>2. Where will the project take place?</legend>
+
+            <label class="listening-option">
+              <input type="radio" name="q2" value="a">
+              <span>Near the sports center park</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q2" value="b">
+              <span>At the local technology center</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q2" value="c">
+              <span>Inside the school library</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q2" value="d">
+              <span>At a forest reserve</span>
+            </label>
+          </fieldset>
+
+          <fieldset class="listening-question">
+            <legend>3. Which activity is NOT mentioned in the announcement?</legend>
+
+            <label class="listening-option">
+              <input type="radio" name="q3" value="a">
+              <span>Collecting recyclable materials</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q3" value="b">
+              <span>Painting damaged benches</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q3" value="c">
+              <span>Planting native trees</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q3" value="d">
+              <span>Building a new sports center</span>
+            </label>
+          </fieldset>
+
+          <fieldset class="listening-question">
+            <legend>4. When should students register?</legend>
+
+            <label class="listening-option">
+              <input type="radio" name="q4" value="a">
+              <span>Before Friday</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q4" value="b">
+              <span>On Saturday afternoon</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q4" value="c">
+              <span>Next month</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q4" value="d">
+              <span>After the activity ends</span>
+            </label>
+          </fieldset>
+
+          <fieldset class="listening-question">
+            <legend>5. What time will the activity finish?</legend>
+
+            <label class="listening-option">
+              <input type="radio" name="q5" value="a">
+              <span>At eight in the morning</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q5" value="b">
+              <span>At noon</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q5" value="c">
+              <span>At three in the afternoon</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q5" value="d">
+              <span>At midnight</span>
+            </label>
+          </fieldset>
+        </section>
+
+        <section class="audio-card" aria-labelledby="audio-2-title">
+          <span class="audio-label">Audio 2</span>
+          <h2 id="audio-2-title">Digital design course</h2>
+
+          <div class="audio-player-box">
+            <p>
+              Escuchá la información sobre el curso. Podés reproducirla un máximo
+              de dos veces.
+            </p>
+
+            <audio
+              id="audio-2"
+              controls
+              preload="metadata"
+              data-max-plays="2"
+            >
+              <source src="../assets/audio/listening-b1-2.mp3" type="audio/mpeg">
+              Tu navegador no puede reproducir este archivo de audio.
+            </audio>
+
+            <p id="audio-2-status" class="audio-status" aria-live="polite">
+              Reproducciones disponibles: 2
+            </p>
+          </div>
+
+          <fieldset class="listening-question">
+            <legend>6. Who is the course for?</legend>
+
+            <label class="listening-option">
+              <input type="radio" name="q6" value="a">
+              <span>Eleventh-grade students</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q6" value="b">
+              <span>Primary school teachers</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q6" value="c">
+              <span>Parents of young children</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q6" value="d">
+              <span>Professional designers only</span>
+            </label>
+          </fieldset>
+
+          <fieldset class="listening-question">
+            <legend>7. What must students do before June fifteenth?</legend>
+
+            <label class="listening-option">
+              <input type="radio" name="q7" value="a">
+              <span>Complete an online application</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q7" value="b">
+              <span>Pay for the course</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q7" value="c">
+              <span>Buy a new laptop</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q7" value="d">
+              <span>Travel to another city</span>
+            </label>
+          </fieldset>
+
+          <fieldset class="listening-question">
+            <legend>8. What will participants create?</legend>
+
+            <label class="listening-option">
+              <input type="radio" name="q8" value="a">
+              <span>A small portfolio</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q8" value="b">
+              <span>A new school building</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q8" value="c">
+              <span>A sports competition</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q8" value="d">
+              <span>A travel guide</span>
+            </label>
+          </fieldset>
+
+          <fieldset class="listening-question">
+            <legend>9. When will the course take place?</legend>
+
+            <label class="listening-option">
+              <input type="radio" name="q9" value="a">
+              <span>Monday to Thursday, 9:00 a.m. to 12:00 p.m.</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q9" value="b">
+              <span>Saturday only, 8:00 a.m. to noon</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q9" value="c">
+              <span>Monday to Friday, 1:00 p.m. to 5:00 p.m.</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q9" value="d">
+              <span>Every night, 6:00 p.m. to 8:00 p.m.</span>
+            </label>
+          </fieldset>
+
+          <fieldset class="listening-question">
+            <legend>10. Why should interested students apply early?</legend>
+
+            <label class="listening-option">
+              <input type="radio" name="q10" value="a">
+              <span>Places are limited</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q10" value="b">
+              <span>The course is very expensive</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q10" value="c">
+              <span>They need to bring a teacher</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q10" value="d">
+              <span>The center closes in the afternoon</span>
+            </label>
+          </fieldset>
+        </section>
+
+        <section class="audio-card" aria-labelledby="audio-3-title">
+          <span class="audio-label">Audio 3</span>
+          <h2 id="audio-3-title">A travel experience</h2>
+
+          <div class="audio-player-box">
+            <p>
+              Escuchá la experiencia de viaje. Podés reproducirla un máximo de
+              dos veces.
+            </p>
+
+            <audio
+              id="audio-3"
+              controls
+              preload="metadata"
+              data-max-plays="2"
+            >
+              <source src="../assets/audio/listening-b1-3.mp3" type="audio/mpeg">
+              Tu navegador no puede reproducir este archivo de audio.
+            </audio>
+
+            <p id="audio-3-status" class="audio-status" aria-live="polite">
+              Reproducciones disponibles: 2
+            </p>
+          </div>
+
+          <fieldset class="listening-question">
+            <legend>11. When did the speaker visit the northern region?</legend>
+
+            <label class="listening-option">
+              <input type="radio" name="q11" value="a">
+              <span>Last July</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q11" value="b">
+              <span>Last December</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q11" value="c">
+              <span>Next month</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q11" value="d">
+              <span>Every weekend</span>
+            </label>
+          </fieldset>
+
+          <fieldset class="listening-question">
+            <legend>12. Where did the family stay?</legend>
+
+            <label class="listening-option">
+              <input type="radio" name="q12" value="a">
+              <span>In a small lodge near a forest reserve</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q12" value="b">
+              <span>In a hotel near the airport</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q12" value="c">
+              <span>At a school in San José</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q12" value="d">
+              <span>In a tent on the beach</span>
+            </label>
+          </fieldset>
+
+          <fieldset class="listening-question">
+            <legend>13. What did they see on the second day?</legend>
+
+            <label class="listening-option">
+              <input type="radio" name="q13" value="a">
+              <span>Birds, monkeys, and a waterfall</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q13" value="b">
+              <span>A technology center and a museum</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q13" value="c">
+              <span>A sports center and a library</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q13" value="d">
+              <span>Only a large city</span>
+            </label>
+          </fieldset>
+
+          <fieldset class="listening-question">
+            <legend>14. How was the weather during the trip?</legend>
+
+            <label class="listening-option">
+              <input type="radio" name="q14" value="a">
+              <span>Rainy</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q14" value="b">
+              <span>Very snowy</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q14" value="c">
+              <span>Extremely hot every day</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q14" value="d">
+              <span>Windy with no clouds</span>
+            </label>
+          </fieldset>
+
+          <fieldset class="listening-question">
+            <legend>15. What did the experience make the speaker appreciate?</legend>
+
+            <label class="listening-option">
+              <input type="radio" name="q15" value="a">
+              <span>The importance of protecting natural habitats</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q15" value="b">
+              <span>The importance of buying more devices</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q15" value="c">
+              <span>The importance of studying only indoors</span>
+            </label>
+
+            <label class="listening-option">
+              <input type="radio" name="q15" value="d">
+              <span>The importance of traveling by plane</span>
+            </label>
+          </fieldset>
+        </section>
+
+        <div class="listening-submit-row">
+          <button class="button button-primary" type="submit">
+            Finalizar simulacro
+          </button>
+
+          <p>Respondé las 15 preguntas antes de finalizar.</p>
+        </div>
+      </form>
+
+      <section
+        id="listening-result"
+        class="listening-result"
+        tabindex="-1"
+        aria-live="polite"
+      ></section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-top">
+      <div>
+        <a class="brand" href="../index.html">
+          <span class="brand-mark" aria-hidden="true">EQ</span>
+          <span>
+            <strong>English Quest CR</strong>
+            <small>Tu ruta de inglés</small>
+          </span>
+        </a>
+
+        <p class="footer-copy">
+          Curso gratuito de inglés para estudiantes de secundaria en Costa Rica.
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <a href="levels.html">Rutas</a>
+        <a href="challenge.html">Retos</a>
+        <a href="progress.html">Mi progreso</a>
+        <a href="resources.html">Recursos</a>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>© <span id="current-year"></span> English Quest CR. Licencia MIT.</p>
+      <a href="#main-content">Volver arriba ↑</a>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.querySelector("#listening-exam-form");
+      const result = document.querySelector("#listening-result");
+      const timerBox = document.querySelector("#listening-timer");
+      const timerDisplay = document.querySelector("#timer-display");
+
+      const answerKey = {
+        q1: "a",
+        q2: "a",
+        q3: "d",
+        q4: "a",
+        q5: "b",
+        q6: "a",
+        q7: "a",
+        q8: "a",
+        q9: "a",
+        q10: "a",
+        q11: "a",
+        q12: "a",
+        q13: "a",
+        q14: "a",
+        q15: "a"
+      };
+
+      const totalQuestions = Object.keys(answerKey).length;
+      let remainingSeconds = 20 * 60;
+      let examFinished = false;
+
+      function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const remainder = seconds % 60;
+
+        return `${String(minutes).padStart(2, "0")}:${String(
+          remainder
+        ).padStart(2, "0")}`;
+      }
+
+      function updateTimer() {
+        timerDisplay.textContent = formatTime(remainingSeconds);
+
+        if (remainingSeconds <= 5 * 60 && remainingSeconds > 0) {
+          timerBox.classList.add("is-warning");
+        }
+
+        if (remainingSeconds <= 0) {
+          timerBox.classList.remove("is-warning");
+          timerBox.classList.add("is-finished");
+          timerDisplay.textContent = "00:00";
+        }
+      }
+
+      function stopAllAudio() {
+        document.querySelectorAll("audio").forEach((audio) => {
+          audio.pause();
+        });
+      }
+
+      function disableAllAudio() {
+        document.querySelectorAll("audio").forEach((audio) => {
+          audio.pause();
+          audio.controls = false;
+          audio.setAttribute("aria-disabled", "true");
+        });
+      }
+
+      function setupAudioLimit(audio) {
+        const maxPlays = Number(audio.dataset.maxPlays || 2);
+        const status = document.querySelector(`#${audio.id}-status`);
+        let playsUsed = 0;
+        let countedCurrentPlay = false;
+
+        function updateStatus(message, className = "") {
+          if (!status) return;
+
+          status.textContent = message;
+          status.className = `audio-status ${className}`.trim();
+        }
+
+        audio.addEventListener("play", () => {
+          if (examFinished) {
+            audio.pause();
+            return;
+          }
+
+          document.querySelectorAll("audio").forEach((otherAudio) => {
+            if (otherAudio !== audio) {
+              otherAudio.pause();
+            }
+          });
+
+          if (playsUsed >= maxPlays && audio.currentTime === 0) {
+            audio.pause();
+            updateStatus(
+              "Ya usaste las dos reproducciones de este audio.",
+              "is-error"
+            );
+            return;
+          }
+
+          if (audio.currentTime === 0 && !countedCurrentPlay) {
+            playsUsed += 1;
+            countedCurrentPlay = true;
+
+            const remaining = maxPlays - playsUsed;
+
+            updateStatus(
+              remaining > 0
+                ? `Reproducciones disponibles: ${remaining}`
+                : "Última reproducción en curso."
+            );
+          }
+        });
+
+        audio.addEventListener("ended", () => {
+          countedCurrentPlay = false;
+
+          if (playsUsed >= maxPlays) {
+            audio.controls = false;
+            updateStatus(
+              "Ya usaste las dos reproducciones de este audio.",
+              "is-error"
+            );
+          }
+        });
+
+        audio.addEventListener("error", () => {
+          updateStatus(
+            `No se encontró el archivo ../assets/audio/${audio.id.replace(
+              "audio-",
+              "listening-b1-"
+            )}.mp3. Revisá nombre y ubicación.`,
+            "is-error"
+          );
+        });
+      }
+
+      document.querySelectorAll("audio").forEach(setupAudioLimit);
+
+      function getFeedback(score) {
+        const percentage = Math.round((score / totalQuestions) * 100);
+
+        if (percentage >= 80) {
+          return {
+            title: "¡Excelente comprensión auditiva!",
+            message:
+              "Identificaste con precisión ideas principales, detalles, horarios e información específica en los audios.",
+            className: "is-success"
+          };
+        }
+
+        if (percentage >= 60) {
+          return {
+            title: "¡Buen trabajo!",
+            message:
+              "Tenés una buena base de listening. Practicá identificar palabras clave, fechas, horarios e instrucciones antes de seleccionar una respuesta.",
+            className: "is-warning"
+          };
+        }
+
+        return {
+          title: "Seguí practicando",
+          message:
+            "Escuchá audios cortos con frecuencia. Primero buscá la idea general y luego prestá atención a nombres, lugares, números y acciones.",
+          className: "is-error"
+        };
+      }
+
+      function awardExperience(score, isTimeUp) {
+        if (isTimeUp || score < 9) {
+          return;
+        }
+
+        try {
+          const storageKey = "englishQuestCRProgress";
+          const today = new Date().toISOString().slice(0, 10);
+          const saved = localStorage.getItem(storageKey);
+          const progress = saved ? JSON.parse(saved) : {};
+
+          if (progress.lastListeningExamDate !== today) {
+            progress.xp = Number(progress.xp || 0) + 150;
+            progress.lastListeningExamDate = today;
+
+            localStorage.setItem(storageKey, JSON.stringify(progress));
+          }
+        } catch {
+          // El resultado continúa aunque el navegador no permita localStorage.
+        }
+      }
+
+      function finishExam(isTimeUp = false) {
+        if (examFinished) {
+          return;
+        }
+
+        examFinished = true;
+        clearInterval(timerInterval);
+        stopAllAudio();
+        disableAllAudio();
+
+        let score = 0;
+        const unanswered = [];
+
+        Object.entries(answerKey).forEach(([question, correctAnswer]) => {
+          const selected = form.querySelector(
+            `input[name="${question}"]:checked`
+          );
+
+          if (!selected) {
+            unanswered.push(question);
+            return;
+          }
+
+          if (selected.value === correctAnswer) {
+            score += 1;
+          }
+        });
+
+        form.querySelectorAll("input").forEach((input) => {
+          input.disabled = true;
+        });
+
+        const percentage = Math.round((score / totalQuestions) * 100);
+        const feedback = getFeedback(score);
+
+        timerBox.classList.remove("is-warning");
+
+        if (isTimeUp) {
+          timerBox.classList.add("is-finished");
+        }
+
+        awardExperience(score, isTimeUp);
+
+        result.className = `listening-result is-visible ${feedback.className}`;
+
+        result.innerHTML = `
+          <h2>${isTimeUp ? "Tiempo finalizado" : feedback.title}</h2>
+          <div class="listening-score">${score} / ${totalQuestions}</div>
+          <p><strong>Resultado: ${percentage}%</strong></p>
+          <p>${feedback.message}</p>
+          ${
+            unanswered.length > 0
+              ? `<p>Preguntas sin responder: ${unanswered.length}.</p>`
+              : ""
+          }
+          ${
+            !isTimeUp && score >= 9
+              ? "<p>Ganaste 150 XP. Los XP se otorgan una vez por día.</p>"
+              : ""
+          }
+          <ul class="listening-feedback-list">
+            <li>Escuchá primero la idea general: ¿quién habla y sobre qué?</li>
+            <li>Buscá detalles: fechas, horarios, lugares, cantidades y acciones.</li>
+            <li>Leé las preguntas antes de reproducir el audio.</li>
+            <li>No te detengás en una palabra desconocida; usá el contexto.</li>
+          </ul>
+          <div class="listening-actions">
+            <a class="button button-primary" href="progress.html">
+              Ver mi progreso
+            </a>
+            <button class="button button-secondary" type="button" id="restart-exam">
+              Intentar de nuevo
+            </button>
+          </div>
+        `;
+
+        result.focus();
+
+        const restartButton = document.querySelector("#restart-exam");
+
+        if (restartButton) {
+          restartButton.addEventListener("click", () => {
+            window.location.reload();
+          });
+        }
+      }
+
+      const timerInterval = window.setInterval(() => {
+        if (examFinished) {
+          return;
+        }
+
+        remainingSeconds -= 1;
+        updateTimer();
+
+        if (remainingSeconds <= 0) {
+          finishExam(true);
+        }
+      }, 1000);
+
+      updateTimer();
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const unanswered = Object.keys(answerKey).filter((question) => {
+          return !form.querySelector(`input[name="${question}"]:checked`);
+        });
+
+        if (unanswered.length > 0) {
+          result.className = "listening-result is-visible is-warning";
+
+          result.innerHTML = `
+            <h2>Faltan respuestas</h2>
+            <p>
+              Todavía tenés ${unanswered.length} pregunta${
+                unanswered.length === 1 ? "" : "s"
+              } sin responder. Completalas antes de finalizar.
+            </p>
+          `;
+
+          result.focus();
+
+          const firstUnanswered = document.querySelector(
+            `input[name="${unanswered[0]}"]`
+          );
+
+          if (firstUnanswered) {
+            firstUnanswered.closest(".listening-question").scrollIntoView({
+              behavior: "smooth",
+              block: "center"
+            });
+          }
+
+          return;
+        }
+
+        finishExam(false);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -10,18 +10,29 @@
   <title>Mi progreso | English Quest CR</title>
 
   <link rel="stylesheet" href="../assets/css/styles.css">
+
   <script src="../data/seventh-missions.js" defer></script>
   <script src="../data/eighth-missions.js" defer></script>
+  <script src="../data/ninth-missions.js" defer></script>
+  <script src="../data/tenth-missions.js" defer></script>
+  <script src="../data/eleventh-missions.js" defer></script>
   <script src="../assets/js/app.js" defer></script>
-  </head>
+</head>
 
 <body>
-  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+  <a class="skip-link" href="#main-content">
+    Saltar al contenido principal
+  </a>
 
   <header class="site-header">
     <div class="container header-content">
-      <a class="brand" href="../index.html" aria-label="English Quest CR, página de inicio">
+      <a
+        class="brand"
+        href="../index.html"
+        aria-label="English Quest CR, página de inicio"
+      >
         <span class="brand-mark" aria-hidden="true">EQ</span>
+
         <span>
           <strong>English Quest CR</strong>
           <small>Tu ruta de inglés</small>
@@ -48,7 +59,15 @@
         <a class="nav-link" href="../index.html">Inicio</a>
         <a class="nav-link" href="levels.html">Rutas</a>
         <a class="nav-link" href="challenge.html">Retos</a>
-        <a class="nav-link is-active" href="progress.html" aria-current="page">Mi progreso</a>
+
+        <a
+          class="nav-link is-active"
+          href="progress.html"
+          aria-current="page"
+        >
+          Mi progreso
+        </a>
+
         <a class="nav-link" href="resources.html">Recursos</a>
         <a class="nav-link" href="about.html">Sobre el proyecto</a>
       </nav>
@@ -91,6 +110,7 @@
               <span aria-hidden="true">📊</span>
               Resumen general
             </p>
+
             <h2 id="summary-title">Así va tu aventura.</h2>
           </div>
         </div>
@@ -116,14 +136,22 @@
 
           <article class="progress-stat-card">
             <span class="progress-stat-icon" aria-hidden="true">🧭</span>
-            <p class="progress-stat-value" id="progress-percentage-page">0%</p>
+            <p
+              class="progress-stat-value"
+              id="progress-percentage-page"
+            >
+              0%
+            </p>
             <p class="progress-stat-label">Progreso general</p>
           </article>
         </div>
       </div>
     </section>
 
-    <section class="section level-section" aria-labelledby="missions-title">
+    <section
+      class="section level-section"
+      aria-labelledby="missions-title"
+    >
       <div class="container">
         <div class="section-heading">
           <div>
@@ -131,6 +159,7 @@
               <span aria-hidden="true">🗺️</span>
               Ruta actual
             </p>
+
             <h2 id="missions-title">Misiones de Séptimo.</h2>
           </div>
 
@@ -140,42 +169,11 @@
           </a>
         </div>
 
+        <!-- app.js reemplaza este mensaje por las 48 misiones -->
         <div class="mission-progress-list">
-          <article class="mission-progress-item" id="mission-progress-1">
-            <span class="mission-progress-icon" aria-hidden="true">🌱</span>
-
-            <div class="mission-progress-copy">
-              <p class="mission-progress-label">Séptimo · Foundations</p>
-              <h3>Mission 1: Greetings & Personal Information</h3>
-              <p>Saludos, presentaciones e información personal.</p>
-            </div>
-
-            <span class="mission-status" id="mission-status-1">Disponible</span>
-          </article>
-
-          <article class="mission-progress-item is-locked" id="mission-progress-2">
-            <span class="mission-progress-icon" aria-hidden="true">🔒</span>
-
-            <div class="mission-progress-copy">
-              <p class="mission-progress-label">Séptimo · Foundations</p>
-              <h3>Mission 2: Family & Friends</h3>
-              <p>Próximamente: describí personas cercanas y relaciones.</p>
-            </div>
-
-            <span class="mission-status" id="mission-status-2">Bloqueada</span>
-          </article>
-
-          <article class="mission-progress-item is-locked" id="mission-progress-3">
-            <span class="mission-progress-icon" aria-hidden="true">🔒</span>
-
-            <div class="mission-progress-copy">
-              <p class="mission-progress-label">Séptimo · Foundations</p>
-              <h3>Mission 3: My Daily Routine</h3>
-              <p>Próximamente: hablá de hábitos y actividades diarias.</p>
-            </div>
-
-            <span class="mission-status" id="mission-status-3">Bloqueada</span>
-          </article>
+          <p class="loading-message">
+            Cargando tus misiones...
+          </p>
         </div>
       </div>
     </section>
@@ -188,7 +186,10 @@
               <span aria-hidden="true">🎖️</span>
               Tus insignias
             </p>
-            <h2 id="badges-title">Logros que acompañan tu avance.</h2>
+
+            <h2 id="badges-title">
+              Logros que acompañan tu avance.
+            </h2>
           </div>
         </div>
 
@@ -224,15 +225,20 @@
       </div>
     </section>
 
-    <section class="section diagnostic-section" aria-labelledby="continue-title">
+    <section
+      class="section diagnostic-section"
+      aria-labelledby="continue-title"
+    >
       <div class="container">
-        <div class="diagnostic-card">
+        <article class="diagnostic-card">
           <div>
             <p class="eyebrow">
               <span aria-hidden="true">🚀</span>
               Próximo paso
             </p>
+
             <h2 id="continue-title">Seguí sumando experiencia.</h2>
+
             <p>
               Completá las misiones de Séptimo o realizá el reto diario
               para seguir fortaleciendo tu inglés.
@@ -247,7 +253,7 @@
             Continuar aprendiendo
             <span aria-hidden="true">→</span>
           </a>
-        </div>
+        </article>
       </div>
     </section>
   </main>
@@ -257,6 +263,7 @@
       <div>
         <a class="brand footer-brand" href="../index.html">
           <span class="brand-mark" aria-hidden="true">EQ</span>
+
           <span>
             <strong>English Quest CR</strong>
             <small>Aprender también es avanzar.</small>
@@ -270,16 +277,19 @@
         </p>
       </div>
 
-      <div class="footer-links">
+      <nav class="footer-links" aria-label="Enlaces del pie de página">
         <a href="levels.html">Rutas</a>
         <a href="challenge.html">Retos</a>
         <a href="resources.html">Recursos</a>
         <a href="about.html">Sobre el proyecto</a>
-      </div>
+      </nav>
     </div>
 
     <div class="container footer-bottom">
-      <p>© <span id="current-year"></span> English Quest CR. Licencia MIT.</p>
+      <p>
+        © <span id="current-year"></span> English Quest CR. Licencia MIT.
+      </p>
+
       <a href="#main-content">Volver arriba ↑</a>
     </div>
   </footer>

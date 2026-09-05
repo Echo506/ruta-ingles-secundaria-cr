@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="description"
+    content="Simulacro de comprensión lectora B1 para Undécimo año."
+  >
+
+  <title>Simulacro Reading B1 | English Quest CR</title>
+
+  <link rel="stylesheet" href="../assets/css/styles.css">
+
+  <script src="../assets/js/app.js" defer></script>
+
+  <style>
+    .exam-page {
+      padding: 2rem 0 4rem;
+    }
+
+    .exam-hero {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1.25rem;
+      align-items: start;
+      margin-bottom: 1.5rem;
+    }
+
+    .exam-label {
+      display: inline-flex;
+      margin-bottom: 0.85rem;
+      padding: 0.38rem 0.75rem;
+      border: 1px solid rgba(89, 242, 196, 0.45);
+      border-radius: 999px;
+      color: var(--mint);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+    }
+
+    .exam-title {
+      max-width: 760px;
+      margin: 0;
+      color: var(--text);
+      font-size: clamp(2rem, 5vw, 3.6rem);
+      line-height: 1.05;
+    }
+
+    .exam-intro {
+      max-width: 720px;
+      margin: 1rem 0 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    .exam-timer {
+      min-width: 140px;
+      padding: 1rem;
+      border: 1px solid rgba(89, 242, 196, 0.28);
+      border-radius: 18px;
+      background: rgba(89, 242, 196, 0.08);
+      text-align: center;
+    }
+
+    .exam-timer-label {
+      display: block;
+      margin-bottom: 0.3rem;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .exam-timer-time {
+      color: var(--mint);
+      font-size: 2rem;
+      font-variant-numeric: tabular-nums;
+      font-weight: 900;
+    }
+
+    .exam-timer.is-warning {
+      border-color: rgba(255, 184, 77, 0.7);
+      background: rgba(255, 184, 77, 0.12);
+    }
+
+    .exam-timer.is-warning .exam-timer-time {
+      color: #ffb84d;
+    }
+
+    .exam-timer.is-finished {
+      border-color: rgba(255, 104, 104, 0.7);
+      background: rgba(255, 104, 104, 0.12);
+    }
+
+    .exam-timer.is-finished .exam-timer-time {
+      color: #ff6868;
+    }
+
+    .exam-instructions,
+    .reading-card,
+    .exam-result {
+      margin-bottom: 1.5rem;
+      padding: clamp(1.25rem, 3vw, 2rem);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .exam-instructions h2,
+    .reading-card h2 {
+      margin-top: 0;
+      color: var(--text);
+    }
+
+    .exam-instructions p,
+    .exam-instructions li,
+    .reading-card p {
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .exam-instructions ul {
+      margin-bottom: 0;
+      padding-left: 1.25rem;
+    }
+
+    .reading-card {
+      scroll-margin-top: 1rem;
+    }
+
+    .reading-label {
+      display: inline-block;
+      margin-bottom: 0.8rem;
+      color: var(--mint);
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .reading-passage {
+      margin: 1.25rem 0 1.5rem;
+      padding: 1.15rem;
+      border-left: 4px solid var(--mint);
+      border-radius: 0 14px 14px 0;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .reading-passage p {
+      color: var(--text);
+    }
+
+    .reading-passage p:last-child {
+      margin-bottom: 0;
+    }
+
+    .exam-question {
+      margin-top: 1.4rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .exam-question legend {
+      color: var(--text);
+      font-weight: 800;
+      line-height: 1.5;
+    }
+
+    .exam-option {
+      display: flex;
+      gap: 0.7rem;
+      align-items: flex-start;
+      margin-top: 0.75rem;
+      padding: 0.85rem 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      color: var(--muted);
+      cursor: pointer;
+      transition: border-color 160ms ease, background 160ms ease;
+    }
+
+    .exam-option:hover {
+      border-color: rgba(89, 242, 196, 0.5);
+      background: rgba(89, 242, 196, 0.06);
+    }
+
+    .exam-option input {
+      margin-top: 0.25rem;
+      accent-color: var(--mint);
+    }
+
+    .exam-submit-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      margin-top: 1.5rem;
+    }
+
+    .exam-submit-row p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .exam-result {
+      display: none;
+    }
+
+    .exam-result.is-visible {
+      display: block;
+    }
+
+    .exam-result.is-success {
+      border-color: rgba(89, 242, 196, 0.5);
+    }
+
+    .exam-result.is-warning {
+      border-color: rgba(255, 184, 77, 0.7);
+    }
+
+    .exam-result.is-error {
+      border-color: rgba(255, 104, 104, 0.7);
+    }
+
+    .exam-result h2 {
+      margin-top: 0;
+    }
+
+    .exam-result p {
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .exam-score {
+      color: var(--mint);
+      font-size: clamp(2.4rem, 7vw, 4.5rem);
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .exam-feedback-list {
+      margin: 1rem 0 0;
+      padding-left: 1.25rem;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .exam-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      margin-top: 1.35rem;
+    }
+
+    .exam-actions a,
+    .exam-actions button {
+      text-decoration: none;
+    }
+
+    @media (max-width: 700px) {
+      .exam-hero {
+        grid-template-columns: 1fr;
+      }
+
+      .exam-timer {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="../index.html" aria-label="English Quest CR, inicio">
+        <span class="brand-mark" aria-hidden="true">EQ</span>
+        <span>
+          <strong>English Quest CR</strong>
+          <small>Tu ruta de inglés</small>
+        </span>
+      </a>
+
+      <button
+        class="menu-toggle"
+        type="button"
+        data-menu-toggle
+        aria-expanded="false"
+        aria-controls="primary-navigation"
+      >
+        <span class="sr-only">Abrir menú</span>
+        <span aria-hidden="true">☰</span>
+      </button>
+
+      <nav id="primary-navigation" class="primary-navigation" data-navigation>
+        <a href="../index.html">Inicio</a>
+        <a href="levels.html">Rutas</a>
+        <a href="challenge.html">Retos</a>
+        <a href="progress.html">Mi progreso</a>
+        <a href="resources.html">Recursos</a>
+        <a href="about.html">Sobre el proyecto</a>
+      </nav>
+
+      <button
+        class="contrast-toggle"
+        type="button"
+        data-contrast-toggle
+        aria-pressed="false"
+      >
+        Alto contraste
+      </button>
+    </div>
+  </header>
+
+  <main id="main-content" class="exam-page">
+    <div class="container">
+      <section class="exam-hero" aria-labelledby="exam-title">
+        <div>
+          <span class="exam-label">Undécimo · Reading B1</span>
+          <h1 id="exam-title" class="exam-title">Simulacro de comprensión lectora</h1>
+          <p class="exam-intro">
+            Leé los tres textos y respondé las 15 preguntas. Usá estrategias de
+            lectura: identificá idea principal, detalles, vocabulario en contexto
+            e información implícita.
+          </p>
+        </div>
+
+        <div class="exam-timer" id="exam-timer" aria-live="polite">
+          <span class="exam-timer-label">Tiempo restante</span>
+          <strong class="exam-timer-time" id="timer-display">25:00</strong>
+        </div>
+      </section>
+
+      <section class="exam-instructions" aria-labelledby="instructions-title">
+        <h2 id="instructions-title">Instrucciones</h2>
+        <ul>
+          <li>Tenés 25 minutos para completar el simulacro.</li>
+          <li>Seleccioná una respuesta por pregunta.</li>
+          <li>Leé con atención: algunas preguntas piden inferencias, no solo detalles directos.</li>
+          <li>Al finalizar, presioná “Finalizar simulacro” para recibir tu resultado.</li>
+          <li>El contenido es práctica original y no reproduce una prueba oficial.</li>
+        </ul>
+      </section>
+
+      <form id="mock-exam-form" novalidate>
+        <section class="reading-card" aria-labelledby="reading-1-title">
+          <span class="reading-label">Reading 1</span>
+          <h2 id="reading-1-title">A Library Beyond Books</h2>
+
+          <div class="reading-passage">
+            <p>
+              In a small town in Costa Rica, the public library has changed the
+              way many young people learn after school. For years, students
+              visited the building mainly to borrow novels or use the quiet study
+              area. Today, however, the library also offers workshops on digital
+              skills, creative writing, and community projects.
+            </p>
+
+            <p>
+              One of its most popular activities is the “Repair and Share”
+              program. Teenagers bring old electronic devices to the library,
+              where local volunteers teach them how to identify simple problems.
+              Devices that can be repaired are later donated to families who need
+              access to online educational materials. The program does not solve
+              every technological problem in the community, but it has helped
+              participants understand that useful resources do not always need to
+              be new.
+            </p>
+
+            <p>
+              Library staff say that the greatest result is not the number of
+              repaired devices. Instead, they value the confidence students gain
+              when they work together, ask questions, and discover practical
+              solutions.
+            </p>
+          </div>
+
+          <fieldset class="exam-question">
+            <legend>1. What is the main purpose of the text?</legend>
+
+            <label class="exam-option">
+              <input type="radio" name="q1" value="a">
+              <span>To explain how a library has expanded its educational role.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q1" value="b">
+              <span>To advertise a new electronic store in Costa Rica.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q1" value="c">
+              <span>To describe why students should stop borrowing books.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q1" value="d">
+              <span>To compare libraries in different countries.</span>
+            </label>
+          </fieldset>
+
+          <fieldset class="exam-question">
+            <legend>2. What happens to devices that can be repaired?</legend>
+
+            <label class="exam-option">
+              <input type="radio" name="q2" value="a">
+              <span>They are sold to local businesses.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q2" value="b">
+              <span>They are donated to families needing online learning access.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q2" value="c">
+              <span>They are used only by library staff.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q2" value="d">
+              <span>They are sent to a recycling factory immediately.</span>
+            </label>
+          </fieldset>
+
+          <fieldset class="exam-question">
+            <legend>3. What can be inferred about the volunteers?</legend>
+
+            <label class="exam-option">
+              <input type="radio" name="q3" value="a">
+              <span>They teach students practical skills without charging them.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q3" value="b">
+              <span>They work only with professional engineers.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q3" value="c">
+              <span>They do not want teenagers to use technology.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q3" value="d">
+              <span>They receive devices from families every day.</span>
+            </label>
+          </fieldset>
+
+          <fieldset class="exam-question">
+            <legend>4. In the text, “resources” is closest in meaning to:</legend>
+
+            <label class="exam-option">
+              <input type="radio" name="q4" value="a">
+              <span>Useful materials or tools.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q4" value="b">
+              <span>Rules that students must follow.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q4" value="c">
+              <span>New buildings in the town.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q4" value="d">
+              <span>Private companies selling devices.</span>
+            </label>
+          </fieldset>
+
+          <fieldset class="exam-question">
+            <legend>5. What do library staff value most about the program?</legend>
+
+            <label class="exam-option">
+              <input type="radio" name="q5" value="a">
+              <span>The money earned by repairing devices.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q5" value="b">
+              <span>The number of books students borrow.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q5" value="c">
+              <span>The confidence and collaboration students develop.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q5" value="d">
+              <span>The size of the library building.</span>
+            </label>
+          </fieldset>
+        </section>
+
+        <section class="reading-card" aria-labelledby="reading-2-title">
+          <span class="reading-label">Reading 2</span>
+          <h2 id="reading-2-title">The School Garden Project</h2>
+
+          <div class="reading-passage">
+            <p>
+              At first, the garden behind Central High School was only an empty
+              area with dry soil and broken benches. A group of students proposed
+              transforming it into a place where classes could learn about food,
+              science, and environmental responsibility. The principal supported
+              the idea, but the school did not have enough money to hire a company
+              to do all the work.
+            </p>
+
+            <p>
+              Instead of giving up, students contacted parents, local farmers, and
+              former graduates. Some donated seeds and tools, while others offered
+              advice about growing vegetables in the local climate. Science
+              students measured soil conditions, art students painted signs, and
+              mathematics classes helped calculate the amount of water needed each
+              week.
+            </p>
+
+            <p>
+              Six months later, the garden produces lettuce, herbs, and tomatoes.
+              A small part of the harvest is used in the school cafeteria, and the
+              rest is shared with a nearby community center. More importantly, the
+              project has shown students that a complex problem can become
+              manageable when different people contribute their knowledge.
+            </p>
+          </div>
+
+          <fieldset class="exam-question">
+            <legend>6. Why did students contact people outside the school?</legend>
+
+            <label class="exam-option">
+              <input type="radio" name="q6" value="a">
+              <span>Because they needed money, materials, and advice.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q6" value="b">
+              <span>Because they wanted to close the garden.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q6" value="c">
+              <span>Because teachers refused to help them.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q6" value="d">
+              <span>Because the cafeteria needed new benches.</span>
+            </label>
+          </fieldset>
+
+          <fieldset class="exam-question">
+            <legend>7. Which group helped calculate water needs?</legend>
+
+            <label class="exam-option">
+              <input type="radio" name="q7" value="a">
+              <span>Art students.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q7" value="b">
+              <span>Mathematics classes.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q7" value="c">
+              <span>Former graduates.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q7" value="d">
+              <span>The community center.</span>
+            </label>
+          </fieldset>
+
+          <fieldset class="exam-question">
+            <legend>8. What does “harvest” refer to in the text?</legend>
+
+            <label class="exam-option">
+              <input type="radio" name="q8" value="a">
+              <span>The vegetables produced in the garden.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q8" value="b">
+              <span>The tools donated by local farmers.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q8" value="c">
+              <span>The benches that were repaired.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q8" value="d">
+              <span>The lessons taught by teachers.</span>
+            </label>
+          </fieldset>
+
+          <fieldset class="exam-question">
+            <legend>9. What is the most important lesson of the project?</legend>
+
+            <label class="exam-option">
+              <input type="radio" name="q9" value="a">
+              <span>Schools should grow only tomatoes.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q9" value="b">
+              <span>Complex problems can be solved through shared contributions.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q9" value="c">
+              <span>Companies are necessary for every school project.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q9" value="d">
+              <span>Students should not work with community members.</span>
+            </label>
+          </fieldset>
+
+          <fieldset class="exam-question">
+            <legend>10. Which statement is true according to the text?</legend>
+
+            <label class="exam-option">
+              <input type="radio" name="q10" value="a">
+              <span>All vegetables are sold to businesses.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q10" value="b">
+              <span>The principal refused to support the project.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q10" value="c">
+              <span>Part of the garden's production is shared with a community center.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q10" value="d">
+              <span>The garden was completed in one week.</span>
+            </label>
+          </fieldset>
+        </section>
+
+        <section class="reading-card" aria-labelledby="reading-3-title">
+          <span class="reading-label">Reading 3</span>
+          <h2 id="reading-3-title">A Message from the Future Careers Club</h2>
+
+          <div class="reading-passage">
+            <p>
+              Dear students,
+            </p>
+
+            <p>
+              The Future Careers Club is inviting eleventh-grade students to take
+              part in a series of workshops during the next two months. The
+              sessions will focus on writing a résumé, preparing for interviews,
+              and exploring training opportunities after graduation. Participants
+              will also meet professionals from different fields, including health,
+              technology, tourism, and environmental science.
+            </p>
+
+            <p>
+              The club understands that students have different plans. Some may
+              want to enter university, while others may prefer technical programs
+              or begin working. For this reason, the workshops will not recommend
+              one path as the best choice for everyone. Instead, they will provide
+              information and activities to help students identify their strengths,
+              interests, and next steps.
+            </p>
+
+            <p>
+              To register, complete the online form before May 20. Students who
+              attend at least four sessions will receive a participation
+              certificate. If you have questions, contact the school counselor by
+              email.
+            </p>
+          </div>
+
+          <fieldset class="exam-question">
+            <legend>11. What is the purpose of this message?</legend>
+
+            <label class="exam-option">
+              <input type="radio" name="q11" value="a">
+              <span>To invite students to career-preparation workshops.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q11" value="b">
+              <span>To announce that university is mandatory.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q11" value="c">
+              <span>To describe a new school cafeteria menu.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q11" value="d">
+              <span>To sell professional training courses.</span>
+            </label>
+          </fieldset>
+
+          <fieldset class="exam-question">
+            <legend>12. Which topic will NOT be part of the workshops?</legend>
+
+            <label class="exam-option">
+              <input type="radio" name="q12" value="a">
+              <span>Writing a résumé.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q12" value="b">
+              <span>Preparing for interviews.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q12" value="c">
+              <span>Exploring training opportunities.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q12" value="d">
+              <span>Learning how to repair electronic devices.</span>
+            </label>
+          </fieldset>
+
+          <fieldset class="exam-question">
+            <legend>13. Why will the club not recommend one path for everyone?</legend>
+
+            <label class="exam-option">
+              <input type="radio" name="q13" value="a">
+              <span>Because students have different plans and interests.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q13" value="b">
+              <span>Because no students want to study after graduation.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q13" value="c">
+              <span>Because the club does not know about careers.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q13" value="d">
+              <span>Because only technical programs are available.</span>
+            </label>
+          </fieldset>
+
+          <fieldset class="exam-question">
+            <legend>14. What must students do to receive a participation certificate?</legend>
+
+            <label class="exam-option">
+              <input type="radio" name="q14" value="a">
+              <span>Attend at least four sessions.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q14" value="b">
+              <span>Choose a career immediately.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q14" value="c">
+              <span>Pay for all the workshops.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q14" value="d">
+              <span>Write a letter to a professional.</span>
+            </label>
+          </fieldset>
+
+          <fieldset class="exam-question">
+            <legend>15. What does “identify their strengths” mean in this context?</legend>
+
+            <label class="exam-option">
+              <input type="radio" name="q15" value="a">
+              <span>Recognize the abilities they have.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q15" value="b">
+              <span>Find their physical location.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q15" value="c">
+              <span>Choose the hardest workshop.</span>
+            </label>
+
+            <label class="exam-option">
+              <input type="radio" name="q15" value="d">
+              <span>Compare their grades with other students.</span>
+            </label>
+          </fieldset>
+        </section>
+
+        <div class="exam-submit-row">
+          <button class="button button-primary" type="submit">
+            Finalizar simulacro
+          </button>
+
+          <p>Respondé las 15 preguntas antes de finalizar.</p>
+        </div>
+      </form>
+
+      <section
+        id="exam-result"
+        class="exam-result"
+        tabindex="-1"
+        aria-live="polite"
+      ></section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-top">
+      <div>
+        <a class="brand" href="../index.html">
+          <span class="brand-mark" aria-hidden="true">EQ</span>
+          <span>
+            <strong>English Quest CR</strong>
+            <small>Tu ruta de inglés</small>
+          </span>
+        </a>
+
+        <p class="footer-copy">
+          Curso gratuito de inglés para estudiantes de secundaria en Costa Rica.
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <a href="levels.html">Rutas</a>
+        <a href="challenge.html">Retos</a>
+        <a href="progress.html">Mi progreso</a>
+        <a href="resources.html">Recursos</a>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>© <span id="current-year"></span> English Quest CR. Licencia MIT.</p>
+      <a href="#main-content">Volver arriba ↑</a>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.querySelector("#mock-exam-form");
+      const result = document.querySelector("#exam-result");
+      const timerBox = document.querySelector("#exam-timer");
+      const timerDisplay = document.querySelector("#timer-display");
+
+      const answerKey = {
+        q1: "a",
+        q2: "b",
+        q3: "a",
+        q4: "a",
+        q5: "c",
+        q6: "a",
+        q7: "b",
+        q8: "a",
+        q9: "b",
+        q10: "c",
+        q11: "a",
+        q12: "d",
+        q13: "a",
+        q14: "a",
+        q15: "a"
+      };
+
+      const totalQuestions = Object.keys(answerKey).length;
+      let remainingSeconds = 25 * 60;
+      let examFinished = false;
+
+      function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const remaining = seconds % 60;
+
+        return `${String(minutes).padStart(2, "0")}:${String(
+          remaining
+        ).padStart(2, "0")}`;
+      }
+
+      function updateTimer() {
+        timerDisplay.textContent = formatTime(remainingSeconds);
+
+        if (remainingSeconds <= 5 * 60 && remainingSeconds > 0) {
+          timerBox.classList.add("is-warning");
+        }
+
+        if (remainingSeconds <= 0) {
+          timerBox.classList.remove("is-warning");
+          timerBox.classList.add("is-finished");
+          timerDisplay.textContent = "00:00";
+        }
+      }
+
+      function getFeedback(score) {
+        const percentage = Math.round((score / totalQuestions) * 100);
+
+        if (percentage >= 80) {
+          return {
+            title: "¡Excelente desempeño!",
+            message:
+              "Demostraste una comprensión lectora sólida: identificaste ideas principales, detalles e información implícita con mucha precisión.",
+            className: "is-success"
+          };
+        }
+
+        if (percentage >= 60) {
+          return {
+            title: "¡Buen trabajo!",
+            message:
+              "Tenés una base sólida. Revisá especialmente las preguntas de inferencia y vocabulario en contexto para seguir mejorando.",
+            className: "is-warning"
+          };
+        }
+
+        return {
+          title: "Seguí practicando",
+          message:
+            "Revisá cada lectura con calma. Empezá por encontrar la idea principal y luego buscá en el texto las pistas para cada respuesta.",
+          className: "is-error"
+        };
+      }
+
+      function finishExam(isTimeUp = false) {
+        if (examFinished) {
+          return;
+        }
+
+        examFinished = true;
+        clearInterval(timerInterval);
+
+        const unanswered = [];
+        let score = 0;
+
+        Object.entries(answerKey).forEach(([question, correctAnswer]) => {
+          const selected = form.querySelector(
+            `input[name="${question}"]:checked`
+          );
+
+          if (!selected) {
+            unanswered.push(question);
+            return;
+          }
+
+          if (selected.value === correctAnswer) {
+            score += 1;
+          }
+        });
+
+        form
+          .querySelectorAll("input")
+          .forEach((input) => {
+            input.disabled = true;
+          });
+
+        const percentage = Math.round((score / totalQuestions) * 100);
+        const feedback = getFeedback(score);
+
+        timerBox.classList.remove("is-warning");
+
+        if (isTimeUp) {
+          timerBox.classList.add("is-finished");
+        }
+
+        result.className = `exam-result is-visible ${feedback.className}`;
+
+        result.innerHTML = `
+          <h2>${isTimeUp ? "Tiempo finalizado" : feedback.title}</h2>
+          <div class="exam-score">${score} / ${totalQuestions}</div>
+          <p><strong>Resultado: ${percentage}%</strong></p>
+          <p>${feedback.message}</p>
+          ${
+            unanswered.length > 0
+              ? `<p>Preguntas sin responder: ${unanswered.length}.</p>`
+              : ""
+          }
+          <ul class="exam-feedback-list">
+            <li>Idea principal: leé título, primera oración y palabras repetidas.</li>
+            <li>Detalles: buscá nombres, fechas, cantidades y acciones específicas.</li>
+            <li>Inferencia: elegí la respuesta apoyada por pistas del texto.</li>
+            <li>Vocabulario: usá las oraciones cercanas para deducir significado.</li>
+          </ul>
+          <div class="exam-actions">
+            <a class="button button-primary" href="progress.html">
+              Ver mi progreso
+            </a>
+            <button class="button button-secondary" type="button" id="restart-exam">
+              Intentar de nuevo
+            </button>
+          </div>
+        `;
+
+        result.focus();
+
+        const restartButton = document.querySelector("#restart-exam");
+
+        if (restartButton) {
+          restartButton.addEventListener("click", () => {
+            window.location.reload();
+          });
+        }
+
+        if (!isTimeUp && score >= 9) {
+          try {
+            const storageKey = "englishQuestCRProgress";
+            const saved = localStorage.getItem(storageKey);
+            const progress = saved ? JSON.parse(saved) : {};
+
+            if (progress.lastMockExamDate !== new Date().toISOString().slice(0, 10)) {
+              progress.xp = Number(progress.xp || 0) + 150;
+              progress.lastMockExamDate = new Date().toISOString().slice(0, 10);
+
+              localStorage.setItem(storageKey, JSON.stringify(progress));
+            }
+          } catch {
+            // El simulacro sigue funcionando aunque localStorage no esté disponible.
+          }
+        }
+      }
+
+      const timerInterval = window.setInterval(() => {
+        if (examFinished) {
+          return;
+        }
+
+        remainingSeconds -= 1;
+        updateTimer();
+
+        if (remainingSeconds <= 0) {
+          finishExam(true);
+        }
+      }, 1000);
+
+      updateTimer();
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const unanswered = Object.keys(answerKey).filter((question) => {
+          return !form.querySelector(`input[name="${question}"]:checked`);
+        });
+
+        if (unanswered.length > 0) {
+          result.className = "exam-result is-visible is-warning";
+          result.innerHTML = `
+            <h2>Faltan respuestas</h2>
+            <p>
+              Todavía tenés ${unanswered.length} pregunta${
+                unanswered.length === 1 ? "" : "s"
+              } sin responder. Completalas antes de finalizar el simulacro.
+            </p>
+          `;
+          result.focus();
+
+          const firstQuestion = document.querySelector(
+            `input[name="${unanswered[0]}"]`
+          );
+
+          if (firstQuestion) {
+            firstQuestion.closest(".exam-question").scrollIntoView({
+              behavior: "smooth",
+              block: "center"
+            });
+          }
+
+          return;
+        }
+
+        finishExam(false);
+      });
+    });
+  </script>
+</body>
+</html>
