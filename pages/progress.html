@@ -10,6 +10,7 @@
   <title>Mi progreso | English Quest CR</title>
 
   <link rel="stylesheet" href="../assets/css/styles.css">
+  <script src="../data/seventh-missions.js" defer></script>
   <script src="../assets/js/app.js" defer></script>
 </head>
 
@@ -68,15 +69,15 @@
     <section class="mission-hero section">
       <div class="container">
         <p class="eyebrow">
-          <span aria-hidden="true">📊</span>
+          <span aria-hidden="true">🏆</span>
           Tu expedición
         </p>
 
-        <h1>Mi progreso</h1>
+        <h1>Tu progreso se construye misión por misión.</h1>
 
         <p class="hero-description">
-          Cada misión que completás deja una huella. Revisá tus puntos,
-          tus logros y elegí tu siguiente paso.
+          Revisá tus puntos de experiencia, días de práctica, insignias y
+          misiones completadas. Cada paso cuenta.
         </p>
       </div>
     </section>
@@ -86,10 +87,10 @@
         <div class="section-heading">
           <div>
             <p class="eyebrow">
-              <span aria-hidden="true">🏆</span>
-              Resumen
+              <span aria-hidden="true">📊</span>
+              Resumen general
             </p>
-            <h2 id="summary-title">Tu avance hasta hoy.</h2>
+            <h2 id="summary-title">Así va tu aventura.</h2>
           </div>
         </div>
 
@@ -107,69 +108,72 @@
           </article>
 
           <article class="progress-stat-card">
-            <span class="progress-stat-icon" aria-hidden="true">🎖️</span>
+            <span class="progress-stat-icon" aria-hidden="true">🏅</span>
             <p class="progress-stat-value" id="progress-badges">0</p>
-            <p class="progress-stat-label">Insignias ganadas</p>
+            <p class="progress-stat-label">Insignias obtenidas</p>
           </article>
 
           <article class="progress-stat-card">
-            <span class="progress-stat-icon" aria-hidden="true">✅</span>
-            <p class="progress-stat-value" id="progress-missions">0</p>
-            <p class="progress-stat-label">Misiones completadas</p>
+            <span class="progress-stat-icon" aria-hidden="true">🧭</span>
+            <p class="progress-stat-value" id="progress-percentage-page">0%</p>
+            <p class="progress-stat-label">Progreso general</p>
           </article>
         </div>
       </div>
     </section>
 
-    <section class="section lesson-section" aria-labelledby="missions-title">
+    <section class="section level-section" aria-labelledby="missions-title">
       <div class="container">
         <div class="section-heading">
           <div>
             <p class="eyebrow">
               <span aria-hidden="true">🗺️</span>
-              Camino recorrido
+              Ruta actual
             </p>
-            <h2 id="missions-title">Misiones de Séptimo</h2>
+            <h2 id="missions-title">Misiones de Séptimo.</h2>
           </div>
+
+          <a class="text-link" href="levels.html">
+            Ver todas las rutas
+            <span aria-hidden="true">→</span>
+          </a>
         </div>
 
         <div class="mission-progress-list">
-          <article class="mission-progress-item" data-mission-status="seventh-mission-1">
-            <div class="mission-progress-icon" aria-hidden="true">🌱</div>
+          <article class="mission-progress-item" id="mission-progress-1">
+            <span class="mission-progress-icon" aria-hidden="true">🌱</span>
 
             <div class="mission-progress-copy">
-              <p class="mission-progress-label">Mission 1</p>
-              <h3>Greetings & Personal Information</h3>
-              <p>Saludos, despedidas y presentación personal.</p>
+              <p class="mission-progress-label">Séptimo · Foundations</p>
+              <h3>Mission 1: Greetings & Personal Information</h3>
+              <p>Saludos, presentaciones e información personal.</p>
             </div>
 
-            <span class="mission-status" data-status-label="seventh-mission-1">
-              Pendiente
-            </span>
+            <span class="mission-status" id="mission-status-1">Disponible</span>
           </article>
 
-          <article class="mission-progress-item is-locked">
-            <div class="mission-progress-icon" aria-hidden="true">🔒</div>
+          <article class="mission-progress-item is-locked" id="mission-progress-2">
+            <span class="mission-progress-icon" aria-hidden="true">🔒</span>
 
             <div class="mission-progress-copy">
-              <p class="mission-progress-label">Mission 2</p>
-              <h3>My Family & Friends</h3>
-              <p>Próximamente: personas importantes y posesivos básicos.</p>
+              <p class="mission-progress-label">Séptimo · Foundations</p>
+              <h3>Mission 2: Family & Friends</h3>
+              <p>Próximamente: describí personas cercanas y relaciones.</p>
             </div>
 
-            <span class="mission-status">Próximamente</span>
+            <span class="mission-status" id="mission-status-2">Bloqueada</span>
           </article>
 
-          <article class="mission-progress-item is-locked">
-            <div class="mission-progress-icon" aria-hidden="true">🔒</div>
+          <article class="mission-progress-item is-locked" id="mission-progress-3">
+            <span class="mission-progress-icon" aria-hidden="true">🔒</span>
 
             <div class="mission-progress-copy">
-              <p class="mission-progress-label">Mission 3</p>
-              <h3>My Daily Routine</h3>
-              <p>Próximamente: hábitos, horarios y presente simple.</p>
+              <p class="mission-progress-label">Séptimo · Foundations</p>
+              <h3>Mission 3: My Daily Routine</h3>
+              <p>Próximamente: hablá de hábitos y actividades diarias.</p>
             </div>
 
-            <span class="mission-status">Próximamente</span>
+            <span class="mission-status" id="mission-status-3">Bloqueada</span>
           </article>
         </div>
       </div>
@@ -181,66 +185,65 @@
           <div>
             <p class="eyebrow">
               <span aria-hidden="true">🎖️</span>
-              Colección
+              Tus insignias
             </p>
-            <h2 id="badges-title">Tus insignias</h2>
+            <h2 id="badges-title">Logros que acompañan tu avance.</h2>
           </div>
         </div>
 
-        <div class="badge-showcase progress-badge-showcase">
-          <article class="badge-card" data-badge-card="first-mission">
+        <div class="badge-showcase">
+          <article class="badge-card" id="badge-first-step">
             <span class="badge-icon" aria-hidden="true">🌟</span>
             <h3>Primer paso</h3>
             <p>Completá tu primera misión.</p>
-            <span class="badge-state">Bloqueada</span>
+            <span class="badge-state">Aún no obtenida</span>
           </article>
 
-          <article class="badge-card is-locked">
+          <article class="badge-card" id="badge-active-streak">
             <span class="badge-icon" aria-hidden="true">🔥</span>
-            <h3>Racha de 3 días</h3>
-            <p>Estudiá durante tres días consecutivos.</p>
-            <span class="badge-state">Próximamente</span>
+            <h3>Racha activa</h3>
+            <p>Practicá tres días consecutivos.</p>
+            <span class="badge-state">Aún no obtenida</span>
           </article>
 
-          <article class="badge-card is-locked">
+          <article class="badge-card">
             <span class="badge-icon" aria-hidden="true">📚</span>
             <h3>Lectura atenta</h3>
-            <p>Completá tres misiones de Reading.</p>
+            <p>Completá próximos retos de Reading.</p>
             <span class="badge-state">Próximamente</span>
           </article>
 
-          <article class="badge-card is-locked">
+          <article class="badge-card">
             <span class="badge-icon" aria-hidden="true">🎧</span>
             <h3>Oído explorador</h3>
-            <p>Completá tres misiones de Listening.</p>
+            <p>Completá próximos retos de Listening.</p>
             <span class="badge-state">Próximamente</span>
           </article>
         </div>
       </div>
     </section>
 
-    <section class="section diagnostic-section" aria-labelledby="next-title">
+    <section class="section diagnostic-section" aria-labelledby="continue-title">
       <div class="container">
         <div class="diagnostic-card">
           <div>
             <p class="eyebrow">
               <span aria-hidden="true">🚀</span>
-              Siguiente paso
+              Próximo paso
             </p>
-
-            <h2 id="next-title">Tu próxima práctica te espera.</h2>
-
-            <p id="progress-next-message">
-              Empezá la primera misión para sumar XP y desbloquear tu primera insignia.
+            <h2 id="continue-title">Seguí sumando experiencia.</h2>
+            <p>
+              Completá las misiones de Séptimo o realizá el reto diario
+              para seguir fortaleciendo tu inglés.
             </p>
           </div>
 
           <a
             class="button button-primary"
-            id="progress-next-link"
+            id="continue-learning-link"
             href="mission.html?mission=seventh-mission-1"
           >
-            Iniciar misión 1
+            Continuar aprendiendo
             <span aria-hidden="true">→</span>
           </a>
         </div>
