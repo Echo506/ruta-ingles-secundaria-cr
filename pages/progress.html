@@ -102,6 +102,49 @@
       </div>
     </section>
 
+    <section class="section" aria-labelledby="account-title">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">
+              <span aria-hidden="true">🔐</span>
+              Tu cuenta
+            </p>
+
+            <h2 id="account-title">Guardá tu progreso en este dispositivo.</h2>
+          </div>
+        </div>
+
+        <article class="diagnostic-card">
+          <div>
+            <p id="auth-status">
+              Iniciá sesión una sola vez con Google para conservar tu historial,
+              tus insignias y tu avance.
+            </p>
+          </div>
+
+          <div class="exam-actions">
+            <button
+              class="button button-primary"
+              id="google-login"
+              type="button"
+            >
+              Ingresar con Google
+            </button>
+
+            <button
+              class="button button-secondary"
+              id="logout-button"
+              type="button"
+              hidden
+            >
+              Cerrar sesión
+            </button>
+          </div>
+        </article>
+      </div>
+    </section>
+
     <section class="section" aria-labelledby="summary-title">
       <div class="container">
         <div class="section-heading">
@@ -136,12 +179,7 @@
 
           <article class="progress-stat-card">
             <span class="progress-stat-icon" aria-hidden="true">🧭</span>
-            <p
-              class="progress-stat-value"
-              id="progress-percentage-page"
-            >
-              0%
-            </p>
+            <p class="progress-stat-value" id="progress-percentage-page">0%</p>
             <p class="progress-stat-label">Progreso general</p>
           </article>
         </div>
@@ -169,7 +207,6 @@
           </a>
         </div>
 
-        <!-- app.js reemplaza este mensaje por las 48 misiones -->
         <div class="mission-progress-list">
           <p class="loading-message">
             Cargando tus misiones...
@@ -208,17 +245,17 @@
             <span class="badge-state">Aún no obtenida</span>
           </article>
 
-          <article class="badge-card">
+          <article class="badge-card" id="badge-reading">
             <span class="badge-icon" aria-hidden="true">📚</span>
             <h3>Lectura atenta</h3>
-            <p>Completá próximos retos de Reading.</p>
+            <p>Completá retos de Reading.</p>
             <span class="badge-state">Próximamente</span>
           </article>
 
-          <article class="badge-card">
+          <article class="badge-card" id="badge-listening">
             <span class="badge-icon" aria-hidden="true">🎧</span>
             <h3>Oído explorador</h3>
-            <p>Completá próximos retos de Listening.</p>
+            <p>Completá retos de Listening.</p>
             <span class="badge-state">Próximamente</span>
           </article>
         </div>
@@ -293,5 +330,181 @@
       <a href="#main-content">Volver arriba ↑</a>
     </div>
   </footer>
+
+  <script type="module">
+    import {
+      signInWithGoogle,
+      signOutUser,
+      getCurrentUser
+    } from "../assets/js/auth.js";
+    import { supabase } from "../assets/js/supabase-config.js";
+
+    const loginButton = document.querySelector("#google-login");
+    const logoutButton = document.querySelector("#logout-button");
+    const authStatus = document.querySelector("#auth-status");
+
+    const xpEl = document.querySelector("#progress-xp");
+    const streakEl = document.querySelector("#progress-streak");
+    const badgesEl = document.querySelector("#progress-badges");
+    const progressEl = document.querySelector("#progress-percentage-page");
+
+    const firstStepBadge = document.querySelector("#badge-first-step .badge-state");
+    const activeStreakBadge = document.querySelector("#badge-active-streak .badge-state");
+    const readingBadge = document.querySelector("#badge-reading .badge-state");
+    const listeningBadge = document.querySelector("#badge-listening .badge-state");
+
+    async function ensureUserProgressRow(user) {
+      const { data: existing, error: selectError } = await supabase
+        .from("student_progress")
+        .select("*")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+      if (selectError) {
+        console.error("Error buscando progreso:", selectError.message);
+        return null;
+      }
+
+      if (existing) return existing;
+
+      const starterRow = {
+        user_id: user.id,
+        email: user.email ?? "",
+        display_name: user.user_metadata?.full_name ?? user.user_metadata?.name ?? "",
+        completed_levels: [],
+        completed_challenges: [],
+        reading_scores: [],
+        listening_scores: [],
+        xp: 0,
+        streak: 1,
+        badges: [],
+        updated_at: new Date().toISOString()
+      };
+
+      const { data, error } = await supabase
+        .from("student_progress")
+        .insert(starterRow)
+        .select()
+        .single();
+
+      if (error) {
+        console.error("Error creando fila inicial:", error.message);
+        return null;
+      }
+
+      return data;
+    }
+
+    function calculateProgress(progress) {
+      const completedLevels = Array.isArray(progress.completed_levels)
+        ? progress.completed_levels.length
+        : 0;
+
+      const completedChallenges = Array.isArray(progress.completed_challenges)
+        ? progress.completed_challenges.length
+        : 0;
+
+      const readingCount = Array.isArray(progress.reading_scores)
+        ? progress.reading_scores.length
+        : 0;
+
+      const listeningCount = Array.isArray(progress.listening_scores)
+        ? progress.listening_scores.length
+        : 0;
+
+      const totalDone = completedLevels + completedChallenges + readingCount + listeningCount;
+      const totalReference = 100;
+
+      return Math.min(100, Math.round((totalDone / totalReference) * 100));
+    }
+
+    async function loadUserProgress(user) {
+      const { data, error } = await supabase
+        .from("student_progress")
+        .select("*")
+        .eq("user_id", user.id)
+        .single();
+
+      if (error) {
+        console.error("Error cargando progreso:", error.message);
+        return null;
+      }
+
+      return data;
+    }
+
+    function updateBadges(progress) {
+      const badges = Array.isArray(progress.badges) ? progress.badges : [];
+
+      if (firstStepBadge) {
+        firstStepBadge.textContent = badges.includes("primer-paso")
+          ? "Obtenida"
+          : "Aún no obtenida";
+      }
+
+      if (activeStreakBadge) {
+        activeStreakBadge.textContent = badges.includes("racha-activa")
+          ? "Obtenida"
+          : "Aún no obtenida";
+      }
+
+      if (readingBadge) {
+        readingBadge.textContent = badges.includes("lectura-atenta")
+          ? "Obtenida"
+          : "Próximamente";
+      }
+
+      if (listeningBadge) {
+        listeningBadge.textContent = badges.includes("oido-explorador")
+          ? "Obtenida"
+          : "Próximamente";
+      }
+    }
+
+    async function renderProgressPage() {
+      const user = await getCurrentUser();
+
+      if (!user) {
+        authStatus.textContent = "Iniciá sesión una sola vez con Google para conservar tu historial, tus insignias y tu avance.";
+        loginButton.hidden = false;
+        logoutButton.hidden = true;
+
+        if (xpEl) xpEl.textContent = "0";
+        if (streakEl) streakEl.textContent = "0";
+        if (badgesEl) badgesEl.textContent = "0";
+        if (progressEl) progressEl.textContent = "0%";
+
+        if (firstStepBadge) firstStepBadge.textContent = "Aún no obtenida";
+        if (activeStreakBadge) activeStreakBadge.textContent = "Aún no obtenida";
+        if (readingBadge) readingBadge.textContent = "Próximamente";
+        if (listeningBadge) listeningBadge.textContent = "Próximamente";
+        return;
+      }
+
+      loginButton.hidden = true;
+      logoutButton.hidden = false;
+      authStatus.textContent = `Sesión iniciada como ${user.email}`;
+
+      await ensureUserProgressRow(user);
+      const progress = await loadUserProgress(user);
+
+      if (!progress) return;
+
+      const badgesCount = Array.isArray(progress.badges) ? progress.badges.length : 0;
+      const progressPercent = calculateProgress(progress);
+
+      if (xpEl) xpEl.textContent = String(progress.xp ?? 0);
+      if (streakEl) streakEl.textContent = String(progress.streak ?? 0);
+      if (badgesEl) badgesEl.textContent = String(badgesCount);
+      if (progressEl) progressEl.textContent = `${progressPercent}%`;
+
+      updateBadges(progress);
+    }
+
+    loginButton?.addEventListener("click", signInWithGoogle);
+    logoutButton?.addEventListener("click", signOutUser);
+
+    renderProgressPage();
+  </script>
 </body>
 </html>
