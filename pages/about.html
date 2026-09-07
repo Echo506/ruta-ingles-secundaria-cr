@@ -3,21 +3,273 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Próximamente | English Quest CR</title>
+
+  <meta
+    name="description"
+    content="Conocé la misión, el enfoque y el funcionamiento de English Quest CR."
+  >
+
+  <title>Sobre el proyecto | English Quest CR</title>
+
   <link rel="stylesheet" href="../assets/css/styles.css">
+  <script src="../assets/js/app.js" defer></script>
+
+  <style>
+    .about-page {
+      padding: 2rem 0 4rem;
+    }
+
+    .about-hero {
+      max-width: 820px;
+      margin-bottom: 2rem;
+    }
+
+    .about-hero h1 {
+      margin: 0;
+      color: var(--text);
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      line-height: 1.05;
+    }
+
+    .about-hero p {
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.75;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .about-card {
+      padding: 1.6rem;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .about-card h2 {
+      margin-top: 0;
+      margin-bottom: 0.75rem;
+      color: var(--text);
+      font-size: 1.35rem;
+    }
+
+    .about-card p,
+    .about-card li {
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .about-card ul {
+      margin: 0;
+      padding-left: 1.2rem;
+    }
+
+    .about-highlight {
+      padding: clamp(1.4rem, 3vw, 2rem);
+      border: 1px solid rgba(89, 242, 196, 0.35);
+      border-radius: 24px;
+      background:
+        linear-gradient(
+          135deg,
+          rgba(89, 242, 196, 0.12),
+          rgba(255, 255, 255, 0.02)
+        );
+      box-shadow: var(--shadow);
+    }
+
+    .about-highlight h2 {
+      margin-top: 0;
+      color: var(--text);
+    }
+
+    .about-highlight p,
+    .about-highlight li {
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .about-highlight ul {
+      margin: 0.8rem 0 0;
+      padding-left: 1.2rem;
+    }
+
+    .about-cta {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+    }
+
+    @media (max-width: 720px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
+
 <body>
-  <main class="section">
-    <div class="container">
-      <p class="eyebrow">🚧 En desarrollo</p>
-      <h1>Esta sección estará disponible pronto.</h1>
-      <p class="hero-description">
-        Estamos construyendo esta parte de English Quest CR para la próxima fase.
-      </p>
-      <a class="button button-primary" href="../index.html">
-        ← Volver al inicio
+  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="../index.html" aria-label="English Quest CR, inicio">
+        <span class="brand-mark" aria-hidden="true">EQ</span>
+        <span>
+          <strong>English Quest CR</strong>
+          <small>Tu ruta de inglés</small>
+        </span>
       </a>
+
+      <button
+        class="menu-toggle"
+        type="button"
+        data-menu-toggle
+        aria-expanded="false"
+        aria-controls="primary-navigation"
+      >
+        <span class="sr-only">Abrir menú</span>
+        <span aria-hidden="true">☰</span>
+      </button>
+
+      <nav id="primary-navigation" class="primary-navigation" data-navigation>
+        <a href="../index.html">Inicio</a>
+        <a href="levels.html">Rutas</a>
+        <a href="challenge.html">Retos</a>
+        <a href="progress.html">Mi progreso</a>
+        <a href="resources.html">Recursos</a>
+        <a href="about.html" aria-current="page">Sobre el proyecto</a>
+      </nav>
+
+      <button
+        class="contrast-toggle"
+        type="button"
+        data-contrast-toggle
+        aria-pressed="false"
+      >
+        Alto contraste
+      </button>
+    </div>
+  </header>
+
+  <main id="main-content" class="about-page">
+    <div class="container">
+      <section class="about-hero" aria-labelledby="about-title">
+        <p class="eyebrow">Sobre English Quest CR</p>
+
+        <h1 id="about-title">Una ruta gratuita para aprender inglés con propósito</h1>
+
+        <p>
+          English Quest CR es una plataforma educativa creada para estudiantes de
+          secundaria en Costa Rica. Su objetivo es ofrecer práctica guiada,
+          misiones interactivas y recursos por nivel para fortalecer el inglés de
+          forma clara, progresiva y motivadora.
+        </p>
+      </section>
+
+      <section class="about-grid" aria-label="Información del proyecto">
+        <article class="about-card">
+          <h2>Misión</h2>
+          <p>
+            Este proyecto busca acompañar al estudiante durante su recorrido por
+            secundaria con actividades que combinan vocabulario, lectura,
+            comprensión, práctica guiada y seguimiento del progreso.
+          </p>
+        </article>
+
+        <article class="about-card">
+          <h2>Qué incluye</h2>
+          <ul>
+            <li>Rutas organizadas por nivel.</li>
+            <li>Misiones interactivas con validación.</li>
+            <li>Retos para reforzar el aprendizaje.</li>
+            <li>XP, racha e indicadores de avance.</li>
+            <li>Recursos y simulacros de práctica.</li>
+          </ul>
+        </article>
+
+        <article class="about-card">
+          <h2>Cómo funciona</h2>
+          <p>
+            El estudiante avanza por misiones, responde actividades y acumula
+            progreso dentro del sitio. La experiencia está pensada para motivar
+            el estudio frecuente y facilitar una práctica constante.
+          </p>
+        </article>
+
+        <article class="about-card">
+          <h2>Enfoque</h2>
+          <p>
+            English Quest CR está orientado al aprendizaje de secundaria completa
+            y al fortalecimiento de competencias útiles para contextos escolares
+            y evaluaciones relacionadas con el currículo nacional.
+          </p>
+        </article>
+      </section>
+
+      <section class="about-highlight" aria-labelledby="project-note-title">
+        <h2 id="project-note-title">Aviso importante</h2>
+
+        <p>
+          English Quest CR es un recurso educativo independiente. Su contenido
+          busca apoyar la práctica y el aprendizaje del inglés, pero no sustituye
+          la mediación docente ni garantiza por sí solo la aprobación de pruebas.
+        </p>
+
+        <ul>
+          <li>Se prioriza el uso de contenido original o compatible con fines educativos.</li>
+          <li>El progreso del estudiante puede guardarse localmente en el navegador.</li>
+          <li>No es necesario recopilar datos personales para usar las funciones principales del sitio.</li>
+          <li>El proyecto puede seguir creciendo y actualizándose por fases.</li>
+        </ul>
+
+        <div class="about-cta">
+          <a class="button button-primary" href="levels.html">
+            Explorar rutas →
+          </a>
+
+          <a class="button button-secondary" href="resources.html">
+            Ver recursos →
+          </a>
+        </div>
+      </section>
     </div>
   </main>
+
+  <footer class="site-footer">
+    <div class="container footer-top">
+      <div>
+        <a class="brand" href="../index.html">
+          <span class="brand-mark" aria-hidden="true">EQ</span>
+          <span>
+            <strong>English Quest CR</strong>
+            <small>Tu ruta de inglés</small>
+          </span>
+        </a>
+
+        <p class="footer-copy">
+          Curso gratuito de inglés para estudiantes de secundaria en Costa Rica.
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <a href="levels.html">Rutas</a>
+        <a href="challenge.html">Retos</a>
+        <a href="progress.html">Mi progreso</a>
+        <a href="resources.html">Recursos</a>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>© <span id="current-year"></span> English Quest CR. Licencia MIT.</p>
+      <a href="#main-content">Volver arriba ↑</a>
+    </div>
+  </footer>
 </body>
 </html>
