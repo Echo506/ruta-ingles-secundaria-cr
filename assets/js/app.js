@@ -25,11 +25,51 @@ document.addEventListener("DOMContentLoaded", () => {
     : [];
 
   const MISSION_GROUPS = [
-    { grade: "Séptimo año", missions: SEVENTH_MISSIONS },
-    { grade: "Octavo año", missions: EIGHTH_MISSIONS },
-    { grade: "Noveno año", missions: NINTH_MISSIONS },
-    { grade: "Décimo año", missions: TENTH_MISSIONS },
-    { grade: "Undécimo año", missions: ELEVENTH_MISSIONS }
+    {
+      key: "seventh",
+      grade: "Séptimo año",
+      yearLabel: "Séptimo",
+      missions: SEVENTH_MISSIONS,
+      icon: "🌱",
+      description: "Construí bases sólidas con saludos, rutinas, lugares, compras y comunicación cotidiana.",
+      topics: ["Saludos", "Rutinas", "Naturaleza"]
+    },
+    {
+      key: "eighth",
+      grade: "Octavo año",
+      yearLabel: "Octavo",
+      missions: EIGHTH_MISSIONS,
+      icon: "🚀",
+      description: "Fortalecé estructuras frecuentes para hablar de experiencias, gustos y situaciones de la vida diaria.",
+      topics: ["Experiencias", "Preferencias", "Reading"]
+    },
+    {
+      key: "ninth",
+      grade: "Noveno año",
+      yearLabel: "Noveno",
+      missions: NINTH_MISSIONS,
+      icon: "🧠",
+      description: "Desarrollá comprensión, argumentación simple y uso más preciso del inglés en distintos contextos.",
+      topics: ["Opiniones", "Comprensión", "Contexto"]
+    },
+    {
+      key: "tenth",
+      grade: "Décimo año",
+      yearLabel: "Décimo",
+      missions: TENTH_MISSIONS,
+      icon: "🎯",
+      description: "Practicá comunicación académica y funcional con retos más completos de lectura y análisis.",
+      topics: ["Análisis", "Mensajes", "Estrategias"]
+    },
+    {
+      key: "eleventh",
+      grade: "Undécimo año",
+      yearLabel: "Undécimo",
+      missions: ELEVENTH_MISSIONS,
+      icon: "🏆",
+      description: "Consolidá lectura crítica, argumentación y preparación final para comunicarte con confianza.",
+      topics: ["Argumentación", "Lectura crítica", "Preparación final"]
+    }
   ].filter((group) => group.missions.length > 0);
 
   const MISSIONS = MISSION_GROUPS.flatMap((group) => group.missions);
@@ -169,6 +209,57 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  function setupHomeLevels() {
+    const levelsContainer = document.querySelector("#levels-container");
+    const levelsError = document.querySelector("#levels-error");
+
+    if (!levelsContainer) {
+      return;
+    }
+
+    if (!MISSION_GROUPS.length) {
+      levelsContainer.innerHTML = "";
+      if (levelsError) {
+        levelsError.hidden = false;
+      }
+      return;
+    }
+
+    if (levelsError) {
+      levelsError.hidden = true;
+    }
+
+    levelsContainer.innerHTML = MISSION_GROUPS.map((group) => {
+      const firstMission = group.missions[0];
+      const topics = Array.isArray(group.topics) ? group.topics : [];
+      const missionCount = group.missions.length;
+
+      return `
+        <article class="level-card reveal-card">
+          <div class="level-card-top">
+            <span class="level-icon" aria-hidden="true">${group.icon}</span>
+            <span class="level-tag">${missionCount} misiones</span>
+          </div>
+
+          <p class="level-year">${escapeHtml(group.grade)}</p>
+          <h3>${escapeHtml(group.yearLabel)}</h3>
+          <p>${escapeHtml(group.description)}</p>
+
+          <ul class="topic-list" aria-label="Temas principales de ${escapeHtml(group.grade)}">
+            ${topics
+              .map((topic) => `<li>${escapeHtml(topic)}</li>`)
+              .join("")}
+          </ul>
+
+          <a class="text-link" href="pages/${getMissionUrl(firstMission.id)}">
+            Empezar ruta
+            <span aria-hidden="true">→</span>
+          </a>
+        </article>
+      `;
+    }).join("");
+  }
+
   function setupProgressPage() {
     const xpElement = document.querySelector("#progress-xp");
 
@@ -197,99 +288,107 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const missionList = document.querySelector(".mission-progress-list");
 
-    if (missionList && MISSIONS.length > 0) {
-      missionList.innerHTML = MISSION_GROUPS.map((group) => {
-        return group.missions
-          .map((mission) => {
-            const missionCompleted = completed.includes(mission.id);
+    if (missionList) {
+      if (!MISSIONS.length) {
+        missionList.innerHTML = `
+          <p class="loading-message">
+            No se pudieron cargar tus misiones.
+          </p>
+        `;
+      } else {
+        missionList.innerHTML = MISSION_GROUPS.map((group) => {
+          return group.missions
+            .map((mission) => {
+              const missionCompleted = completed.includes(mission.id);
 
-            const missionIndex = MISSIONS.findIndex(
-              (item) => item.id === mission.id
-            );
+              const missionIndex = MISSIONS.findIndex(
+                (item) => item.id === mission.id
+              );
 
-            const previousMission =
-              missionIndex > 0 ? MISSIONS[missionIndex - 1] : null;
+              const previousMission =
+                missionIndex > 0 ? MISSIONS[missionIndex - 1] : null;
 
-            const available =
-              !previousMission ||
-              completed.includes(previousMission.id);
+              const available =
+                !previousMission ||
+                completed.includes(previousMission.id);
 
-            const locked = !missionCompleted && !available;
+              const locked = !missionCompleted && !available;
 
-            const status = missionCompleted
-              ? "Completada"
-              : locked
-                ? "Bloqueada"
-                : "Disponible";
+              const status = missionCompleted
+                ? "Completada"
+                : locked
+                  ? "Bloqueada"
+                  : "Disponible";
 
-            const icon = missionCompleted
-              ? "✅"
-              : locked
-                ? "🔒"
-                : "🧭";
+              const icon = missionCompleted
+                ? "✅"
+                : locked
+                  ? "🔒"
+                  : "🧭";
 
-            const classes = [
-              "mission-progress-item",
-              missionCompleted ? "is-completed" : "",
-              locked ? "is-locked" : "",
-              available && !missionCompleted ? "is-available" : ""
-            ]
-              .filter(Boolean)
-              .join(" ");
+              const classes = [
+                "mission-progress-item",
+                missionCompleted ? "is-completed" : "",
+                locked ? "is-locked" : "",
+                available && !missionCompleted ? "is-available" : ""
+              ]
+                .filter(Boolean)
+                .join(" ");
 
-            const urlAttribute = locked
-              ? ""
-              : `data-mission-url="${getMissionUrl(mission.id)}"`;
+              const urlAttribute = locked
+                ? ""
+                : `data-mission-url="${getMissionUrl(mission.id)}"`;
 
-            const tabIndex = locked ? "-1" : "0";
+              const tabIndex = locked ? "-1" : "0";
 
-            return `
-              <article
-                class="${classes}"
-                ${urlAttribute}
-                tabindex="${tabIndex}"
-                aria-label="${escapeHtml(mission.title)}: ${status}"
-              >
-                <span class="mission-progress-icon" aria-hidden="true">
-                  ${icon}
-                </span>
+              return `
+                <article
+                  class="${classes}"
+                  ${urlAttribute}
+                  tabindex="${tabIndex}"
+                  aria-label="${escapeHtml(mission.title)}: ${status}"
+                >
+                  <span class="mission-progress-icon" aria-hidden="true">
+                    ${icon}
+                  </span>
 
-                <div class="mission-progress-copy">
-                  <p class="mission-progress-label">
-                    ${group.grade} · ${escapeHtml(mission.unit)}
-                  </p>
+                  <div class="mission-progress-copy">
+                    <p class="mission-progress-label">
+                      ${group.grade} · ${escapeHtml(mission.unit)}
+                    </p>
 
-                  <h3>${escapeHtml(mission.title)}</h3>
-                  <p>${escapeHtml(mission.description)}</p>
-                </div>
+                    <h3>${escapeHtml(mission.title)}</h3>
+                    <p>${escapeHtml(mission.description)}</p>
+                  </div>
 
-                <span class="mission-status ${
-                  missionCompleted ? "is-completed" : ""
-                }">
-                  ${status}
-                </span>
-              </article>
-            `;
-          })
-          .join("");
-      }).join("");
+                  <span class="mission-status ${
+                    missionCompleted ? "is-completed" : ""
+                  }">
+                    ${status}
+                  </span>
+                </article>
+              `;
+            })
+            .join("");
+        }).join("");
 
-      missionList
-        .querySelectorAll("[data-mission-url]")
-        .forEach((card) => {
-          function openMission() {
-            window.location.href = card.dataset.missionUrl;
-          }
-
-          card.addEventListener("click", openMission);
-
-          card.addEventListener("keydown", (event) => {
-            if (event.key === "Enter" || event.key === " ") {
-              event.preventDefault();
-              openMission();
+        missionList
+          .querySelectorAll("[data-mission-url]")
+          .forEach((card) => {
+            function openMission() {
+              window.location.href = card.dataset.missionUrl;
             }
+
+            card.addEventListener("click", openMission);
+
+            card.addEventListener("keydown", (event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                openMission();
+              }
+            });
           });
-        });
+      }
     }
 
     const continueLink = document.querySelector(
@@ -717,6 +816,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupContrastToggle();
   setupCurrentYear();
   updateBasicProgressWidgets();
+  setupHomeLevels();
   setupProgressPage();
   setupMissionPage();
   setupDailyChallenge();

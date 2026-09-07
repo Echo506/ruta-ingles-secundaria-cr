@@ -367,19 +367,19 @@
 
       if (existing) return existing;
 
-      const starterRow = {
-        user_id: user.id,
-        email: user.email ?? "",
-        display_name: user.user_metadata?.full_name ?? user.user_metadata?.name ?? "",
-        completed_levels: [],
-        completed_challenges: [],
-        reading_scores: [],
-        listening_scores: [],
-        xp: 0,
-        streak: 1,
-        badges: [],
-        updated_at: new Date().toISOString()
-      };
+  const starterRow = {
+  user_id: user.id,
+  email: user.email ?? "",
+  display_name: user.user_metadata?.full_name ?? user.user_metadata?.name ?? "",
+  completed_levels: [],
+  completed_challenges: [],
+  reading_scores: [],
+  listening_scores: [],
+  xp: 0,
+  streak: 0,
+  badges: [],
+  updated_at: new Date().toISOString()
+};
 
       const { data, error } = await supabase
         .from("student_progress")
