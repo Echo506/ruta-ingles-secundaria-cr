@@ -117,47 +117,52 @@
 <body>
   <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
 
-  <header class="site-header">
-    <div class="container navbar">
-      <a class="brand" href="../index.html" aria-label="English Quest CR, inicio">
-        <span class="brand-mark" aria-hidden="true">EQ</span>
-        <span>
-          <strong>English Quest CR</strong>
-          <small>Tu ruta de inglés</small>
-        </span>
-      </a>
+<header class="site-header">
+  <div class="container header-content">
+    <a class="brand" href="../index.html" aria-label="English Quest CR, inicio">
+      <span class="brand-mark" aria-hidden="true">EQ</span>
+      <span>
+        <strong>English Quest CR</strong>
+        <small>Tu ruta de inglés</small>
+      </span>
+    </a>
 
-      <button
-        class="menu-toggle"
-        type="button"
-        data-menu-toggle
-        aria-expanded="false"
-        aria-controls="primary-navigation"
-      >
-        <span class="sr-only">Abrir menú</span>
-        <span aria-hidden="true">☰</span>
-      </button>
+    <button
+      class="menu-toggle"
+      type="button"
+      data-menu-toggle
+      aria-expanded="false"
+      aria-controls="primary-navigation"
+    >
+      <span class="sr-only">Abrir menú</span>
+      <span aria-hidden="true">☰</span>
+    </button>
 
-      <nav id="primary-navigation" class="primary-navigation" data-navigation>
-        <a href="../index.html">Inicio</a>
-        <a href="levels.html">Rutas</a>
-        <a href="challenge.html">Retos</a>
-        <a href="progress.html">Mi progreso</a>
-        <a href="resources.html">Recursos</a>
-        <a href="about.html" aria-current="page">Sobre el proyecto</a>
-      </nav>
+    <nav
+      id="primary-navigation"
+      class="main-navigation"
+      data-navigation
+      aria-label="Navegación principal"
+    >
+      <a class="nav-link" href="../index.html">Inicio</a>
+      <a class="nav-link" href="levels.html">Rutas</a>
+      <a class="nav-link" href="challenge.html">Retos</a>
+      <a class="nav-link" href="progress.html">Mi progreso</a>
+      <a class="nav-link" href="resources.html">Recursos</a>
+      <a class="nav-link is-active" href="about.html" aria-current="page">Sobre el proyecto</a>
+    </nav>
 
-      <button
-        class="contrast-toggle"
-        type="button"
-        data-contrast-toggle
-        aria-pressed="false"
-      >
-        Alto contraste
-      </button>
-    </div>
-  </header>
-
+    <button
+      class="contrast-toggle"
+      type="button"
+      data-contrast-toggle
+      aria-pressed="false"
+    >
+      <span aria-hidden="true">◐</span>
+      <span class="contrast-label">Contraste</span>
+    </button>
+  </div>
+</header>
   <main id="main-content" class="about-page">
     <div class="container">
       <section class="about-hero" aria-labelledby="about-title">

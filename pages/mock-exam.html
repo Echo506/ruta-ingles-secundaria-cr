@@ -12,7 +12,6 @@
   <title>Simulacro Reading B1 | English Quest CR</title>
 
   <link rel="stylesheet" href="../assets/css/styles.css">
-
   <script src="../assets/js/app.js" defer></script>
 
   <style>
@@ -32,13 +31,14 @@
       display: inline-flex;
       margin-bottom: 0.85rem;
       padding: 0.38rem 0.75rem;
-      border: 1px solid rgba(89, 242, 196, 0.45);
+      border: 1px solid rgba(98, 230, 184, 0.45);
       border-radius: 999px;
       color: var(--mint);
       font-weight: 800;
       letter-spacing: 0.04em;
       text-transform: uppercase;
       font-size: 0.78rem;
+      background: rgba(98, 230, 184, 0.12);
     }
 
     .exam-title {
@@ -47,12 +47,13 @@
       color: var(--text);
       font-size: clamp(2rem, 5vw, 3.6rem);
       line-height: 1.05;
+      letter-spacing: -0.05em;
     }
 
     .exam-intro {
       max-width: 720px;
       margin: 1rem 0 0;
-      color: var(--muted);
+      color: var(--text-muted);
       font-size: 1.05rem;
       line-height: 1.7;
     }
@@ -60,16 +61,17 @@
     .exam-timer {
       min-width: 140px;
       padding: 1rem;
-      border: 1px solid rgba(89, 242, 196, 0.28);
+      border: 1px solid rgba(98, 230, 184, 0.28);
       border-radius: 18px;
-      background: rgba(89, 242, 196, 0.08);
+      background: rgba(98, 230, 184, 0.08);
       text-align: center;
+      box-shadow: var(--shadow-soft);
     }
 
     .exam-timer-label {
       display: block;
       margin-bottom: 0.3rem;
-      color: var(--muted);
+      color: var(--text-muted);
       font-size: 0.78rem;
       font-weight: 800;
       letter-spacing: 0.04em;
@@ -107,7 +109,7 @@
       margin-bottom: 1.5rem;
       padding: clamp(1.25rem, 3vw, 2rem);
       border: 1px solid var(--border);
-      border-radius: 22px;
+      border-radius: var(--radius-lg);
       background: var(--surface);
       box-shadow: var(--shadow);
     }
@@ -121,7 +123,7 @@
     .exam-instructions p,
     .exam-instructions li,
     .reading-card p {
-      color: var(--muted);
+      color: var(--text-muted);
       line-height: 1.7;
     }
 
@@ -132,6 +134,8 @@
 
     .reading-card {
       scroll-margin-top: 1rem;
+      background: linear-gradient(150deg, var(--surface-elevated), var(--surface));
+      box-shadow: var(--shadow-soft);
     }
 
     .reading-label {
@@ -180,14 +184,14 @@
       padding: 0.85rem 1rem;
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 14px;
-      color: var(--muted);
+      color: var(--text-muted);
       cursor: pointer;
       transition: border-color 160ms ease, background 160ms ease;
     }
 
     .exam-option:hover {
-      border-color: rgba(89, 242, 196, 0.5);
-      background: rgba(89, 242, 196, 0.06);
+      border-color: rgba(98, 230, 184, 0.5);
+      background: rgba(98, 230, 184, 0.06);
     }
 
     .exam-option input {
@@ -205,7 +209,7 @@
 
     .exam-submit-row p {
       margin: 0;
-      color: var(--muted);
+      color: var(--text-muted);
     }
 
     .exam-result {
@@ -217,7 +221,7 @@
     }
 
     .exam-result.is-success {
-      border-color: rgba(89, 242, 196, 0.5);
+      border-color: rgba(98, 230, 184, 0.5);
     }
 
     .exam-result.is-warning {
@@ -230,10 +234,11 @@
 
     .exam-result h2 {
       margin-top: 0;
+      color: var(--text);
     }
 
     .exam-result p {
-      color: var(--muted);
+      color: var(--text-muted);
       line-height: 1.7;
     }
 
@@ -247,7 +252,7 @@
     .exam-feedback-list {
       margin: 1rem 0 0;
       padding-left: 1.25rem;
-      color: var(--muted);
+      color: var(--text-muted);
       line-height: 1.8;
     }
 
@@ -279,7 +284,7 @@
   <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
 
   <header class="site-header">
-    <div class="container navbar">
+    <div class="container header-content">
       <a class="brand" href="../index.html" aria-label="English Quest CR, inicio">
         <span class="brand-mark" aria-hidden="true">EQ</span>
         <span>
@@ -299,13 +304,18 @@
         <span aria-hidden="true">☰</span>
       </button>
 
-      <nav id="primary-navigation" class="primary-navigation" data-navigation>
-        <a href="../index.html">Inicio</a>
-        <a href="levels.html">Rutas</a>
-        <a href="challenge.html">Retos</a>
-        <a href="progress.html">Mi progreso</a>
-        <a href="resources.html">Recursos</a>
-        <a href="about.html">Sobre el proyecto</a>
+      <nav
+        id="primary-navigation"
+        class="main-navigation"
+        data-navigation
+        aria-label="Navegación principal"
+      >
+        <a class="nav-link" href="../index.html">Inicio</a>
+        <a class="nav-link" href="levels.html">Rutas</a>
+        <a class="nav-link" href="challenge.html">Retos</a>
+        <a class="nav-link" href="progress.html">Mi progreso</a>
+        <a class="nav-link is-active" href="resources.html" aria-current="page">Recursos</a>
+        <a class="nav-link" href="about.html">Sobre el proyecto</a>
       </nav>
 
       <button
@@ -314,7 +324,8 @@
         data-contrast-toggle
         aria-pressed="false"
       >
-        Alto contraste
+        <span aria-hidden="true">◐</span>
+        <span class="contrast-label">Contraste</span>
       </button>
     </div>
   </header>
@@ -661,9 +672,7 @@
           <h2 id="reading-3-title">A Message from the Future Careers Club</h2>
 
           <div class="reading-passage">
-            <p>
-              Dear students,
-            </p>
+            <p>Dear students,</p>
 
             <p>
               The Future Careers Club is inviting eleventh-grade students to take
@@ -831,9 +840,9 @@
   </main>
 
   <footer class="site-footer">
-    <div class="container footer-top">
+    <div class="container footer-grid">
       <div>
-        <a class="brand" href="../index.html">
+        <a class="brand footer-brand" href="../index.html" aria-label="English Quest CR, inicio">
           <span class="brand-mark" aria-hidden="true">EQ</span>
           <span>
             <strong>English Quest CR</strong>
@@ -841,16 +850,19 @@
           </span>
         </a>
 
-        <p class="footer-copy">
-          Curso gratuito de inglés para estudiantes de secundaria en Costa Rica.
+        <p class="footer-disclaimer">
+          Curso gratuito de inglés para estudiantes de secundaria en Costa Rica,
+          con rutas, retos, recursos y seguimiento del progreso.
         </p>
       </div>
 
       <div class="footer-links">
+        <a href="../index.html">Inicio</a>
         <a href="levels.html">Rutas</a>
         <a href="challenge.html">Retos</a>
         <a href="progress.html">Mi progreso</a>
         <a href="resources.html">Recursos</a>
+        <a href="about.html">Sobre el proyecto</a>
       </div>
     </div>
 
@@ -893,9 +905,7 @@
         const minutes = Math.floor(seconds / 60);
         const remaining = seconds % 60;
 
-        return `${String(minutes).padStart(2, "0")}:${String(
-          remaining
-        ).padStart(2, "0")}`;
+        return `${String(minutes).padStart(2, "0")}:${String(remaining).padStart(2, "0")}`;
       }
 
       function updateTimer() {
@@ -942,9 +952,7 @@
       }
 
       function finishExam(isTimeUp = false) {
-        if (examFinished) {
-          return;
-        }
+        if (examFinished) return;
 
         examFinished = true;
         clearInterval(timerInterval);
@@ -953,9 +961,7 @@
         let score = 0;
 
         Object.entries(answerKey).forEach(([question, correctAnswer]) => {
-          const selected = form.querySelector(
-            `input[name="${question}"]:checked`
-          );
+          const selected = form.querySelector(`input[name="${question}"]:checked`);
 
           if (!selected) {
             unanswered.push(question);
@@ -967,11 +973,9 @@
           }
         });
 
-        form
-          .querySelectorAll("input")
-          .forEach((input) => {
-            input.disabled = true;
-          });
+        form.querySelectorAll("input").forEach((input) => {
+          input.disabled = true;
+        });
 
         const percentage = Math.round((score / totalQuestions) * 100);
         const feedback = getFeedback(score);
@@ -1019,29 +1023,10 @@
             window.location.reload();
           });
         }
-
-        if (!isTimeUp && score >= 9) {
-          try {
-            const storageKey = "englishQuestCRProgress";
-            const saved = localStorage.getItem(storageKey);
-            const progress = saved ? JSON.parse(saved) : {};
-
-            if (progress.lastMockExamDate !== new Date().toISOString().slice(0, 10)) {
-              progress.xp = Number(progress.xp || 0) + 150;
-              progress.lastMockExamDate = new Date().toISOString().slice(0, 10);
-
-              localStorage.setItem(storageKey, JSON.stringify(progress));
-            }
-          } catch {
-            // El simulacro sigue funcionando aunque localStorage no esté disponible.
-          }
-        }
       }
 
       const timerInterval = window.setInterval(() => {
-        if (examFinished) {
-          return;
-        }
+        if (examFinished) return;
 
         remainingSeconds -= 1;
         updateTimer();
@@ -1072,9 +1057,7 @@
           `;
           result.focus();
 
-          const firstQuestion = document.querySelector(
-            `input[name="${unanswered[0]}"]`
-          );
+          const firstQuestion = document.querySelector(`input[name="${unanswered[0]}"]`);
 
           if (firstQuestion) {
             firstQuestion.closest(".exam-question").scrollIntoView({

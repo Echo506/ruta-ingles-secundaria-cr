@@ -12,15 +12,14 @@
   <title>Simulacro Listening B1 | English Quest CR</title>
 
   <link rel="stylesheet" href="../assets/css/styles.css">
-
   <script src="../assets/js/app.js" defer></script>
 
   <style>
-    .listening-page {
+    .exam-page {
       padding: 2rem 0 4rem;
     }
 
-    .listening-hero {
+    .exam-hero {
       display: grid;
       grid-template-columns: 1fr auto;
       gap: 1.25rem;
@@ -28,113 +27,118 @@
       margin-bottom: 1.5rem;
     }
 
-    .listening-label {
+    .exam-label {
       display: inline-flex;
       margin-bottom: 0.85rem;
       padding: 0.38rem 0.75rem;
-      border: 1px solid rgba(89, 242, 196, 0.45);
+      border: 1px solid rgba(98, 230, 184, 0.45);
       border-radius: 999px;
       color: var(--mint);
-      font-size: 0.78rem;
       font-weight: 800;
       letter-spacing: 0.04em;
       text-transform: uppercase;
+      font-size: 0.78rem;
+      background: rgba(98, 230, 184, 0.12);
     }
 
-    .listening-title {
+    .exam-title {
       max-width: 760px;
       margin: 0;
       color: var(--text);
       font-size: clamp(2rem, 5vw, 3.6rem);
       line-height: 1.05;
+      letter-spacing: -0.05em;
     }
 
-    .listening-intro {
+    .exam-intro {
       max-width: 720px;
       margin: 1rem 0 0;
-      color: var(--muted);
+      color: var(--text-muted);
       font-size: 1.05rem;
       line-height: 1.7;
     }
 
-    .listening-timer {
+    .exam-timer {
       min-width: 140px;
       padding: 1rem;
-      border: 1px solid rgba(89, 242, 196, 0.28);
+      border: 1px solid rgba(98, 230, 184, 0.28);
       border-radius: 18px;
-      background: rgba(89, 242, 196, 0.08);
+      background: rgba(98, 230, 184, 0.08);
       text-align: center;
+      box-shadow: var(--shadow-soft);
     }
 
-    .listening-timer-label {
+    .exam-timer-label {
       display: block;
       margin-bottom: 0.3rem;
-      color: var(--muted);
+      color: var(--text-muted);
       font-size: 0.78rem;
       font-weight: 800;
       letter-spacing: 0.04em;
       text-transform: uppercase;
     }
 
-    .listening-timer-time {
+    .exam-timer-time {
       color: var(--mint);
       font-size: 2rem;
       font-variant-numeric: tabular-nums;
       font-weight: 900;
     }
 
-    .listening-timer.is-warning {
+    .exam-timer.is-warning {
       border-color: rgba(255, 184, 77, 0.7);
       background: rgba(255, 184, 77, 0.12);
     }
 
-    .listening-timer.is-warning .listening-timer-time {
+    .exam-timer.is-warning .exam-timer-time {
       color: #ffb84d;
     }
 
-    .listening-timer.is-finished {
+    .exam-timer.is-finished {
       border-color: rgba(255, 104, 104, 0.7);
       background: rgba(255, 104, 104, 0.12);
     }
 
-    .listening-timer.is-finished .listening-timer-time {
+    .exam-timer.is-finished .exam-timer-time {
       color: #ff6868;
     }
 
-    .listening-instructions,
-    .audio-card,
-    .listening-result {
+    .exam-instructions,
+    .listening-card,
+    .exam-result {
       margin-bottom: 1.5rem;
       padding: clamp(1.25rem, 3vw, 2rem);
       border: 1px solid var(--border);
-      border-radius: 22px;
+      border-radius: var(--radius-lg);
       background: var(--surface);
       box-shadow: var(--shadow);
     }
 
-    .listening-instructions h2,
-    .audio-card h2 {
+    .exam-instructions h2,
+    .listening-card h2 {
       margin-top: 0;
       color: var(--text);
     }
 
-    .listening-instructions p,
-    .listening-instructions li,
-    .audio-card p {
-      color: var(--muted);
+    .exam-instructions p,
+    .exam-instructions li,
+    .listening-card p {
+      color: var(--text-muted);
       line-height: 1.7;
     }
 
-    .listening-instructions ul {
+    .exam-instructions ul {
       margin-bottom: 0;
       padding-left: 1.25rem;
     }
 
-    .audio-card {
+    .listening-card {
       scroll-margin-top: 1rem;
+      background: linear-gradient(150deg, var(--surface-elevated), var(--surface));
+      box-shadow: var(--shadow-soft);
     }
 
-    .audio-label {
+    .listening-label {
       display: inline-block;
       margin-bottom: 0.8rem;
       color: var(--mint);
@@ -144,48 +148,75 @@
       text-transform: uppercase;
     }
 
-    .audio-player-box {
-      margin: 1.1rem 0 1.4rem;
-      padding: 1rem;
-      border: 1px solid rgba(89, 242, 196, 0.2);
-      border-radius: 16px;
+    .audio-box {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem;
+      margin: 1.25rem 0 1.5rem;
+      padding: 1.15rem;
+      border-left: 4px solid var(--mint);
+      border-radius: 0 14px 14px 0;
       background: rgba(255, 255, 255, 0.04);
     }
 
-    .audio-player-box p {
-      margin-top: 0;
-      font-size: 0.94rem;
+    .audio-box audio {
+      flex: 1 1 260px;
+      min-width: 220px;
     }
 
-    .audio-player-box audio {
-      width: 100%;
-      margin-top: 0.4rem;
+    .audio-box p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.88rem;
     }
 
-    .audio-status {
-      min-height: 1.25rem;
-      margin: 0.7rem 0 0;
-      color: var(--muted);
-      font-size: 0.9rem;
+    .transcript-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 0.5rem;
+      color: var(--cyan);
+      font-size: 0.85rem;
+      font-weight: 800;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
     }
 
-    .audio-status.is-error {
-      color: #ff8d8d;
+    .transcript-toggle:hover {
+      color: var(--mint);
     }
 
-    .listening-question {
+    .transcript-box {
+      display: none;
+      margin-top: 1rem;
+      padding: 1rem;
+      color: var(--text-muted);
+      background: rgba(4, 11, 22, 0.3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      line-height: 1.7;
+    }
+
+    .transcript-box.is-open {
+      display: block;
+    }
+
+    .exam-question {
       margin-top: 1.4rem;
       padding-top: 1.25rem;
       border-top: 1px solid var(--border);
     }
 
-    .listening-question legend {
+    .exam-question legend {
       color: var(--text);
       font-weight: 800;
       line-height: 1.5;
     }
 
-    .listening-option {
+    .exam-option {
       display: flex;
       gap: 0.7rem;
       align-items: flex-start;
@@ -193,22 +224,22 @@
       padding: 0.85rem 1rem;
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 14px;
-      color: var(--muted);
+      color: var(--text-muted);
       cursor: pointer;
       transition: border-color 160ms ease, background 160ms ease;
     }
 
-    .listening-option:hover {
-      border-color: rgba(89, 242, 196, 0.5);
-      background: rgba(89, 242, 196, 0.06);
+    .exam-option:hover {
+      border-color: rgba(98, 230, 184, 0.5);
+      background: rgba(98, 230, 184, 0.06);
     }
 
-    .listening-option input {
+    .exam-option input {
       margin-top: 0.25rem;
       accent-color: var(--mint);
     }
 
-    .listening-submit-row {
+    .exam-submit-row {
       display: flex;
       flex-wrap: wrap;
       gap: 1rem;
@@ -216,72 +247,73 @@
       margin-top: 1.5rem;
     }
 
-    .listening-submit-row p {
+    .exam-submit-row p {
       margin: 0;
-      color: var(--muted);
+      color: var(--text-muted);
     }
 
-    .listening-result {
+    .exam-result {
       display: none;
     }
 
-    .listening-result.is-visible {
+    .exam-result.is-visible {
       display: block;
     }
 
-    .listening-result.is-success {
-      border-color: rgba(89, 242, 196, 0.5);
+    .exam-result.is-success {
+      border-color: rgba(98, 230, 184, 0.5);
     }
 
-    .listening-result.is-warning {
+    .exam-result.is-warning {
       border-color: rgba(255, 184, 77, 0.7);
     }
 
-    .listening-result.is-error {
+    .exam-result.is-error {
       border-color: rgba(255, 104, 104, 0.7);
     }
 
-    .listening-result h2 {
+    .exam-result h2 {
       margin-top: 0;
+      color: var(--text);
     }
 
-    .listening-result p {
-      color: var(--muted);
+    .exam-result p {
+      color: var(--text-muted);
       line-height: 1.7;
     }
 
-    .listening-score {
+    .exam-score {
       color: var(--mint);
       font-size: clamp(2.4rem, 7vw, 4.5rem);
       font-weight: 900;
       line-height: 1;
     }
 
-    .listening-feedback-list {
+    .exam-feedback-list {
       margin: 1rem 0 0;
       padding-left: 1.25rem;
-      color: var(--muted);
+      color: var(--text-muted);
       line-height: 1.8;
     }
 
-    .listening-actions {
+    .exam-actions {
       display: flex;
       flex-wrap: wrap;
       gap: 0.85rem;
       margin-top: 1.35rem;
     }
 
-    .listening-actions a,
-    .listening-actions button {
+    .exam-actions a,
+    .exam-actions button {
       text-decoration: none;
     }
 
     @media (max-width: 700px) {
-      .listening-hero {
+      .exam-hero {
         grid-template-columns: 1fr;
       }
 
-      .listening-timer {
+      .exam-timer {
         width: 100%;
       }
     }
@@ -292,7 +324,7 @@
   <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
 
   <header class="site-header">
-    <div class="container navbar">
+    <div class="container header-content">
       <a class="brand" href="../index.html" aria-label="English Quest CR, inicio">
         <span class="brand-mark" aria-hidden="true">EQ</span>
         <span>
@@ -312,13 +344,18 @@
         <span aria-hidden="true">☰</span>
       </button>
 
-      <nav id="primary-navigation" class="primary-navigation" data-navigation>
-        <a href="../index.html">Inicio</a>
-        <a href="levels.html">Rutas</a>
-        <a href="challenge.html">Retos</a>
-        <a href="progress.html">Mi progreso</a>
-        <a href="resources.html">Recursos</a>
-        <a href="about.html">Sobre el proyecto</a>
+      <nav
+        id="primary-navigation"
+        class="main-navigation"
+        data-navigation
+        aria-label="Navegación principal"
+      >
+        <a class="nav-link" href="../index.html">Inicio</a>
+        <a class="nav-link" href="levels.html">Rutas</a>
+        <a class="nav-link" href="challenge.html">Retos</a>
+        <a class="nav-link" href="progress.html">Mi progreso</a>
+        <a class="nav-link is-active" href="resources.html" aria-current="page">Recursos</a>
+        <a class="nav-link" href="about.html">Sobre el proyecto</a>
       </nav>
 
       <button
@@ -327,486 +364,490 @@
         data-contrast-toggle
         aria-pressed="false"
       >
-        Alto contraste
+        <span aria-hidden="true">◐</span>
+        <span class="contrast-label">Contraste</span>
       </button>
     </div>
   </header>
 
-  <main id="main-content" class="listening-page">
+  <main id="main-content" class="exam-page">
     <div class="container">
-      <section class="listening-hero" aria-labelledby="listening-title">
+      <section class="exam-hero" aria-labelledby="exam-title">
         <div>
-          <span class="listening-label">Undécimo · Listening B1</span>
-
-          <h1 id="listening-title" class="listening-title">
-            Simulacro de comprensión auditiva
-          </h1>
-
-          <p class="listening-intro">
-            Escuchá los tres audios y respondé las 15 preguntas. Prestá atención
-            a la idea principal, los detalles, los horarios, las instrucciones y
-            el significado de palabras en contexto.
+          <span class="exam-label">Undécimo · Listening B1</span>
+          <h1 id="exam-title" class="exam-title">Simulacro de comprensión auditiva</h1>
+          <p class="exam-intro">
+            Escuchá los tres audios y respondé las 15 preguntas. Podés reproducir
+            cada audio más de una vez y leer la transcripción si la necesitás.
           </p>
         </div>
 
-        <div class="listening-timer" id="listening-timer" aria-live="polite">
-          <span class="listening-timer-label">Tiempo restante</span>
-          <strong class="listening-timer-time" id="timer-display">20:00</strong>
+        <div class="exam-timer" id="exam-timer" aria-live="polite">
+          <span class="exam-timer-label">Tiempo restante</span>
+          <strong class="exam-timer-time" id="timer-display">25:00</strong>
         </div>
       </section>
 
-      <section class="listening-instructions" aria-labelledby="instructions-title">
+      <section class="exam-instructions" aria-labelledby="instructions-title">
         <h2 id="instructions-title">Instrucciones</h2>
-
         <ul>
-          <li>Tenés 20 minutos para completar el simulacro.</li>
-          <li>Podés escuchar cada audio hasta dos veces.</li>
-          <li>No hay transcripción durante el examen.</li>
-          <li>Seleccioná una sola respuesta por pregunta.</li>
-          <li>Al terminar, presioná “Finalizar simulacro”.</li>
-          <li>Este es material original de práctica y no una prueba oficial.</li>
+          <li>Tenés 25 minutos para completar el simulacro.</li>
+          <li>Escuchá cada audio con atención antes de responder.</li>
+          <li>Podés usar la transcripción como apoyo, pero intentá primero sin leerla.</li>
+          <li>Seleccioná una respuesta por pregunta.</li>
+          <li>Al finalizar, presioná “Finalizar simulacro” para recibir tu resultado.</li>
+          <li>El contenido es práctica original y no reproduce una prueba oficial.</li>
         </ul>
       </section>
 
-      <form id="listening-exam-form" novalidate>
-        <section class="audio-card" aria-labelledby="audio-1-title">
-          <span class="audio-label">Audio 1</span>
-          <h2 id="audio-1-title">Community project announcement</h2>
+      <form id="mock-exam-form" novalidate>
+        <section class="listening-card" aria-labelledby="listening-1-title">
+          <span class="listening-label">Listening 1</span>
+          <h2 id="listening-1-title">A Phone Call About a Trip</h2>
 
-          <div class="audio-player-box">
-            <p>
-              Escuchá el anuncio. Podés reproducirlo un máximo de dos veces.
-            </p>
-
-            <audio
-              id="audio-1"
-              controls
-              preload="metadata"
-              data-max-plays="2"
-            >
-              <source src="../assets/audio/listening-b1-1.mp3" type="audio/mpeg">
-              Tu navegador no puede reproducir este archivo de audio.
+          <div class="audio-box">
+            <audio controls>
+              <source src="../assets/audio/listening-1.mp3" type="audio/mpeg">
+              Tu navegador no soporta audio HTML5.
             </audio>
-
-            <p id="audio-1-status" class="audio-status" aria-live="polite">
-              Reproducciones disponibles: 2
-            </p>
+            <p>Escuchá la conversación entre dos amigas planeando un viaje.</p>
           </div>
 
-          <fieldset class="listening-question">
-            <legend>1. What is the name of the community project?</legend>
+          <button class="transcript-toggle" type="button" data-transcript-toggle="1">
+            Mostrar transcripción ▾
+          </button>
 
-            <label class="listening-option">
+          <div class="transcript-box" id="transcript-1">
+            <p><strong>Ana:</strong> Hey, are you still coming with us this weekend?</p>
+            <p><strong>Laura:</strong> Yes, but I need to know what time the bus leaves.</p>
+            <p><strong>Ana:</strong> It leaves at 7:30 in the morning from the main terminal.</p>
+            <p><strong>Laura:</strong> That's early. Should I bring money for lunch?</p>
+            <p><strong>Ana:</strong> No, lunch is included. Just bring money for snacks and the entrance fee to the park.</p>
+            <p><strong>Laura:</strong> Great, thanks. I'll be there by 7:15.</p>
+          </div>
+
+          <fieldset class="exam-question">
+            <legend>1. What time does the bus leave?</legend>
+
+            <label class="exam-option">
               <input type="radio" name="q1" value="a">
-              <span>Clean Spaces</span>
+              <span>6:30 in the morning.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q1" value="b">
-              <span>Green Technology</span>
+              <span>7:30 in the morning.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q1" value="c">
-              <span>Future Careers</span>
+              <span>7:30 in the evening.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q1" value="d">
-              <span>Healthy Schools</span>
+              <span>8:15 in the morning.</span>
             </label>
           </fieldset>
 
-          <fieldset class="listening-question">
-            <legend>2. Where will the project take place?</legend>
+          <fieldset class="exam-question">
+            <legend>2. What does Laura need to bring money for?</legend>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q2" value="a">
-              <span>Near the sports center park</span>
+              <span>Lunch and the bus ticket.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q2" value="b">
-              <span>At the local technology center</span>
+              <span>Snacks and the park entrance fee.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q2" value="c">
-              <span>Inside the school library</span>
+              <span>A hotel room.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q2" value="d">
-              <span>At a forest reserve</span>
+              <span>Transportation only.</span>
             </label>
           </fieldset>
 
-          <fieldset class="listening-question">
-            <legend>3. Which activity is NOT mentioned in the announcement?</legend>
+          <fieldset class="exam-question">
+            <legend>3. What time will Laura arrive at the terminal?</legend>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q3" value="a">
-              <span>Collecting recyclable materials</span>
+              <span>7:00.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q3" value="b">
-              <span>Painting damaged benches</span>
+              <span>7:15.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q3" value="c">
-              <span>Planting native trees</span>
+              <span>7:30.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q3" value="d">
-              <span>Building a new sports center</span>
+              <span>8:00.</span>
             </label>
           </fieldset>
 
-          <fieldset class="listening-question">
-            <legend>4. When should students register?</legend>
+          <fieldset class="exam-question">
+            <legend>4. Is lunch included in the trip?</legend>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q4" value="a">
-              <span>Before Friday</span>
+              <span>Yes, it is included.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q4" value="b">
-              <span>On Saturday afternoon</span>
+              <span>No, everyone pays separately.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q4" value="c">
-              <span>Next month</span>
+              <span>Only breakfast is included.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q4" value="d">
-              <span>After the activity ends</span>
+              <span>The text does not mention this.</span>
             </label>
           </fieldset>
 
-          <fieldset class="listening-question">
-            <legend>5. What time will the activity finish?</legend>
+          <fieldset class="exam-question">
+            <legend>5. What is the general purpose of this conversation?</legend>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q5" value="a">
-              <span>At eight in the morning</span>
+              <span>To confirm details about a weekend trip.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q5" value="b">
-              <span>At noon</span>
+              <span>To cancel a trip.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q5" value="c">
-              <span>At three in the afternoon</span>
+              <span>To complain about a bus schedule.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q5" value="d">
-              <span>At midnight</span>
+              <span>To plan a birthday party.</span>
             </label>
           </fieldset>
         </section>
 
-        <section class="audio-card" aria-labelledby="audio-2-title">
-          <span class="audio-label">Audio 2</span>
-          <h2 id="audio-2-title">Digital design course</h2>
+        <section class="listening-card" aria-labelledby="listening-2-title">
+          <span class="listening-label">Listening 2</span>
+          <h2 id="listening-2-title">A School Announcement</h2>
 
-          <div class="audio-player-box">
-            <p>
-              Escuchá la información sobre el curso. Podés reproducirla un máximo
-              de dos veces.
-            </p>
-
-            <audio
-              id="audio-2"
-              controls
-              preload="metadata"
-              data-max-plays="2"
-            >
-              <source src="../assets/audio/listening-b1-2.mp3" type="audio/mpeg">
-              Tu navegador no puede reproducir este archivo de audio.
+          <div class="audio-box">
+            <audio controls>
+              <source src="../assets/audio/listening-2.mp3" type="audio/mpeg">
+              Tu navegador no soporta audio HTML5.
             </audio>
+            <p>Escuchá el anuncio sobre un cambio de horario en la escuela.</p>
+          </div>
 
-            <p id="audio-2-status" class="audio-status" aria-live="polite">
-              Reproducciones disponibles: 2
+          <button class="transcript-toggle" type="button" data-transcript-toggle="2">
+            Mostrar transcripción ▾
+          </button>
+
+          <div class="transcript-box" id="transcript-2">
+            <p>
+              Good morning, students. Please remember that tomorrow's science
+              fair will start at 9:00 a.m. instead of 8:00 a.m., because the gym
+              needs extra time for setup. All projects must be ready by 8:30.
+              Students who need help carrying materials should contact Mr. Rojas
+              in the main office before 3:00 p.m. today. Also, remember that
+              parents are welcome to attend, but they must register at the front
+              desk when they arrive. Thank you, and good luck to everyone
+              participating.
             </p>
           </div>
 
-          <fieldset class="listening-question">
-            <legend>6. Who is the course for?</legend>
+          <fieldset class="exam-question">
+            <legend>6. What time will the science fair start?</legend>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q6" value="a">
-              <span>Eleventh-grade students</span>
+              <span>8:00 a.m.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q6" value="b">
-              <span>Primary school teachers</span>
+              <span>8:30 a.m.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q6" value="c">
-              <span>Parents of young children</span>
+              <span>9:00 a.m.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q6" value="d">
-              <span>Professional designers only</span>
+              <span>3:00 p.m.</span>
             </label>
           </fieldset>
 
-          <fieldset class="listening-question">
-            <legend>7. What must students do before June fifteenth?</legend>
+          <fieldset class="exam-question">
+            <legend>7. Why was the schedule changed?</legend>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q7" value="a">
-              <span>Complete an online application</span>
+              <span>Because the gym needs extra setup time.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q7" value="b">
-              <span>Pay for the course</span>
+              <span>Because there is no gym available.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q7" value="c">
-              <span>Buy a new laptop</span>
+              <span>Because parents asked for a later time.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q7" value="d">
-              <span>Travel to another city</span>
+              <span>Because of bad weather.</span>
             </label>
           </fieldset>
 
-          <fieldset class="listening-question">
-            <legend>8. What will participants create?</legend>
+          <fieldset class="exam-question">
+            <legend>8. Who should students contact for help carrying materials?</legend>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q8" value="a">
-              <span>A small portfolio</span>
+              <span>Mr. Rojas.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q8" value="b">
-              <span>A new school building</span>
+              <span>The science teacher.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q8" value="c">
-              <span>A sports competition</span>
+              <span>The front desk.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q8" value="d">
-              <span>A travel guide</span>
+              <span>Other students.</span>
             </label>
           </fieldset>
 
-          <fieldset class="listening-question">
-            <legend>9. When will the course take place?</legend>
+          <fieldset class="exam-question">
+            <legend>9. What must parents do before attending?</legend>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q9" value="a">
-              <span>Monday to Thursday, 9:00 a.m. to 12:00 p.m.</span>
+              <span>Pay an entrance fee.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q9" value="b">
-              <span>Saturday only, 8:00 a.m. to noon</span>
+              <span>Register at the front desk.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q9" value="c">
-              <span>Monday to Friday, 1:00 p.m. to 5:00 p.m.</span>
+              <span>Bring their own materials.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q9" value="d">
-              <span>Every night, 6:00 p.m. to 8:00 p.m.</span>
+              <span>Contact Mr. Rojas directly.</span>
             </label>
           </fieldset>
 
-          <fieldset class="listening-question">
-            <legend>10. Why should interested students apply early?</legend>
+          <fieldset class="exam-question">
+            <legend>10. By what time must projects be ready?</legend>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q10" value="a">
-              <span>Places are limited</span>
+              <span>8:00 a.m.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q10" value="b">
-              <span>The course is very expensive</span>
+              <span>8:30 a.m.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q10" value="c">
-              <span>They need to bring a teacher</span>
+              <span>9:00 a.m.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q10" value="d">
-              <span>The center closes in the afternoon</span>
+              <span>3:00 p.m.</span>
             </label>
           </fieldset>
         </section>
 
-        <section class="audio-card" aria-labelledby="audio-3-title">
-          <span class="audio-label">Audio 3</span>
-          <h2 id="audio-3-title">A travel experience</h2>
+        <section class="listening-card" aria-labelledby="listening-3-title">
+          <span class="listening-label">Listening 3</span>
+          <h2 id="listening-3-title">A Job Interview Tip</h2>
 
-          <div class="audio-player-box">
-            <p>
-              Escuchá la experiencia de viaje. Podés reproducirla un máximo de
-              dos veces.
-            </p>
-
-            <audio
-              id="audio-3"
-              controls
-              preload="metadata"
-              data-max-plays="2"
-            >
-              <source src="../assets/audio/listening-b1-3.mp3" type="audio/mpeg">
-              Tu navegador no puede reproducir este archivo de audio.
+          <div class="audio-box">
+            <audio controls>
+              <source src="../assets/audio/listening-3.mp3" type="audio/mpeg">
+              Tu navegador no soporta audio HTML5.
             </audio>
+            <p>Escuchá el consejo de una consejera escolar sobre entrevistas de trabajo.</p>
+          </div>
 
-            <p id="audio-3-status" class="audio-status" aria-live="polite">
-              Reproducciones disponibles: 2
+          <button class="transcript-toggle" type="button" data-transcript-toggle="3">
+            Mostrar transcripción ▾
+          </button>
+
+          <div class="transcript-box" id="transcript-3">
+            <p>
+              When you go to a job interview, the first thing to remember is to
+              arrive at least ten minutes early. This shows respect for the
+              interviewer's time. Second, bring a printed copy of your résumé,
+              even if you already sent it by email. Third, prepare two or three
+              questions about the company; this shows genuine interest. Finally,
+              avoid checking your phone during the interview, even if you are
+              waiting. Small details like these often matter as much as your
+              answers to the questions.
             </p>
           </div>
 
-          <fieldset class="listening-question">
-            <legend>11. When did the speaker visit the northern region?</legend>
+          <fieldset class="exam-question">
+            <legend>11. How early should you arrive at a job interview?</legend>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q11" value="a">
-              <span>Last July</span>
+              <span>At least ten minutes early.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q11" value="b">
-              <span>Last December</span>
+              <span>Exactly on time.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q11" value="c">
-              <span>Next month</span>
+              <span>One hour early.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q11" value="d">
-              <span>Every weekend</span>
+              <span>It does not matter.</span>
             </label>
           </fieldset>
 
-          <fieldset class="listening-question">
-            <legend>12. Where did the family stay?</legend>
+          <fieldset class="exam-question">
+            <legend>12. What should you bring even if you already sent your résumé by email?</legend>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q12" value="a">
-              <span>In a small lodge near a forest reserve</span>
+              <span>A printed copy of your résumé.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q12" value="b">
-              <span>In a hotel near the airport</span>
+              <span>A letter of recommendation.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q12" value="c">
-              <span>At a school in San José</span>
+              <span>Your phone.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q12" value="d">
-              <span>In a tent on the beach</span>
+              <span>A gift for the interviewer.</span>
             </label>
           </fieldset>
 
-          <fieldset class="listening-question">
-            <legend>13. What did they see on the second day?</legend>
+          <fieldset class="exam-question">
+            <legend>13. Why should you prepare questions about the company?</legend>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q13" value="a">
-              <span>Birds, monkeys, and a waterfall</span>
+              <span>To show genuine interest.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q13" value="b">
-              <span>A technology center and a museum</span>
+              <span>Because the interviewer requires it.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q13" value="c">
-              <span>A sports center and a library</span>
+              <span>To avoid answering questions.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q13" value="d">
-              <span>Only a large city</span>
+              <span>Because it is part of the résumé.</span>
             </label>
           </fieldset>
 
-          <fieldset class="listening-question">
-            <legend>14. How was the weather during the trip?</legend>
+          <fieldset class="exam-question">
+            <legend>14. What should you avoid doing during the interview?</legend>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q14" value="a">
-              <span>Rainy</span>
+              <span>Checking your phone.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q14" value="b">
-              <span>Very snowy</span>
+              <span>Asking questions.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q14" value="c">
-              <span>Extremely hot every day</span>
+              <span>Bringing your résumé.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q14" value="d">
-              <span>Windy with no clouds</span>
+              <span>Arriving early.</span>
             </label>
           </fieldset>
 
-          <fieldset class="listening-question">
-            <legend>15. What did the experience make the speaker appreciate?</legend>
+          <fieldset class="exam-question">
+            <legend>15. According to the speaker, small details are:</legend>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q15" value="a">
-              <span>The importance of protecting natural habitats</span>
+              <span>Often as important as your answers.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q15" value="b">
-              <span>The importance of buying more devices</span>
+              <span>Not important at all.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q15" value="c">
-              <span>The importance of studying only indoors</span>
+              <span>Only important for managers.</span>
             </label>
 
-            <label class="listening-option">
+            <label class="exam-option">
               <input type="radio" name="q15" value="d">
-              <span>The importance of traveling by plane</span>
+              <span>Only relevant after the interview.</span>
             </label>
           </fieldset>
         </section>
 
-        <div class="listening-submit-row">
+        <div class="exam-submit-row">
           <button class="button button-primary" type="submit">
             Finalizar simulacro
           </button>
@@ -816,8 +857,8 @@
       </form>
 
       <section
-        id="listening-result"
-        class="listening-result"
+        id="exam-result"
+        class="exam-result"
         tabindex="-1"
         aria-live="polite"
       ></section>
@@ -825,9 +866,9 @@
   </main>
 
   <footer class="site-footer">
-    <div class="container footer-top">
+    <div class="container footer-grid">
       <div>
-        <a class="brand" href="../index.html">
+        <a class="brand footer-brand" href="../index.html" aria-label="English Quest CR, inicio">
           <span class="brand-mark" aria-hidden="true">EQ</span>
           <span>
             <strong>English Quest CR</strong>
@@ -835,16 +876,19 @@
           </span>
         </a>
 
-        <p class="footer-copy">
-          Curso gratuito de inglés para estudiantes de secundaria en Costa Rica.
+        <p class="footer-disclaimer">
+          Curso gratuito de inglés para estudiantes de secundaria en Costa Rica,
+          con rutas, retos, recursos y seguimiento del progreso.
         </p>
       </div>
 
       <div class="footer-links">
+        <a href="../index.html">Inicio</a>
         <a href="levels.html">Rutas</a>
         <a href="challenge.html">Retos</a>
         <a href="progress.html">Mi progreso</a>
         <a href="resources.html">Recursos</a>
+        <a href="about.html">Sobre el proyecto</a>
       </div>
     </div>
 
@@ -856,22 +900,36 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const form = document.querySelector("#listening-exam-form");
-      const result = document.querySelector("#listening-result");
-      const timerBox = document.querySelector("#listening-timer");
+      const form = document.querySelector("#mock-exam-form");
+      const result = document.querySelector("#exam-result");
+      const timerBox = document.querySelector("#exam-timer");
       const timerDisplay = document.querySelector("#timer-display");
 
+      document.querySelectorAll("[data-transcript-toggle]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const id = button.getAttribute("data-transcript-toggle");
+          const box = document.querySelector(`#transcript-${id}`);
+
+          if (!box) return;
+
+          const isOpen = box.classList.toggle("is-open");
+          button.textContent = isOpen
+            ? "Ocultar transcripción ▴"
+            : "Mostrar transcripción ▾";
+        });
+      });
+
       const answerKey = {
-        q1: "a",
-        q2: "a",
-        q3: "d",
+        q1: "b",
+        q2: "b",
+        q3: "b",
         q4: "a",
-        q5: "b",
-        q6: "a",
+        q5: "a",
+        q6: "c",
         q7: "a",
         q8: "a",
-        q9: "a",
-        q10: "a",
+        q9: "b",
+        q10: "b",
         q11: "a",
         q12: "a",
         q13: "a",
@@ -880,16 +938,14 @@
       };
 
       const totalQuestions = Object.keys(answerKey).length;
-      let remainingSeconds = 20 * 60;
+      let remainingSeconds = 25 * 60;
       let examFinished = false;
 
       function formatTime(seconds) {
         const minutes = Math.floor(seconds / 60);
-        const remainder = seconds % 60;
+        const remaining = seconds % 60;
 
-        return `${String(minutes).padStart(2, "0")}:${String(
-          remainder
-        ).padStart(2, "0")}`;
+        return `${String(minutes).padStart(2, "0")}:${String(remaining).padStart(2, "0")}`;
       }
 
       function updateTimer() {
@@ -906,101 +962,14 @@
         }
       }
 
-      function stopAllAudio() {
-        document.querySelectorAll("audio").forEach((audio) => {
-          audio.pause();
-        });
-      }
-
-      function disableAllAudio() {
-        document.querySelectorAll("audio").forEach((audio) => {
-          audio.pause();
-          audio.controls = false;
-          audio.setAttribute("aria-disabled", "true");
-        });
-      }
-
-      function setupAudioLimit(audio) {
-        const maxPlays = Number(audio.dataset.maxPlays || 2);
-        const status = document.querySelector(`#${audio.id}-status`);
-        let playsUsed = 0;
-        let countedCurrentPlay = false;
-
-        function updateStatus(message, className = "") {
-          if (!status) return;
-
-          status.textContent = message;
-          status.className = `audio-status ${className}`.trim();
-        }
-
-        audio.addEventListener("play", () => {
-          if (examFinished) {
-            audio.pause();
-            return;
-          }
-
-          document.querySelectorAll("audio").forEach((otherAudio) => {
-            if (otherAudio !== audio) {
-              otherAudio.pause();
-            }
-          });
-
-          if (playsUsed >= maxPlays && audio.currentTime === 0) {
-            audio.pause();
-            updateStatus(
-              "Ya usaste las dos reproducciones de este audio.",
-              "is-error"
-            );
-            return;
-          }
-
-          if (audio.currentTime === 0 && !countedCurrentPlay) {
-            playsUsed += 1;
-            countedCurrentPlay = true;
-
-            const remaining = maxPlays - playsUsed;
-
-            updateStatus(
-              remaining > 0
-                ? `Reproducciones disponibles: ${remaining}`
-                : "Última reproducción en curso."
-            );
-          }
-        });
-
-        audio.addEventListener("ended", () => {
-          countedCurrentPlay = false;
-
-          if (playsUsed >= maxPlays) {
-            audio.controls = false;
-            updateStatus(
-              "Ya usaste las dos reproducciones de este audio.",
-              "is-error"
-            );
-          }
-        });
-
-        audio.addEventListener("error", () => {
-          updateStatus(
-            `No se encontró el archivo ../assets/audio/${audio.id.replace(
-              "audio-",
-              "listening-b1-"
-            )}.mp3. Revisá nombre y ubicación.`,
-            "is-error"
-          );
-        });
-      }
-
-      document.querySelectorAll("audio").forEach(setupAudioLimit);
-
       function getFeedback(score) {
         const percentage = Math.round((score / totalQuestions) * 100);
 
         if (percentage >= 80) {
           return {
-            title: "¡Excelente comprensión auditiva!",
+            title: "¡Excelente desempeño!",
             message:
-              "Identificaste con precisión ideas principales, detalles, horarios e información específica en los audios.",
+              "Comprendiste los audios con mucha precisión: identificaste horarios, motivos y consejos sin dificultad.",
             className: "is-success"
           };
         }
@@ -1009,7 +978,7 @@
           return {
             title: "¡Buen trabajo!",
             message:
-              "Tenés una buena base de listening. Practicá identificar palabras clave, fechas, horarios e instrucciones antes de seleccionar una respuesta.",
+              "Tenés una base sólida en comprensión auditiva. Repasá los audios donde tuviste dudas y usá la transcripción como apoyo.",
             className: "is-warning"
           };
         }
@@ -1017,50 +986,22 @@
         return {
           title: "Seguí practicando",
           message:
-            "Escuchá audios cortos con frecuencia. Primero buscá la idea general y luego prestá atención a nombres, lugares, números y acciones.",
+            "Escuchá cada audio más de una vez y anotá palabras clave como números, nombres y lugares antes de responder.",
           className: "is-error"
         };
       }
 
-      function awardExperience(score, isTimeUp) {
-        if (isTimeUp || score < 9) {
-          return;
-        }
-
-        try {
-          const storageKey = "englishQuestCRProgress";
-          const today = new Date().toISOString().slice(0, 10);
-          const saved = localStorage.getItem(storageKey);
-          const progress = saved ? JSON.parse(saved) : {};
-
-          if (progress.lastListeningExamDate !== today) {
-            progress.xp = Number(progress.xp || 0) + 150;
-            progress.lastListeningExamDate = today;
-
-            localStorage.setItem(storageKey, JSON.stringify(progress));
-          }
-        } catch {
-          // El resultado continúa aunque el navegador no permita localStorage.
-        }
-      }
-
       function finishExam(isTimeUp = false) {
-        if (examFinished) {
-          return;
-        }
+        if (examFinished) return;
 
         examFinished = true;
         clearInterval(timerInterval);
-        stopAllAudio();
-        disableAllAudio();
 
-        let score = 0;
         const unanswered = [];
+        let score = 0;
 
         Object.entries(answerKey).forEach(([question, correctAnswer]) => {
-          const selected = form.querySelector(
-            `input[name="${question}"]:checked`
-          );
+          const selected = form.querySelector(`input[name="${question}"]:checked`);
 
           if (!selected) {
             unanswered.push(question);
@@ -1085,13 +1026,11 @@
           timerBox.classList.add("is-finished");
         }
 
-        awardExperience(score, isTimeUp);
-
-        result.className = `listening-result is-visible ${feedback.className}`;
+        result.className = `exam-result is-visible ${feedback.className}`;
 
         result.innerHTML = `
           <h2>${isTimeUp ? "Tiempo finalizado" : feedback.title}</h2>
-          <div class="listening-score">${score} / ${totalQuestions}</div>
+          <div class="exam-score">${score} / ${totalQuestions}</div>
           <p><strong>Resultado: ${percentage}%</strong></p>
           <p>${feedback.message}</p>
           ${
@@ -1099,18 +1038,13 @@
               ? `<p>Preguntas sin responder: ${unanswered.length}.</p>`
               : ""
           }
-          ${
-            !isTimeUp && score >= 9
-              ? "<p>Ganaste 150 XP. Los XP se otorgan una vez por día.</p>"
-              : ""
-          }
-          <ul class="listening-feedback-list">
-            <li>Escuchá primero la idea general: ¿quién habla y sobre qué?</li>
-            <li>Buscá detalles: fechas, horarios, lugares, cantidades y acciones.</li>
-            <li>Leé las preguntas antes de reproducir el audio.</li>
-            <li>No te detengás en una palabra desconocida; usá el contexto.</li>
+          <ul class="exam-feedback-list">
+            <li>Escuchá números, horas y nombres con atención especial.</li>
+            <li>Usá la transcripción solo después de responder por primera vez.</li>
+            <li>Identificá el propósito general del audio antes de los detalles.</li>
+            <li>Repetí el audio si algo no quedó claro; no hay penalización por escucharlo varias veces.</li>
           </ul>
-          <div class="listening-actions">
+          <div class="exam-actions">
             <a class="button button-primary" href="progress.html">
               Ver mi progreso
             </a>
@@ -1132,9 +1066,7 @@
       }
 
       const timerInterval = window.setInterval(() => {
-        if (examFinished) {
-          return;
-        }
+        if (examFinished) return;
 
         remainingSeconds -= 1;
         updateTimer();
@@ -1154,25 +1086,21 @@
         });
 
         if (unanswered.length > 0) {
-          result.className = "listening-result is-visible is-warning";
-
+          result.className = "exam-result is-visible is-warning";
           result.innerHTML = `
             <h2>Faltan respuestas</h2>
             <p>
               Todavía tenés ${unanswered.length} pregunta${
                 unanswered.length === 1 ? "" : "s"
-              } sin responder. Completalas antes de finalizar.
+              } sin responder. Completalas antes de finalizar el simulacro.
             </p>
           `;
-
           result.focus();
 
-          const firstUnanswered = document.querySelector(
-            `input[name="${unanswered[0]}"]`
-          );
+          const firstQuestion = document.querySelector(`input[name="${unanswered[0]}"]`);
 
-          if (firstUnanswered) {
-            firstUnanswered.closest(".listening-question").scrollIntoView({
+          if (firstQuestion) {
+            firstQuestion.closest(".exam-question").scrollIntoView({
               behavior: "smooth",
               block: "center"
             });

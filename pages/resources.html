@@ -3,12 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <meta
     name="description"
     content="Recursos, simulacros y estrategias para aprender inglés en English Quest CR."
   >
-
   <title>Recursos | English Quest CR</title>
 
   <link rel="stylesheet" href="../assets/css/styles.css">
@@ -29,90 +27,112 @@
       color: var(--text);
       font-size: clamp(2.2rem, 5vw, 4rem);
       line-height: 1.05;
+      letter-spacing: -0.05em;
     }
 
     .resources-hero p {
-      color: var(--muted);
-      font-size: 1.08rem;
+      color: var(--text-muted);
+      font-size: 1.03rem;
       line-height: 1.75;
+      max-width: 62ch;
     }
 
     .resources-grid {
       display: grid;
+      gap: 1rem;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1.25rem;
     }
 
     .resource-card {
       display: flex;
       flex-direction: column;
       min-height: 260px;
-      padding: 1.6rem;
+      padding: 1.3rem;
+      overflow: hidden;
+      background: linear-gradient(155deg, var(--surface-elevated), var(--surface));
       border: 1px solid var(--border);
-      border-radius: 22px;
-      background: var(--surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-soft);
+      transition:
+        transform var(--transition),
+        border-color var(--transition),
+        box-shadow var(--transition);
+    }
+
+    .resource-card:hover {
+      border-color: var(--border-strong);
       box-shadow: var(--shadow);
+      transform: translateY(-4px);
     }
 
     .resource-card.is-featured {
-      border-color: rgba(89, 242, 196, 0.5);
-      background:
-        linear-gradient(
-          135deg,
-          rgba(89, 242, 196, 0.12),
-          rgba(255, 255, 255, 0.03)
-        );
+      background: linear-gradient(
+        145deg,
+        rgba(17, 42, 72, 0.98),
+        rgba(8, 22, 40, 0.98)
+      );
+      border-color: rgba(98, 230, 184, 0.38);
     }
 
     .resource-tag {
       display: inline-flex;
       align-self: flex-start;
       margin-bottom: 0.9rem;
-      padding: 0.35rem 0.7rem;
-      border: 1px solid rgba(89, 242, 196, 0.45);
-      border-radius: 999px;
+      padding: 0.28rem 0.55rem;
       color: var(--mint);
-      font-size: 0.76rem;
-      font-weight: 800;
-      letter-spacing: 0.05em;
+      background: rgba(98, 230, 184, 0.12);
+      border: 1px solid rgba(98, 230, 184, 0.35);
+      border-radius: 99rem;
+      font-size: 0.68rem;
+      font-weight: 900;
+      letter-spacing: 0.04em;
       text-transform: uppercase;
     }
 
     .resource-card h2 {
       margin: 0;
       color: var(--text);
-      font-size: 1.45rem;
+      font-size: 1.22rem;
+      line-height: 1.15;
     }
 
     .resource-card p {
-      color: var(--muted);
+      margin: 0.9rem 0 1rem;
+      color: var(--text-muted);
+      font-size: 0.92rem;
       line-height: 1.7;
     }
 
     .resource-card .button {
-      align-self: flex-start;
       margin-top: auto;
+      align-self: flex-start;
     }
 
     .study-tips {
       margin-top: 2rem;
-      padding: clamp(1.25rem, 3vw, 2rem);
-      border: 1px solid var(--border);
-      border-radius: 22px;
+      padding: 1.35rem;
       background: var(--surface);
-      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-soft);
     }
 
     .study-tips h2 {
-      margin-top: 0;
+      margin: 0 0 0.8rem;
       color: var(--text);
+      font-size: 1.25rem;
+      line-height: 1.15;
     }
 
     .study-tips ul {
-      margin-bottom: 0;
-      padding-left: 1.3rem;
-      color: var(--muted);
-      line-height: 1.9;
+      margin: 0;
+      padding-left: 1.2rem;
+      color: var(--text-muted);
+      line-height: 1.85;
+    }
+
+    .study-tips li + li {
+      margin-top: 0.25rem;
     }
 
     @media (max-width: 720px) {
@@ -126,54 +146,57 @@
 <body>
   <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
 
-  <header class="site-header">
-    <div class="container navbar">
-      <a class="brand" href="../index.html" aria-label="English Quest CR, inicio">
-        <span class="brand-mark" aria-hidden="true">EQ</span>
-        <span>
-          <strong>English Quest CR</strong>
-          <small>Tu ruta de inglés</small>
-        </span>
-      </a>
+<header class="site-header">
+  <div class="container header-content">
+    <a class="brand" href="../index.html" aria-label="English Quest CR, inicio">
+      <span class="brand-mark" aria-hidden="true">EQ</span>
+      <span>
+        <strong>English Quest CR</strong>
+        <small>Tu ruta de inglés</small>
+      </span>
+    </a>
 
-      <button
-        class="menu-toggle"
-        type="button"
-        data-menu-toggle
-        aria-expanded="false"
-        aria-controls="primary-navigation"
-      >
-        <span class="sr-only">Abrir menú</span>
-        <span aria-hidden="true">☰</span>
-      </button>
+    <button
+      class="menu-toggle"
+      type="button"
+      data-menu-toggle
+      aria-expanded="false"
+      aria-controls="primary-navigation"
+    >
+      <span class="sr-only">Abrir menú</span>
+      <span aria-hidden="true">☰</span>
+    </button>
 
-      <nav id="primary-navigation" class="primary-navigation" data-navigation>
-        <a href="../index.html">Inicio</a>
-        <a href="levels.html">Rutas</a>
-        <a href="challenge.html">Retos</a>
-        <a href="progress.html">Mi progreso</a>
-        <a href="resources.html" aria-current="page">Recursos</a>
-        <a href="about.html">Sobre el proyecto</a>
-      </nav>
+    <nav
+      id="primary-navigation"
+      class="main-navigation"
+      data-navigation
+      aria-label="Navegación principal"
+    >
+      <a class="nav-link" href="../index.html">Inicio</a>
+      <a class="nav-link" href="levels.html">Rutas</a>
+      <a class="nav-link" href="challenge.html">Retos</a>
+      <a class="nav-link" href="progress.html">Mi progreso</a>
+      <a class="nav-link is-active" href="resources.html" aria-current="page">Recursos</a>
+      <a class="nav-link" href="about.html">Sobre el proyecto</a>
+    </nav>
 
-      <button
-        class="contrast-toggle"
-        type="button"
-        data-contrast-toggle
-        aria-pressed="false"
-      >
-        Alto contraste
-      </button>
-    </div>
-  </header>
+    <button
+      class="contrast-toggle"
+      type="button"
+      data-contrast-toggle
+      aria-pressed="false"
+    >
+      <span aria-hidden="true">◐</span>
+      <span class="contrast-label">Contraste</span>
+    </button>
+  </div>
+</header>
 
   <main id="main-content" class="resources-page">
     <div class="container">
       <section class="resources-hero" aria-labelledby="resources-title">
         <p class="eyebrow">Herramientas de práctica</p>
-
-        <h1 id="resources-title">Recursos para avanzar con seguridad</h1>
-
         <p>
           Practicá estrategias de comprensión, resolvé simulacros originales y
           preparate para usar el inglés en contextos académicos y cotidianos.
@@ -183,14 +206,11 @@
       <section class="resources-grid" aria-label="Recursos disponibles">
         <article class="resource-card is-featured">
           <span class="resource-tag">Undécimo · B1</span>
-
           <h2>Simulacro Reading B1</h2>
-
           <p>
             Tres lecturas originales y 15 preguntas sobre idea principal,
             detalles, inferencias y vocabulario en contexto.
           </p>
-
           <a class="button button-primary" href="mock-exam.html">
             Iniciar Reading →
           </a>
@@ -198,14 +218,11 @@
 
         <article class="resource-card is-featured">
           <span class="resource-tag">Undécimo · B1</span>
-
           <h2>Simulacro Listening B1</h2>
-
           <p>
             Tres audios y 15 preguntas para practicar ideas principales,
             instrucciones, lugares, fechas, horarios y detalles.
           </p>
-
           <a class="button button-primary" href="listening-exam.html">
             Iniciar Listening →
           </a>
@@ -213,14 +230,11 @@
 
         <article class="resource-card">
           <span class="resource-tag">Estrategias</span>
-
           <h2>Lectura eficiente</h2>
-
           <p>
             Leé primero la pregunta, encontrá palabras clave y buscá en el texto
             solo la información necesaria antes de escoger una respuesta.
           </p>
-
           <a class="button button-secondary" href="mission.html?mission=eleventh-mission-13">
             Practicar estrategias →
           </a>
@@ -228,14 +242,11 @@
 
         <article class="resource-card">
           <span class="resource-tag">Estrategias</span>
-
           <h2>Listening paso a paso</h2>
-
           <p>
             Antes de escuchar, revisá las preguntas. Durante el audio, buscá
             nombres, números, lugares, acciones y palabras que se repiten.
           </p>
-
           <a class="button button-secondary" href="listening-exam.html">
             Practicar listening →
           </a>
@@ -244,7 +255,6 @@
 
       <section class="study-tips" aria-labelledby="tips-title">
         <h2 id="tips-title">Recomendaciones para estudiar</h2>
-
         <ul>
           <li>Practicá entre 15 y 25 minutos al día en lugar de estudiar todo en una sola sesión larga.</li>
           <li>Cuando leás, subrayá palabras clave antes de responder.</li>
@@ -257,9 +267,9 @@
   </main>
 
   <footer class="site-footer">
-    <div class="container footer-top">
+    <div class="container footer-grid">
       <div>
-        <a class="brand" href="../index.html">
+        <a class="brand footer-brand" href="../index.html" aria-label="English Quest CR, inicio">
           <span class="brand-mark" aria-hidden="true">EQ</span>
           <span>
             <strong>English Quest CR</strong>
@@ -267,12 +277,14 @@
           </span>
         </a>
 
-        <p class="footer-copy">
-          Curso gratuito de inglés para estudiantes de secundaria en Costa Rica.
+        <p class="footer-disclaimer">
+          Curso gratuito de inglés para estudiantes de secundaria en Costa Rica,
+          con rutas, retos, recursos y seguimiento del progreso.
         </p>
       </div>
 
       <div class="footer-links">
+        <a href="../index.html">Inicio</a>
         <a href="levels.html">Rutas</a>
         <a href="challenge.html">Retos</a>
         <a href="progress.html">Mi progreso</a>
