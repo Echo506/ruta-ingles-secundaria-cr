@@ -31,7 +31,8 @@ document.addEventListener("DOMContentLoaded", () => {
       yearLabel: "Séptimo",
       missions: SEVENTH_MISSIONS,
       icon: "🌱",
-      description: "Construí bases sólidas con saludos, rutinas, lugares, compras y comunicación cotidiana.",
+      description:
+        "Construí bases sólidas con saludos, rutinas, lugares, compras y comunicación cotidiana.",
       topics: ["Saludos", "Rutinas", "Naturaleza"]
     },
     {
@@ -40,7 +41,8 @@ document.addEventListener("DOMContentLoaded", () => {
       yearLabel: "Octavo",
       missions: EIGHTH_MISSIONS,
       icon: "🚀",
-      description: "Fortalecé estructuras frecuentes para hablar de experiencias, gustos y situaciones de la vida diaria.",
+      description:
+        "Fortalecé estructuras frecuentes para hablar de experiencias, gustos y situaciones de la vida diaria.",
       topics: ["Experiencias", "Preferencias", "Reading"]
     },
     {
@@ -49,7 +51,8 @@ document.addEventListener("DOMContentLoaded", () => {
       yearLabel: "Noveno",
       missions: NINTH_MISSIONS,
       icon: "🧠",
-      description: "Desarrollá comprensión, argumentación simple y uso más preciso del inglés en distintos contextos.",
+      description:
+        "Desarrollá comprensión, argumentación simple y uso más preciso del inglés en distintos contextos.",
       topics: ["Opiniones", "Comprensión", "Contexto"]
     },
     {
@@ -58,7 +61,8 @@ document.addEventListener("DOMContentLoaded", () => {
       yearLabel: "Décimo",
       missions: TENTH_MISSIONS,
       icon: "🎯",
-      description: "Practicá comunicación académica y funcional con retos más completos de lectura y análisis.",
+      description:
+        "Practicá comunicación académica y funcional con retos más completos de lectura y análisis.",
       topics: ["Análisis", "Mensajes", "Estrategias"]
     },
     {
@@ -67,7 +71,8 @@ document.addEventListener("DOMContentLoaded", () => {
       yearLabel: "Undécimo",
       missions: ELEVENTH_MISSIONS,
       icon: "🏆",
-      description: "Consolidá lectura crítica, argumentación y preparación final para comunicarte con confianza.",
+      description:
+        "Consolidá lectura crítica, argumentación y preparación final para comunicarte con confianza.",
       topics: ["Argumentación", "Lectura crítica", "Preparación final"]
     }
   ].filter((group) => group.missions.length > 0);
@@ -80,6 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
       streak: 0,
       badges: [],
       completedMissions: [],
+      completedChallenges: [],
       lastStudyDate: null,
       lastChallengeDate: null
     };
@@ -96,6 +102,9 @@ document.addEventListener("DOMContentLoaded", () => {
         badges: Array.isArray(parsed.badges) ? parsed.badges : [],
         completedMissions: Array.isArray(parsed.completedMissions)
           ? parsed.completedMissions
+          : [],
+        completedChallenges: Array.isArray(parsed.completedChallenges)
+          ? parsed.completedChallenges
           : []
       };
     } catch {
@@ -105,6 +114,59 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function saveProgress(progress) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+  }
+
+  async function syncProgressToSupabase(progress) {
+    const supabaseClient = window.supabaseClient;
+
+    if (!supabaseClient) {
+      console.warn(
+        "Supabase no está configurado. El progreso se guardó solamente en este navegador."
+      );
+      return;
+    }
+
+    const {
+      data: { user },
+      error: userError
+    } = await supabaseClient.auth.getUser();
+
+    if (userError || !user) {
+      console.warn(
+        "No hay una sesión autenticada. El progreso se guardó localmente.",
+        userError
+      );
+      return;
+    }
+
+    const { error } = await supabaseClient
+      .from("student_progress")
+      .upsert(
+        {
+          user_id: user.id,
+          email: user.email ?? null,
+          display_name:
+            user.user_metadata?.display_name ??
+            user.user_metadata?.full_name ??
+            null,
+          completed_levels: progress.completedMissions,
+          completed_challenges: progress.completedChallenges,
+          xp: progress.xp,
+          streak: progress.streak,
+          badges: progress.badges,
+          updated_at: new Date().toISOString()
+        },
+        {
+          onConflict: "user_id"
+        }
+      );
+
+    if (error) {
+      console.error("Error al sincronizar con Supabase:", error);
+      return;
+    }
+
+    console.log("Progreso guardado en Supabase.");
   }
 
   function escapeHtml(value) {
@@ -219,9 +281,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!MISSION_GROUPS.length) {
       levelsContainer.innerHTML = "";
+
       if (levelsError) {
         levelsError.hidden = false;
       }
+
       return;
     }
 
@@ -456,9 +520,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const parameters = new URLSearchParams(window.location.search);
-
     const missionId = parameters.get("mission") || MISSIONS[0].id;
-
     const mission = getMissionById(missionId) || MISSIONS[0];
     const progress = getProgress();
 
@@ -587,7 +649,7 @@ document.addEventListener("DOMContentLoaded", () => {
       )
       .join("");
 
-    form.addEventListener("submit", (event) => {
+    form.addEventListener("submit", async (event) => {
       event.preventDefault();
 
       let score = 0;
@@ -664,6 +726,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         saveProgress(updatedProgress);
+        await syncProgressToSupabase(updatedProgress);
       }
 
       const nextMission = getNextMission(mission.id);
@@ -711,7 +774,7 @@ document.addEventListener("DOMContentLoaded", () => {
       "daily-question-3": "b"
     };
 
-    form.addEventListener("submit", (event) => {
+    form.addEventListener("submit", async (event) => {
       event.preventDefault();
 
       let score = 0;
@@ -748,7 +811,13 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!alreadyCompletedToday) {
         progress.xp += 30;
         progress.lastChallengeDate = getToday();
+
+        if (!progress.completedChallenges.includes(getToday())) {
+          progress.completedChallenges.push(getToday());
+        }
+
         saveProgress(progress);
+        await syncProgressToSupabase(progress);
       }
 
       result.innerHTML = alreadyCompletedToday
