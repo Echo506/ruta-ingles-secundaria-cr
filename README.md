@@ -7,9 +7,6 @@
 [![Licencia](https://img.shields.io/badge/Licencia-MIT-62e6b8)](LICENSE)
 [![Accesibilidad](https://img.shields.io/badge/Accesibilidad-WCAG%202.2-7dd3fc)](docs/accessibility.md)
 
-# English Quest CR
-
-> **Aprendé inglés por niveles. Superá retos. Fortalecé Reading y Listening.**
 
 English Quest CR es una plataforma educativa gratuita, estática y de código abierto para estudiantes de secundaria de Costa Rica.
 
