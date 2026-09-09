@@ -2435,3 +2435,29 @@ body.high-contrast .spark {
     animation: none;
   }
 }
+
+.sync-status {
+  margin-top: 1.25rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 14px;
+  font-weight: 700;
+}
+
+.sync-status.is-success {
+  background: rgba(34, 197, 94, 0.14);
+  border-color: rgba(134, 239, 172, 0.35);
+  color: #bbf7d0;
+}
+
+.sync-status.is-info {
+  background: rgba(59, 130, 246, 0.14);
+  border-color: rgba(147, 197, 253, 0.35);
+  color: #bfdbfe;
+}
+
+.sync-status.is-error {
+  background: rgba(239, 68, 68, 0.14);
+  border-color: rgba(252, 165, 165, 0.35);
+  color: #fecaca;
+}
