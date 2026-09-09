@@ -79,6 +79,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const MISSIONS = MISSION_GROUPS.flatMap((group) => group.missions);
 
+  function setSyncStatus(message, type = "info") {
+    const status = document.querySelector("#sync-status");
+
+    if (!status) {
+      return;
+    }
+
+    status.hidden = false;
+    status.textContent = message;
+    status.className = `sync-status is-${type}`;
+  }
+
   function getDefaultProgress() {
     return {
       xp: 0,
@@ -180,9 +192,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const normalized = normalizeProgress(progress);
 
     if (!supabaseClient) {
-      console.warn(
-        "Supabase no está configurado. El progreso se guardó solamente en este navegador."
-      );
+      setSyncStatus("Progreso guardado solo en este dispositivo.", "warning");
       return false;
     }
 
@@ -192,10 +202,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     } = await supabaseClient.auth.getUser();
 
     if (userError || !user) {
-      console.warn(
-        "No hay una sesión autenticada. El progreso se guardó localmente.",
-        userError
-      );
+      setSyncStatus("Iniciá sesión para sincronizar tu progreso.", "warning");
       return false;
     }
 
@@ -223,9 +230,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (error) {
       console.error("Error al sincronizar con Supabase:", error);
+      setSyncStatus("No se pudo sincronizar con tu cuenta.", "error");
       return false;
     }
 
+    setSyncStatus("Progreso sincronizado con tu cuenta.", "success");
     return true;
   }
 
@@ -279,6 +288,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const supabaseClient = window.supabaseClient;
 
     if (!supabaseClient) {
+      setSyncStatus("Progreso guardado solo en este dispositivo.", "warning");
       return;
     }
 
@@ -288,6 +298,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     } = await supabaseClient.auth.getUser();
 
     if (userError || !user) {
+      setSyncStatus("Iniciá sesión para sincronizar tu progreso.", "warning");
       return;
     }
 
@@ -297,12 +308,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!remoteProgress) {
       if (getProgressSize(localProgress) > 0) {
         await syncProgressToSupabase(localProgress);
+      } else {
+        setSyncStatus("Tu cuenta está lista para guardar progreso.", "info");
       }
       return;
     }
 
     const mergedProgress = mergeProgress(localProgress, remoteProgress);
     saveProgress(mergedProgress);
+    setSyncStatus("Progreso cargado desde tu cuenta.", "success");
     await syncProgressToSupabase(mergedProgress);
   }
 

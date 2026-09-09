@@ -5,18 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta
     name="description"
-    content="Reto diario interactivo para practicar inglés con English Quest CR."
+    content="Prueba de nivel y reto diario interactivo para practicar inglés con English Quest CR."
   >
-  <title>Reto diario | English Quest CR</title>
+  <title>Prueba de nivel y retos | English Quest CR</title>
 
   <link rel="stylesheet" href="../assets/css/styles.css">
 
-  <!-- Configuración de Supabase -->
   <script type="module">
     import "../assets/js/supabase-config.js";
   </script>
 
-  <!-- Lógica principal -->
   <script src="../assets/js/app.js" defer></script>
 </head>
 
@@ -79,18 +77,122 @@
   </header>
 
   <main id="main-content">
-    <section class="hero challenge-hero">
+    <section class="hero challenge-hero placement-hero">
       <div class="container">
         <p class="eyebrow">
-          <span aria-hidden="true">⚡</span>
-          Entrenamiento diario
+          <span aria-hidden="true">🧪</span>
+          Diagnóstico + práctica
         </p>
 
-        <h1>Reto diario de inglés</h1>
+        <h1>Descubrí tu nivel y seguí con tus retos</h1>
 
         <p class="hero-description">
-          Practicá un poco cada día. Si acertás al menos 2 respuestas, sumás 30 XP.
+          Primero podés hacer una prueba breve para identificar tu punto de partida.
+          Después, continuá con el reto diario para mantener tu práctica activa.
         </p>
+      </div>
+    </section>
+
+    <section class="section placement-test-section" aria-labelledby="placement-test-title">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">
+              <span aria-hidden="true">📍</span>
+              Ubicación inicial
+            </p>
+            <h2 id="placement-test-title">Prueba de nivel</h2>
+          </div>
+        </div>
+
+        <div class="placement-test-card">
+          <div class="placement-test-intro" id="placementIntro">
+            <p>
+              Esta prueba rápida te ayuda a elegir la ruta más conveniente dentro de English Quest CR.
+              No es un examen oficial; es una guía práctica para saber si te conviene empezar en
+              Séptimo, Octavo, Noveno, Décimo o Undécimo.
+            </p>
+
+            <div class="placement-highlights">
+              <article class="placement-highlight">
+                <span class="placement-highlight__label">Duración</span>
+                <strong>3–5 min</strong>
+              </article>
+
+              <article class="placement-highlight">
+                <span class="placement-highlight__label">Preguntas</span>
+                <strong>10 ítems</strong>
+              </article>
+
+              <article class="placement-highlight">
+                <span class="placement-highlight__label">Resultado</span>
+                <strong>Ruta sugerida</strong>
+              </article>
+            </div>
+
+            <button class="button button-primary" type="button" id="start-placement-test">
+              <span>Empezar prueba de nivel</span>
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
+
+          <div class="placement-quiz" id="placementQuiz" hidden>
+            <div class="placement-progress">
+              <div class="placement-progress__top">
+                <span id="placement-progress-text">Pregunta 1 de 10</span>
+                <span id="placement-score-text">Puntaje: 0</span>
+              </div>
+
+              <div class="placement-progress__bar" aria-hidden="true">
+                <span id="placement-progress-fill"></span>
+              </div>
+            </div>
+
+            <article class="placement-question-card">
+              <p class="placement-question-label">Diagnóstico English Quest CR</p>
+              <h3 id="placement-question-text">Cargando pregunta...</h3>
+              <div class="placement-options" id="placement-options"></div>
+            </article>
+          </div>
+
+          <div
+            class="placement-result"
+            id="placementResult"
+            hidden
+            tabindex="-1"
+            aria-live="polite"
+          >
+            <span class="placement-result__badge" id="placement-badge">Ruta sugerida</span>
+            <h3 id="placement-result-title">Tu resultado</h3>
+            <p id="placement-result-description"></p>
+
+            <div class="placement-result__grid">
+              <article class="placement-result__item">
+                <span>Puntaje</span>
+                <strong id="placement-final-score">0 / 10</strong>
+              </article>
+
+              <article class="placement-result__item">
+                <span>Recomendación</span>
+                <strong id="placement-final-route">Séptimo</strong>
+              </article>
+            </div>
+
+            <div class="placement-result__message" id="placement-result-message"></div>
+
+            <div class="placement-result__actions">
+              <a class="button button-primary" id="placement-route-link" href="levels.html">
+                <span>Ir a mi ruta sugerida</span>
+                <span aria-hidden="true">→</span>
+              </a>
+
+              <button class="button button-secondary" type="button" id="restart-placement-test">
+                <span>Repetir prueba</span>
+                <span aria-hidden="true">↺</span>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -103,7 +205,7 @@
               Hoy practicamos
             </p>
 
-            <h2 id="challenge-title">Completá el reto y seguí avanzando.</h2>
+            <h2 id="challenge-title">Completá el reto diario y seguí avanzando.</h2>
           </div>
         </div>
 
@@ -192,7 +294,8 @@
             <h2 id="next-step-title">Seguí construyendo tu progreso.</h2>
 
             <p>
-              Después del reto, podés volver a tus misiones o revisar tu panel personal.
+              Después del diagnóstico o del reto diario, podés volver a tus misiones,
+              explorar rutas o revisar tu panel personal.
             </p>
           </div>
 
@@ -246,5 +349,233 @@
       <a href="#main-content">Volver arriba ↑</a>
     </div>
   </footer>
+
+  <script>
+    const placementQuestions = [
+      {
+        question: "Choose the correct greeting: 'Good ____!'",
+        options: ["book", "morning", "apple", "student"],
+        correct: 1
+      },
+      {
+        question: "What does 'I go to school every day' express?",
+        options: ["A daily routine", "A past event", "A question", "A place"],
+        correct: 0
+      },
+      {
+        question: "Choose the correct sentence:",
+        options: [
+          "She play soccer on Sundays.",
+          "She plays soccer on Sundays.",
+          "She playing soccer on Sundays.",
+          "She to play soccer on Sundays."
+        ],
+        correct: 1
+      },
+      {
+        question: "What is the best answer to: 'How old are you?'",
+        options: [
+          "I am in the classroom.",
+          "I have 14 years.",
+          "I am 14 years old.",
+          "My age is student."
+        ],
+        correct: 2
+      },
+      {
+        question: "Choose the option related to past experience:",
+        options: [
+          "I visited my grandmother yesterday.",
+          "I visit my grandmother every day.",
+          "I am visit my grandmother now.",
+          "I will visiting my grandmother."
+        ],
+        correct: 0
+      },
+      {
+        question: "Read: 'Maria studied for the test because she wanted a good grade.' Why did Maria study?",
+        options: [
+          "Because she was tired.",
+          "Because she wanted a good grade.",
+          "Because the class ended.",
+          "Because she lost the book."
+        ],
+        correct: 1
+      },
+      {
+        question: "Choose the best option: 'You ____ wear a helmet when riding a bike.'",
+        options: ["should", "should to", "are", "can to"],
+        correct: 0
+      },
+      {
+        question: "Which sentence shows an opinion?",
+        options: [
+          "The movie starts at 7:00.",
+          "There are 25 students.",
+          "I think English is very useful.",
+          "My notebook is blue."
+        ],
+        correct: 2
+      },
+      {
+        question: "What is the main idea of a text?",
+        options: [
+          "A random detail",
+          "The most important message",
+          "The last word",
+          "The title only"
+        ],
+        correct: 1
+      },
+      {
+        question: "Choose the most advanced sentence:",
+        options: [
+          "My name is Ana.",
+          "I like pizza.",
+          "Yesterday I went to the library to finish a school project.",
+          "This is a pen."
+        ],
+        correct: 2
+      }
+    ];
+
+    const placementIntro = document.getElementById("placementIntro");
+    const placementQuiz = document.getElementById("placementQuiz");
+    const placementResult = document.getElementById("placementResult");
+    const startPlacementBtn = document.getElementById("start-placement-test");
+    const restartPlacementBtn = document.getElementById("restart-placement-test");
+    const placementQuestionText = document.getElementById("placement-question-text");
+    const placementOptions = document.getElementById("placement-options");
+    const placementProgressText = document.getElementById("placement-progress-text");
+    const placementScoreText = document.getElementById("placement-score-text");
+    const placementProgressFill = document.getElementById("placement-progress-fill");
+    const placementBadge = document.getElementById("placement-badge");
+    const placementResultTitle = document.getElementById("placement-result-title");
+    const placementResultDescription = document.getElementById("placement-result-description");
+    const placementFinalScore = document.getElementById("placement-final-score");
+    const placementFinalRoute = document.getElementById("placement-final-route");
+    const placementResultMessage = document.getElementById("placement-result-message");
+    const placementRouteLink = document.getElementById("placement-route-link");
+
+    let placementIndex = 0;
+    let placementScore = 0;
+
+    function getPlacementResult(score) {
+      if (score <= 2) {
+        return {
+          route: "Séptimo",
+          description: "Te conviene empezar por bases sólidas: saludos, rutinas, gustos, lugares e información personal.",
+          message: "Iniciá en Séptimo para construir confianza con vocabulario esencial y estructuras simples.",
+          link: "levels.html#seventh"
+        };
+      }
+
+      if (score <= 4) {
+        return {
+          route: "Octavo",
+          description: "Ya manejás nociones básicas y podés avanzar a experiencias, preferencias y comunicación cotidiana.",
+          message: "Empezá en Octavo para reforzar pasado simple, situaciones diarias y comprensión breve.",
+          link: "levels.html#eighth"
+        };
+      }
+
+      if (score <= 6) {
+        return {
+          route: "Noveno",
+          description: "Mostrás una base funcional para trabajar comprensión, opiniones e ideas principales con más precisión.",
+          message: "Seguí en Noveno para practicar lectura, contexto y mensajes más completos.",
+          link: "levels.html#ninth"
+        };
+      }
+
+      if (score <= 8) {
+        return {
+          route: "Décimo",
+          description: "Tu nivel permite abordar tareas más académicas y funcionales, con lectura y análisis más exigentes.",
+          message: "Probá Décimo para desarrollar estrategias de comprensión y análisis de textos.",
+          link: "levels.html#tenth"
+        };
+      }
+
+      return {
+        route: "Undécimo",
+        description: "Tenés una base sólida para consolidar lectura crítica, argumentación y preparación final.",
+        message: "Iniciá en Undécimo para fortalecer comprensión avanzada y tareas integradas.",
+        link: "levels.html#eleventh"
+      };
+    }
+
+    function startPlacementTest() {
+      placementIndex = 0;
+      placementScore = 0;
+      placementIntro.hidden = true;
+      placementResult.hidden = true;
+      placementQuiz.hidden = false;
+      renderPlacementQuestion();
+    }
+
+    function renderPlacementQuestion() {
+      const current = placementQuestions[placementIndex];
+      placementQuestionText.textContent = current.question;
+      placementOptions.innerHTML = "";
+      placementProgressText.textContent = `Pregunta ${placementIndex + 1} de ${placementQuestions.length}`;
+      placementScoreText.textContent = `Puntaje: ${placementScore}`;
+      placementProgressFill.style.width = `${(placementIndex / placementQuestions.length) * 100}%`;
+
+      current.options.forEach((option, index) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "placement-option";
+        button.textContent = option;
+        button.addEventListener("click", () => handlePlacementAnswer(index));
+        placementOptions.appendChild(button);
+      });
+    }
+
+    function handlePlacementAnswer(selectedIndex) {
+      const current = placementQuestions[placementIndex];
+
+      if (selectedIndex === current.correct) {
+        placementScore++;
+      }
+
+      placementIndex++;
+
+      if (placementIndex < placementQuestions.length) {
+        renderPlacementQuestion();
+        return;
+      }
+
+      showPlacementResult();
+    }
+
+    function showPlacementResult() {
+      const result = getPlacementResult(placementScore);
+
+      placementQuiz.hidden = true;
+      placementResult.hidden = false;
+
+      placementBadge.textContent = `Ruta sugerida: ${result.route}`;
+      placementResultTitle.textContent = `Tu mejor punto de inicio es ${result.route}`;
+      placementResultDescription.textContent = result.description;
+      placementFinalScore.textContent = `${placementScore} / ${placementQuestions.length}`;
+      placementFinalRoute.textContent = result.route;
+      placementResultMessage.textContent = result.message;
+      placementRouteLink.href = result.link;
+
+      placementResult.focus();
+      placementResult.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    startPlacementBtn?.addEventListener("click", startPlacementTest);
+
+    restartPlacementBtn?.addEventListener("click", () => {
+      placementResult.hidden = true;
+      placementQuiz.hidden = false;
+      placementIndex = 0;
+      placementScore = 0;
+      renderPlacementQuestion();
+    });
+  </script>
 </body>
 </html>
