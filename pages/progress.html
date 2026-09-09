@@ -99,6 +99,13 @@
           Revisá tus puntos de experiencia, días de práctica, insignias y
           misiones completadas. Cada paso cuenta.
         </p>
+
+        <div
+          id="sync-status"
+          class="sync-status"
+          hidden
+          aria-live="polite"
+        ></div>
       </div>
     </section>
 
@@ -111,7 +118,7 @@
               Tu cuenta
             </p>
 
-            <h2 id="account-title">Guardá tu progreso en este dispositivo.</h2>
+            <h2 id="account-title">Guardá tu progreso en tu cuenta.</h2>
           </div>
         </div>
 
@@ -198,7 +205,7 @@
               Ruta actual
             </p>
 
-            <h2 id="missions-title">Misiones de Séptimo.</h2>
+            <h2 id="missions-title">Tus misiones.</h2>
           </div>
 
           <a class="text-link" href="levels.html">
@@ -277,8 +284,8 @@
             <h2 id="continue-title">Seguí sumando experiencia.</h2>
 
             <p>
-              Completá las misiones de Séptimo o realizá el reto diario
-              para seguir fortaleciendo tu inglés.
+              Completá misiones o realizá el reto diario para seguir
+              fortaleciendo tu inglés.
             </p>
           </div>
 
@@ -337,21 +344,50 @@
       signOutUser,
       getCurrentUser
     } from "../assets/js/auth.js";
+
     import { supabase } from "../assets/js/supabase-config.js";
 
     const loginButton = document.querySelector("#google-login");
     const logoutButton = document.querySelector("#logout-button");
     const authStatus = document.querySelector("#auth-status");
+    const syncStatus = document.querySelector("#sync-status");
 
     const xpEl = document.querySelector("#progress-xp");
     const streakEl = document.querySelector("#progress-streak");
     const badgesEl = document.querySelector("#progress-badges");
     const progressEl = document.querySelector("#progress-percentage-page");
 
-    const firstStepBadge = document.querySelector("#badge-first-step .badge-state");
-    const activeStreakBadge = document.querySelector("#badge-active-streak .badge-state");
-    const readingBadge = document.querySelector("#badge-reading .badge-state");
-    const listeningBadge = document.querySelector("#badge-listening .badge-state");
+    const firstStepBadge = document.querySelector(
+      "#badge-first-step .badge-state"
+    );
+
+    const activeStreakBadge = document.querySelector(
+      "#badge-active-streak .badge-state"
+    );
+
+    const readingBadge = document.querySelector(
+      "#badge-reading .badge-state"
+    );
+
+    const listeningBadge = document.querySelector(
+      "#badge-listening .badge-state"
+    );
+
+    function showSyncStatus(message, type = "info") {
+      if (!syncStatus) return;
+
+      syncStatus.hidden = false;
+      syncStatus.textContent = message;
+      syncStatus.className = `sync-status is-${type}`;
+    }
+
+    function hideSyncStatus() {
+      if (!syncStatus) return;
+
+      syncStatus.hidden = true;
+      syncStatus.textContent = "";
+      syncStatus.className = "sync-status";
+    }
 
     async function ensureUserProgressRow(user) {
       const { data: existing, error: selectError } = await supabase
@@ -362,24 +398,31 @@
 
       if (selectError) {
         console.error("Error buscando progreso:", selectError.message);
+        showSyncStatus(
+          "No se pudo consultar el progreso de tu cuenta.",
+          "error"
+        );
         return null;
       }
 
       if (existing) return existing;
 
-  const starterRow = {
-  user_id: user.id,
-  email: user.email ?? "",
-  display_name: user.user_metadata?.full_name ?? user.user_metadata?.name ?? "",
-  completed_levels: [],
-  completed_challenges: [],
-  reading_scores: [],
-  listening_scores: [],
-  xp: 0,
-  streak: 0,
-  badges: [],
-  updated_at: new Date().toISOString()
-};
+      const starterRow = {
+        user_id: user.id,
+        email: user.email ?? "",
+        display_name:
+          user.user_metadata?.full_name ??
+          user.user_metadata?.name ??
+          "",
+        completed_levels: [],
+        completed_challenges: [],
+        reading_scores: [],
+        listening_scores: [],
+        xp: 0,
+        streak: 0,
+        badges: [],
+        updated_at: new Date().toISOString()
+      };
 
       const { data, error } = await supabase
         .from("student_progress")
@@ -389,8 +432,17 @@
 
       if (error) {
         console.error("Error creando fila inicial:", error.message);
+        showSyncStatus(
+          "No se pudo preparar el progreso de tu cuenta.",
+          "error"
+        );
         return null;
       }
+
+      showSyncStatus(
+        "Tu cuenta está lista para guardar progreso.",
+        "success"
+      );
 
       return data;
     }
@@ -412,10 +464,18 @@
         ? progress.listening_scores.length
         : 0;
 
-      const totalDone = completedLevels + completedChallenges + readingCount + listeningCount;
+      const totalDone =
+        completedLevels +
+        completedChallenges +
+        readingCount +
+        listeningCount;
+
       const totalReference = 100;
 
-      return Math.min(100, Math.round((totalDone / totalReference) * 100));
+      return Math.min(
+        100,
+        Math.round((totalDone / totalReference) * 100)
+      );
     }
 
     async function loadUserProgress(user) {
@@ -427,6 +487,10 @@
 
       if (error) {
         console.error("Error cargando progreso:", error.message);
+        showSyncStatus(
+          "No se pudo cargar el progreso de tu cuenta.",
+          "error"
+        );
         return null;
       }
 
@@ -434,63 +498,97 @@
     }
 
     function updateBadges(progress) {
-      const badges = Array.isArray(progress.badges) ? progress.badges : [];
+      const badges = Array.isArray(progress.badges)
+        ? progress.badges
+        : [];
 
       if (firstStepBadge) {
-        firstStepBadge.textContent = badges.includes("primer-paso")
+        firstStepBadge.textContent = badges.includes("first-step")
           ? "Obtenida"
           : "Aún no obtenida";
       }
 
       if (activeStreakBadge) {
-        activeStreakBadge.textContent = badges.includes("racha-activa")
+        activeStreakBadge.textContent = badges.includes("active-streak")
           ? "Obtenida"
           : "Aún no obtenida";
       }
 
       if (readingBadge) {
-        readingBadge.textContent = badges.includes("lectura-atenta")
+        readingBadge.textContent = badges.includes("reading")
           ? "Obtenida"
           : "Próximamente";
       }
 
       if (listeningBadge) {
-        listeningBadge.textContent = badges.includes("oido-explorador")
+        listeningBadge.textContent = badges.includes("listening")
           ? "Obtenida"
           : "Próximamente";
       }
     }
 
+    function resetProgressPage() {
+      if (xpEl) xpEl.textContent = "0";
+      if (streakEl) streakEl.textContent = "0";
+      if (badgesEl) badgesEl.textContent = "0";
+      if (progressEl) progressEl.textContent = "0%";
+
+      if (firstStepBadge) {
+        firstStepBadge.textContent = "Aún no obtenida";
+      }
+
+      if (activeStreakBadge) {
+        activeStreakBadge.textContent = "Aún no obtenida";
+      }
+
+      if (readingBadge) {
+        readingBadge.textContent = "Próximamente";
+      }
+
+      if (listeningBadge) {
+        listeningBadge.textContent = "Próximamente";
+      }
+    }
+
     async function renderProgressPage() {
+      hideSyncStatus();
+
       const user = await getCurrentUser();
 
       if (!user) {
-        authStatus.textContent = "Iniciá sesión una sola vez con Google para conservar tu historial, tus insignias y tu avance.";
+        authStatus.textContent =
+          "Iniciá sesión una sola vez con Google para conservar tu historial, tus insignias y tu avance.";
+
         loginButton.hidden = false;
         logoutButton.hidden = true;
 
-        if (xpEl) xpEl.textContent = "0";
-        if (streakEl) streakEl.textContent = "0";
-        if (badgesEl) badgesEl.textContent = "0";
-        if (progressEl) progressEl.textContent = "0%";
+        resetProgressPage();
 
-        if (firstStepBadge) firstStepBadge.textContent = "Aún no obtenida";
-        if (activeStreakBadge) activeStreakBadge.textContent = "Aún no obtenida";
-        if (readingBadge) readingBadge.textContent = "Próximamente";
-        if (listeningBadge) listeningBadge.textContent = "Próximamente";
+        showSyncStatus(
+          "Iniciá sesión para sincronizar tu progreso con tu cuenta.",
+          "info"
+        );
+
         return;
       }
 
       loginButton.hidden = true;
       logoutButton.hidden = false;
+
       authStatus.textContent = `Sesión iniciada como ${user.email}`;
 
-      await ensureUserProgressRow(user);
+      const existingOrNewProgress = await ensureUserProgressRow(user);
+
+      if (!existingOrNewProgress) return;
+
       const progress = await loadUserProgress(user);
 
       if (!progress) return;
 
-      const badgesCount = Array.isArray(progress.badges) ? progress.badges.length : 0;
+      const badgesCount = Array.isArray(progress.badges)
+        ? progress.badges.length
+        : 0;
+
       const progressPercent = calculateProgress(progress);
 
       if (xpEl) xpEl.textContent = String(progress.xp ?? 0);
@@ -499,10 +597,19 @@
       if (progressEl) progressEl.textContent = `${progressPercent}%`;
 
       updateBadges(progress);
+
+      showSyncStatus(
+        "Progreso sincronizado con tu cuenta.",
+        "success"
+      );
     }
 
     loginButton?.addEventListener("click", signInWithGoogle);
-    logoutButton?.addEventListener("click", signOutUser);
+
+    logoutButton?.addEventListener("click", async () => {
+      await signOutUser();
+      await renderProgressPage();
+    });
 
     renderProgressPage();
   </script>
