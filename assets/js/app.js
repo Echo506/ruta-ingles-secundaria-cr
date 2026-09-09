@@ -1,6 +1,6 @@
 "use strict";
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const STORAGE_KEY = "englishQuestCRProgress";
   const CONTRAST_KEY = "englishQuestCRHighContrast";
 
@@ -93,33 +93,6 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
-  function getProgress() {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      const parsed = saved ? JSON.parse(saved) : {};
-
-      return {
-        ...getDefaultProgress(),
-        ...parsed,
-        badges: Array.isArray(parsed.badges) ? parsed.badges : [],
-        completedMissions: Array.isArray(parsed.completedMissions)
-          ? parsed.completedMissions
-          : [],
-        completedChallenges: Array.isArray(parsed.completedChallenges)
-          ? parsed.completedChallenges
-          : [],
-        readingScores: Array.isArray(parsed.readingScores)
-          ? parsed.readingScores
-          : [],
-        listeningScores: Array.isArray(parsed.listeningScores)
-          ? parsed.listeningScores
-          : []
-      };
-    } catch {
-      return getDefaultProgress();
-    }
-  }
-
   function normalizeProgress(progress) {
     const safeProgress = progress ?? {};
 
@@ -142,9 +115,64 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
+  function getProgress() {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      const parsed = saved ? JSON.parse(saved) : {};
+      return normalizeProgress(parsed);
+    } catch {
+      return getDefaultProgress();
+    }
+  }
+
   function saveProgress(progress) {
     const normalized = normalizeProgress(progress);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized));
+  }
+
+  function getProgressSize(progress) {
+    const normalized = normalizeProgress(progress);
+
+    return (
+      normalized.xp +
+      normalized.streak +
+      normalized.badges.length +
+      normalized.completedMissions.length * 100 +
+      normalized.completedChallenges.length * 30 +
+      normalized.readingScores.length +
+      normalized.listeningScores.length
+    );
+  }
+
+  function mergeProgress(localProgress, remoteProgress) {
+    const local = normalizeProgress(localProgress);
+    const remote = normalizeProgress(remoteProgress);
+
+    return normalizeProgress({
+      xp: Math.max(local.xp, remote.xp),
+      streak: Math.max(local.streak, remote.streak),
+      badges: [...new Set([...remote.badges, ...local.badges])],
+      completedMissions: [
+        ...new Set([...remote.completedMissions, ...local.completedMissions])
+      ],
+      completedChallenges: [
+        ...new Set([...remote.completedChallenges, ...local.completedChallenges])
+      ],
+      readingScores: [...remote.readingScores, ...local.readingScores],
+      listeningScores: [...remote.listeningScores, ...local.listeningScores],
+      lastStudyDate:
+        local.lastStudyDate && remote.lastStudyDate
+          ? (local.lastStudyDate > remote.lastStudyDate
+              ? local.lastStudyDate
+              : remote.lastStudyDate)
+          : local.lastStudyDate || remote.lastStudyDate || null,
+      lastChallengeDate:
+        local.lastChallengeDate && remote.lastChallengeDate
+          ? (local.lastChallengeDate > remote.lastChallengeDate
+              ? local.lastChallengeDate
+              : remote.lastChallengeDate)
+          : local.lastChallengeDate || remote.lastChallengeDate || null
+    });
   }
 
   async function syncProgressToSupabase(progress) {
@@ -155,7 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.warn(
         "Supabase no está configurado. El progreso se guardó solamente en este navegador."
       );
-      return;
+      return false;
     }
 
     const {
@@ -168,7 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "No hay una sesión autenticada. El progreso se guardó localmente.",
         userError
       );
-      return;
+      return false;
     }
 
     const payload = {
@@ -195,10 +223,87 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (error) {
       console.error("Error al sincronizar con Supabase:", error);
+      return false;
+    }
+
+    return true;
+  }
+
+  async function getRemoteProgress() {
+    const supabaseClient = window.supabaseClient;
+
+    if (!supabaseClient) {
+      return null;
+    }
+
+    const {
+      data: { user },
+      error: userError
+    } = await supabaseClient.auth.getUser();
+
+    if (userError || !user) {
+      return null;
+    }
+
+    const { data, error } = await supabaseClient
+      .from("student_progress")
+      .select(`
+        xp,
+        streak,
+        badges,
+        completed_levels,
+        completed_challenges,
+        reading_scores,
+        listening_scores,
+        updated_at
+      `)
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    if (error || !data) {
+      return null;
+    }
+
+    return normalizeProgress({
+      xp: data.xp ?? 0,
+      streak: data.streak ?? 0,
+      badges: data.badges ?? [],
+      completedMissions: data.completed_levels ?? [],
+      completedChallenges: data.completed_challenges ?? [],
+      readingScores: data.reading_scores ?? [],
+      listeningScores: data.listening_scores ?? []
+    });
+  }
+
+  async function syncProgressOnLoad() {
+    const supabaseClient = window.supabaseClient;
+
+    if (!supabaseClient) {
       return;
     }
 
-    console.log("Progreso guardado en Supabase.");
+    const {
+      data: { user },
+      error: userError
+    } = await supabaseClient.auth.getUser();
+
+    if (userError || !user) {
+      return;
+    }
+
+    const localProgress = getProgress();
+    const remoteProgress = await getRemoteProgress();
+
+    if (!remoteProgress) {
+      if (getProgressSize(localProgress) > 0) {
+        await syncProgressToSupabase(localProgress);
+      }
+      return;
+    }
+
+    const mergedProgress = mergeProgress(localProgress, remoteProgress);
+    saveProgress(mergedProgress);
+    await syncProgressToSupabase(mergedProgress);
   }
 
   function escapeHtml(value) {
@@ -921,6 +1026,9 @@ document.addEventListener("DOMContentLoaded", () => {
   setupNavigation();
   setupContrastToggle();
   setupCurrentYear();
+
+  await syncProgressOnLoad();
+
   updateBasicProgressWidgets();
   setupHomeLevels();
   setupProgressPage();
