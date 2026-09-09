@@ -86,6 +86,8 @@ document.addEventListener("DOMContentLoaded", () => {
       badges: [],
       completedMissions: [],
       completedChallenges: [],
+      readingScores: [],
+      listeningScores: [],
       lastStudyDate: null,
       lastChallengeDate: null
     };
@@ -105,6 +107,12 @@ document.addEventListener("DOMContentLoaded", () => {
           : [],
         completedChallenges: Array.isArray(parsed.completedChallenges)
           ? parsed.completedChallenges
+          : [],
+        readingScores: Array.isArray(parsed.readingScores)
+          ? parsed.readingScores
+          : [],
+        listeningScores: Array.isArray(parsed.listeningScores)
+          ? parsed.listeningScores
           : []
       };
     } catch {
@@ -112,12 +120,36 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  function normalizeProgress(progress) {
+    const safeProgress = progress ?? {};
+
+    return {
+      ...getDefaultProgress(),
+      ...safeProgress,
+      badges: Array.isArray(safeProgress.badges) ? safeProgress.badges : [],
+      completedMissions: Array.isArray(safeProgress.completedMissions)
+        ? safeProgress.completedMissions
+        : [],
+      completedChallenges: Array.isArray(safeProgress.completedChallenges)
+        ? safeProgress.completedChallenges
+        : [],
+      readingScores: Array.isArray(safeProgress.readingScores)
+        ? safeProgress.readingScores
+        : [],
+      listeningScores: Array.isArray(safeProgress.listeningScores)
+        ? safeProgress.listeningScores
+        : []
+    };
+  }
+
   function saveProgress(progress) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+    const normalized = normalizeProgress(progress);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized));
   }
 
   async function syncProgressToSupabase(progress) {
     const supabaseClient = window.supabaseClient;
+    const normalized = normalizeProgress(progress);
 
     if (!supabaseClient) {
       console.warn(
@@ -139,27 +171,27 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    const payload = {
+      user_id: user.id,
+      email: user.email ?? "",
+      display_name:
+        user.user_metadata?.full_name ??
+        user.user_metadata?.name ??
+        user.user_metadata?.display_name ??
+        "",
+      completed_levels: normalized.completedMissions,
+      completed_challenges: normalized.completedChallenges,
+      reading_scores: normalized.readingScores,
+      listening_scores: normalized.listeningScores,
+      xp: Number(normalized.xp) || 0,
+      streak: Number(normalized.streak) || 0,
+      badges: normalized.badges,
+      updated_at: new Date().toISOString()
+    };
+
     const { error } = await supabaseClient
       .from("student_progress")
-      .upsert(
-        {
-          user_id: user.id,
-          email: user.email ?? null,
-          display_name:
-            user.user_metadata?.display_name ??
-            user.user_metadata?.full_name ??
-            null,
-          completed_levels: progress.completedMissions,
-          completed_challenges: progress.completedChallenges,
-          xp: progress.xp,
-          streak: progress.streak,
-          badges: progress.badges,
-          updated_at: new Date().toISOString()
-        },
-        {
-          onConflict: "user_id"
-        }
-      );
+      .upsert(payload, { onConflict: "user_id" });
 
     if (error) {
       console.error("Error al sincronizar con Supabase:", error);
@@ -222,7 +254,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const today = getToday();
 
     if (progress.lastStudyDate === today) {
-      return;
+      return false;
     }
 
     const yesterday = new Date();
@@ -243,6 +275,8 @@ document.addEventListener("DOMContentLoaded", () => {
     ) {
       progress.badges.push("active-streak");
     }
+
+    return true;
   }
 
   function updateBasicProgressWidgets() {
@@ -710,12 +744,11 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      const updatedProgress = getProgress();
-
+      const updatedProgress = normalizeProgress(getProgress());
       const alreadyCompleted =
         updatedProgress.completedMissions.includes(mission.id);
 
-      updateStreak(updatedProgress);
+      const streakChanged = updateStreak(updatedProgress);
 
       if (!alreadyCompleted) {
         updatedProgress.xp += 100;
@@ -724,7 +757,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!updatedProgress.badges.includes("first-step")) {
           updatedProgress.badges.push("first-step");
         }
+      }
 
+      if (!alreadyCompleted || streakChanged) {
         saveProgress(updatedProgress);
         await syncProgressToSupabase(updatedProgress);
       }
@@ -802,11 +837,11 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      const progress = getProgress();
+      const progress = normalizeProgress(getProgress());
       const alreadyCompletedToday =
         progress.lastChallengeDate === getToday();
 
-      updateStreak(progress);
+      const streakChanged = updateStreak(progress);
 
       if (!alreadyCompletedToday) {
         progress.xp += 30;
@@ -815,7 +850,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!progress.completedChallenges.includes(getToday())) {
           progress.completedChallenges.push(getToday());
         }
+      }
 
+      if (!alreadyCompletedToday || streakChanged) {
         saveProgress(progress);
         await syncProgressToSupabase(progress);
       }
